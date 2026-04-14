@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sesame — formfluX</title>
+  <meta name="description" content="A local-first visual inspiration tool for designers — semantic search, aesthetic profiling, and intelligent organisation.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav class="nav nav--case-study" id="nav">
+    <a href="index.html" class="nav__logo">formflu<span class="logo-x">X</span></a>
+    <div class="nav__controls">
+      <a href="index.html#projects" class="cs-back-link">
+        <svg width="16" height="10" viewBox="0 0 16 10" fill="none" aria-hidden="true">
+          <path d="M5 1L1 5L5 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <line x1="1" y1="5" x2="15" y2="5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        Back to Projects
+      </a>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+        <svg class="theme-toggle__sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        <svg class="theme-toggle__moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="cs-hero">
+    <div class="cs-hero__image">
+      <img src="images/sesame/collection.png" alt="Sesame app — collection grid showing visual references" loading="eager">
+    </div>
+    <div class="cs-hero__overlay">
+      <div class="cs-hero__content">
+        <p class="cs-hero__label">Personal Project &middot; 2026</p>
+        <h1 class="cs-hero__title">Sesame</h1>
+        <p class="cs-hero__subtitle">A local-first visual inspiration tool that learns your aesthetic taste</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="cs-main">
+
+    <!-- Overview -->
+    <section class="cs-section cs-overview">
+      <div class="cs-section__body">
+        <div class="cs-overview__grid">
+          <div class="cs-overview__text">
+            <h2 class="cs-section__heading">Overview</h2>
+            <p>Sesame is a native desktop application that helps designers organise and understand their visual reference collections. Import images from anywhere, search them by description, and let the app surface patterns in your taste you might not have noticed.</p>
+            <p>Everything runs locally &mdash; no accounts, no cloud, no images leave the machine. I built it to solve a problem I kept hitting in my own design work: references scattered across platforms with no way to search or make sense of them.</p>
+            <p>This project applied the same rapid-prototyping and systems-thinking skills I use in physical product design to a software context &mdash; scoping a real problem, building a working solution, and shipping it under tight time constraints.</p>
+            <span class="cs-contribution-tag">SOLE DEVELOPER</span>
+          </div>
+          <aside class="cs-overview__meta">
+            <dl class="cs-meta">
+              <div class="cs-meta__item">
+                <dt>Type</dt>
+                <dd>Personal Project / Design Tool</dd>
+              </div>
+              <div class="cs-meta__item">
+                <dt>Year</dt>
+                <dd>2026</dd>
+              </div>
+              <div class="cs-meta__item">
+                <dt>Role</dt>
+                <dd>Design, Architecture &amp; Development</dd>
+              </div>
+              <div class="cs-meta__item">
+                <dt>Approach</dt>
+                <dd>Full-stack &middot; AI integration &middot; Native desktop app</dd>
+              </div>
+            </dl>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <div class="cs-stats">
+      <div class="cs-stat">
+        <span class="cs-stat__value">4 days</span>
+        <span class="cs-stat__label">concept to working product</span>
+      </div>
+      <div class="cs-stat">
+        <span class="cs-stat__value">7</span>
+        <span class="cs-stat__label">interconnected views</span>
+      </div>
+      <div class="cs-stat">
+        <span class="cs-stat__value">100%</span>
+        <span class="cs-stat__label">local-first / offline</span>
+      </div>
+    </div>
+
+    <!-- The Problem -->
+    <section class="cs-section">
+      <div class="cs-section__body">
+        <h2 class="cs-section__heading">The Problem</h2>
+        <p>Designers collect visual inspiration across many platforms, but these collections end up scattered, unsearchable, and disconnected from the actual design process. There&rsquo;s no good way to ask &ldquo;find me images with that warm brutalist feeling&rdquo; across everything you&rsquo;ve saved.</p>
+        <p>Existing tools treat inspiration as a static archive. Sesame treats it as a living, searchable resource that becomes more useful the more you engage with it.</p>
+      </div>
+    </section>
+
+    <!-- Key Features -->
+    <section class="cs-section cs-section--highlight">
+      <div class="cs-section__body">
+        <h2 class="cs-section__heading">What It Does</h2>
+
+        <h3>Natural Language Search</h3>
+        <p>Describe what you&rsquo;re looking for in plain language and the app returns visually relevant results &mdash; no manual tagging required.</p>
+        <img src="images/sesame/search.png" alt="Sesame search results" class="cs-image-full-img" loading="lazy">
+
+        <h3>Refine View</h3>
+        <p>A full-screen view for rapidly reviewing your collection. The app learns from your responses over time, personalising results to your taste.</p>
+        <img src="images/sesame/swipe.png" alt="Sesame refine view" class="cs-image-full-img" loading="lazy">
+
+        <h3>Visual Mapping</h3>
+        <p>An interactive 3D visualisation that reveals how your references relate to each other, making implicit aesthetic patterns visible.</p>
+        <img src="images/sesame/map.png" alt="Sesame visual map" class="cs-image-full-img" loading="lazy">
+
+        <h3>Style Briefs</h3>
+        <p>Generates written design briefs grounded in your actual collection &mdash; principles, vocabulary, and direction based on what you&rsquo;ve curated, not generic labels.</p>
+        <img src="images/sesame/brief.png" alt="Sesame style brief" class="cs-image-full-img" loading="lazy">
+
+        <h3>Moodboard Builder</h3>
+        <p>Arrange selected images on a canvas and export presentation-ready boards directly from your curated references.</p>
+        <img src="images/sesame/moodboard.png" alt="Sesame moodboard builder" class="cs-image-full-img" loading="lazy">
+      </div>
+    </section>
+
+    <!-- Design Approach -->
+    <section class="cs-section">
+      <div class="cs-section__body">
+        <h2 class="cs-section__heading">Design Approach</h2>
+
+        <h3>Privacy-First</h3>
+        <p>Designer reference collections are personal and often contain copyrighted material. Everything runs on-device &mdash; no accounts, no cloud uploads, no data leaves the machine.</p>
+
+        <h3>Minimal Interface</h3>
+        <p>Dark background, warm accent, system typography &mdash; the UI stays out of the way and keeps focus on the images. A consistent design system ensures coherence across all views.</p>
+        <div class="cs-image-pair">
+          <div class="cs-image-slot"><img src="images/sesame/collection.png" alt="Sesame collection grid" loading="lazy"></div>
+          <div class="cs-image-slot"><img src="images/sesame/settings.png" alt="Sesame settings panel" loading="lazy"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Transferable Skills -->
+    <section class="cs-section cs-section--highlight">
+      <div class="cs-section__body">
+        <h2 class="cs-section__heading">Skills Applied</h2>
+        <p>This project applied the same methodology I use in physical product design &mdash; just in a different medium:</p>
+        <ul class="cs-list">
+          <li><strong>Rapid prototyping under constraints:</strong> Scoping, building, and shipping a working product in 4 days &mdash; the same discipline used in fabrication sprints and client deliverables</li>
+          <li><strong>Systems thinking:</strong> Designing interconnected components where each part informs the next &mdash; the same approach used in physical product systems</li>
+          <li><strong>User-centred problem solving:</strong> Built around a real workflow problem, shaped by direct experience as a designer</li>
+          <li><strong>End-to-end delivery:</strong> Owning every layer from backend to interface to packaging &mdash; the same full-ownership approach I bring to physical product work</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Reflection -->
+    <section class="cs-section cs-section--final">
+      <div class="cs-section__body">
+        <h2 class="cs-section__heading">Reflection</h2>
+        <p>Building Sesame reinforced something I&rsquo;ve found across all my work: the best outcomes come from treating constraints as design drivers. A tight timeline forced ruthless prioritisation. Technical constraints forced cleaner decisions. The result is a focused tool that does what it needs to and nothing more.</p>
+        <p>This project confirmed that the skills I&rsquo;ve developed through physical product design &mdash; scoping problems, prototyping fast, and shipping complete deliverables &mdash; apply directly in a software context. The medium changes; the methodology doesn&rsquo;t.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Back to projects -->
+  <div class="cs-back">
+    <a href="index.html#projects" class="cs-back__btn">
+      <svg width="16" height="10" viewBox="0 0 16 10" fill="none" aria-hidden="true">
+        <path d="M5 1L1 5L5 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="1" y1="5" x2="15" y2="5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      Back to All Projects
+    </a>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; 2026 formflu<span class="logo-x">X</span></p>
+  </footer>
+
+  <!-- Theme + scroll animation (standalone) -->
+  <script>
+  (function() {
+    const toggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    const saved = localStorage.getItem('theme');
+    if (saved) html.setAttribute('data-theme', saved);
+    if (toggle) {
+      toggle.addEventListener('click', () => {
+        const current = html.getAttribute('data-theme');
+        let next;
+        if (current === 'dark') next = 'light';
+        else if (current === 'light') next = 'auto';
+        else next = 'dark';
+        html.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+      });
+    }
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.cs-section, .cs-image-slot, .cs-stat').forEach(el => observer.observe(el));
+  })();
+  </script>
+
+</body>
+</html>

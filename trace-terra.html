@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trace Terra — formfluX</title>
+  <meta name="description" content="Computational design and robotic fabrication research into terrain-responsive material systems for arid environments — integrating biological soil crust into robotically extruded structures.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav class="nav nav--case-study" id="nav">
+    <a href="index.html" class="nav__logo">formflu<span class="logo-x">X</span></a>
+    <div class="nav__controls">
+      <a href="index.html#projects" class="cs-back-link">
+        <svg width="16" height="10" viewBox="0 0 16 10" fill="none" aria-hidden="true">
+          <path d="M5 1L1 5L5 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <line x1="1" y1="5" x2="15" y2="5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        Back to Projects
+      </a>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+        <svg class="theme-toggle__sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        <svg class="theme-toggle__moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="cs-hero">
+    <div class="cs-hero__image">
+      <div class="cs-hero__placeholder">Hero image — robotic extrusion output or terrain-to-form panel</div>
+    </div>
+    <div class="cs-hero__overlay">
+      <div class="cs-hero__content">
+        <p class="cs-hero__label">UCL Bio-Integrated Design &middot; Year 2 &middot; 2024&ndash;2025</p>
+        <h1 class="cs-hero__title">Trace Terra</h1>
+        <p class="cs-hero__subtitle">Integrating biological soil-crust microbiota into robotically extruded structures for arid environments</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="cs-main">
+
+    <!-- Overview -->
+    <section class="cs-section cs-overview">
+      <div class="cs-section__body">
+        <div class="cs-overview__grid">
+          <div class="cs-overview__text">
+            <h2 class="cs-section__heading">Overview</h2>
+            <p>Trace Terra is a design research project investigating how landscape geometry and environmental data can be translated into fabricated form at architectural scale. The work sits at the intersection of computational design and physical making — using topographic and climatic datasets to directly inform robotic fabrication parameters for terrain-responsive material systems.</p>
+            <p>The project developed a complete workflow from GIS data input through parametric modelling to robotic paste extrusion, producing structures designed to host biological soil crust (biocrust) — communities of cyanobacteria, mosses, and lichens that stabilise arid soils and sequester carbon.</p>
+          </div>
+          <aside class="cs-overview__meta">
+            <dl class="cs-meta">
+              <div class="cs-meta__item">
+                <dt>Institution</dt>
+                <dd>UCL Bartlett School of Architecture</dd>
+              </div>
+              <div class="cs-meta__item">
+                <dt>Programme</dt>
+                <dd>MArch Bio-Integrated Design</dd>
+              </div>
+              <div class="cs-meta__item">
+                <dt>Year</dt>
+                <dd>2024&ndash;2025 (Year 2)</dd>
+              </div>
+              <div class="cs-meta__item">
+                <dt>My Role</dt>
+                <dd>Design Researcher &amp; Fabrication Lead</dd>
+              </div>
+              <div class="cs-meta__item">
+                <dt>Tools</dt>
+                <dd>Rhino, Grasshopper, KUKA KR60, WASP 40100, Houdini, GIS, Autodesk CFD</dd>
+              </div>
+              <div class="cs-meta__item">
+                <dt>Outputs</dt>
+                <dd>3 publications (poster, conference paper, masterclass submission)</dd>
+              </div>
+            </dl>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- Research Question -->
+    <section class="cs-section">
+      <div class="cs-section__body">
+        <h2 class="cs-section__heading">Research Question</h2>
+        <div class="cs-text-block">
+          <p>How can topographic and environmental data directly inform fabrication parameters, producing structures that are both functionally responsive to arid landscapes and capable of hosting living biological systems?</p>
+          <p>Arid environments face accelerating soil degradation and desertification. Biological soil crusts — natural communities of cyanobacteria, mosses, and lichens — are among the most effective natural stabilisers of dryland soils, but they're slow to establish and easily destroyed. The project asks whether robotically fabricated structures can be designed to accelerate biocrust colonisation by providing optimised surface geometries and microclimates.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Computational Workflow -->
+    <section class="cs-section cs-section--highlight">
+      <div class="cs-section__body">
+        <h2 class="cs-section__heading">Computational Workflow</h2>
+        <span class="cs-contribution-tag">Lead contributor</span>
+        <div class="cs-text-block">
+          <p>The design pipeline begins with GIS terrain data — elevation maps, slope analysis, wind exposure, and solar irradiance — processed through a Grasshopper-based parametric system. These environmental datasets are translated into fabrication parameters: toolpath geometry, layer heights, deposition speeds, and surface textures that respond to site-specific conditions.</p>
+          <p>Simulation workflows in Autodesk CFD validated airflow and moisture retention across different surface geometries, feeding back into the parametric model to refine toolpath generation. The result is a closed-loop system where landscape data drives form, and physical performance validates the computational assumptions.</p>
+        </div>
+        <div class="cs-image-full">
+          <div class="cs-image-placeholder cs-image-placeholder--tall">Grasshopper definition / computational workflow diagram</div>
+        </div>
+        <div class="cs-image-pair">
+          <div class="cs-image-slot">
+            <div class="cs-image-placeholder">GIS terrain data input / site analysis</div>
+          </div>
+          <div class="cs-image-slot">
+            <div class="cs-image-placeholder">CFD simulation results</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Material System -->
+    <section class="cs-section">
+      <div class="cs-section__body">
+        <h2 class="cs-section__heading">Material System</h2>
+        <span class="cs-contribution-tag">Lead contributor</span>
+        <div class="cs-text-block">
+          <p>The material system centres on clay paste extrusion — chosen for its compatibility with biological colonisation, structural self-support during printing, and availability in arid regions. Iterative material testing explored mix ratios, fibre reinforcement, and moisture content to optimise printability while maintaining porosity for biocrust attachment.</p>
+          <p>Surface texture and porosity are critical: too smooth and organisms cannot attach; too rough and the structure loses structural integrity. The parametric system generates varying surface textures across a single panel, creating micro-habitats tuned to different organism requirements.</p>
+        </div>
+        <div class="cs-image-trio">
+          <div class="cs-image-slot">
+            <div class="cs-image-placeholder">Clay paste mix testing</div>
+          </div>
+          <div class="cs-image-slot">
+            <div class="cs-image-placeholder">Surface texture samples</div>
+          </div>
+          <div class="cs-image-slot">
+            <div class="cs-image-placeholder">Biocrust colonisation detail</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Robotic Fabrication -->
+    <section class="cs-section cs-section--highlight">
+      <div class="cs-section__body">
+        <h2 class="cs-section__heading">Robotic Fabrication</h2>
+        <span class="cs-contribution-tag">Lead contributor</span>
+        <div class="cs-text-block">
+          <p>Fabrication was carried out on two robotic platforms — KUKA KR60 and WASP 40100 — using custom paste extrusion end-effectors. The toolpath planning system translates parametric geometry into robot-ready G-code, accounting for material behaviour, gravity effects, and layer adhesion timing.</p>
+          <p>Iterative testing across deposition speeds, layer heights, nozzle diameters, and pause intervals refined the fabrication parameters. Each print run fed data back into the parametric model, progressively tightening the relationship between computational prediction and physical outcome. Setup inefficiencies were reduced by approximately 40% across testing cycles through workflow standardisation.</p>
+        </div>
+        <div class="cs-image-full">
+          <div class="cs-image-placeholder cs-image-placeholder--tall">Robotic fabrication in progress — KUKA or WASP platform</div>
+        </div>
+        <div class="cs-stats">
+          <div class="cs-stat">
+            <span class="cs-stat__value">~40%</span>
+            <span class="cs-stat__label">Reduction in setup inefficiencies</span>
+          </div>
+          <div class="cs-stat">
+            <span class="cs-stat__value">2</span>
+            <span class="cs-stat__label">Robotic platforms (KUKA, WASP)</span>
+          </div>
+          <div class="cs-stat">
+            <span class="cs-stat__value">3</span>
+            <span class="cs-stat__label">Publications from this work</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testing & Iteration -->
+    <section class="cs-section">
+      <div class="cs-section__body">
+        <h2 class="cs-section__heading">Testing &amp; Iteration</h2>
+        <div class="cs-text-block">
+          <p>The project followed a simulation-led, build-to-test methodology. Each fabrication cycle was designed to test specific hypotheses — surface texture effects on moisture retention, structural behaviour under load, biocrust growth rates on different substrates — with results feeding back into the next computational iteration.</p>
+          <p>A series of fabricated panels demonstrated terrain-to-form translation at increasing scales, validating the end-to-end workflow from GIS data input through to robotic output. The iterative process established clear relationships between computational parameters and physical performance metrics.</p>
+        </div>
+        <div class="cs-image-pair">
+          <div class="cs-image-slot">
+            <div class="cs-image-placeholder">Fabricated test panels / iterations</div>
+          </div>
+          <div class="cs-image-slot">
+            <div class="cs-image-placeholder">Testing setup / measurement</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Publications -->
+    <section class="cs-section">
+      <div class="cs-section__body">
+        <h2 class="cs-section__heading">Publications</h2>
+        <div class="cs-text-block">
+          <p>The research contributed to three academic outputs across international symposia and conferences:</p>
+        </div>
+        <div class="cs-publications">
+          <div class="cs-pub">
+            <span class="cs-pub__type">Poster</span>
+            <h3 class="cs-pub__title">Trace Terra: Regenerative Systems in Arid Landscapes</h3>
+            <p class="cs-pub__venue">Circular Strategies Symposium, 2025</p>
+          </div>
+          <div class="cs-pub">
+            <span class="cs-pub__type">Conference Paper</span>
+            <h3 class="cs-pub__title">Trace Terra: Integration of biological soil-crust microbiota into robotically extruded structures for arid contexts</h3>
+            <p class="cs-pub__venue">Biodesign for the Living Futures (Cocoon), 2025 — paper in publication</p>
+          </div>
+          <div class="cs-pub">
+            <span class="cs-pub__type">Under Review</span>
+            <h3 class="cs-pub__title">Trace Terra: Integration of biological soil-crust microbiota into robotically extruded structures designed for arid environment contexts</h3>
+            <p class="cs-pub__venue">DigitalFUTURES CDRF 2026 — Masterclass &amp; 8th International Conference on Computational Design and Robotic Fabrication</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reflection -->
+    <section class="cs-section cs-section--final">
+      <div class="cs-section__body">
+        <h2 class="cs-section__heading">Reflection</h2>
+        <div class="cs-text-block">
+          <p>Trace Terra validated that environmental data can meaningfully drive fabrication parameters — not as a stylistic gesture, but as a functional design logic where landscape conditions directly shape material outcomes. The simulation-led workflow proved effective for bridging the gap between computational prediction and physical reality, though each material system introduces its own unpredictabilities that only emerge through making.</p>
+          <p>The project reinforced the value of owning the full pipeline: from data processing through parametric modelling to hands-on fabrication. Understanding the constraints at each stage — computational resolution limits, material behaviour under extrusion, biological growth requirements — made it possible to design feedback loops that actually improved outcomes rather than just generating complexity.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Back -->
+    <div class="cs-back">
+      <a href="index.html#projects" class="cs-back__btn">
+        <svg width="16" height="10" viewBox="0 0 16 10" fill="none" aria-hidden="true">
+          <path d="M5 1L1 5L5 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <line x1="1" y1="5" x2="15" y2="5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        Back to Projects
+      </a>
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2026 formflu<span class="logo-x">X</span></p>
+  </footer>
+
+  <script>
+    (function() {
+      const toggle = document.getElementById('theme-toggle');
+      const html = document.documentElement;
+      const saved = localStorage.getItem('theme');
+      if (saved) html.setAttribute('data-theme', saved);
+      if (toggle) {
+        toggle.addEventListener('click', () => {
+          const current = html.getAttribute('data-theme');
+          let next;
+          if (current === 'dark') next = 'light';
+          else if (current === 'light') next = 'auto';
+          else next = 'dark';
+          html.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+        });
+      }
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+      }, { threshold: 0.1 });
+      document.querySelectorAll('.cs-section, .cs-image-slot, .cs-stat').forEach(el => observer.observe(el));
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+# Raw assets — not for deployment
+Images & Ref/
+*.DNG
+*.dng
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Dev tools
+node_modules/
+.claude/
+
+# Dev files
+FRAMER-GUIDE.md
+serve.py
+fonts/
+
+# Temp files
+*.tmp
+*.swp
