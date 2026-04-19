@@ -570,6 +570,18 @@ html[data-theme="light"] .theme-toggle__moon { display: block; }
   overflow: hidden;
 }
 
+.project-card__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.project-card:hover .project-card__image img {
+  transform: scale(1.03);
+}
+
 .project-card__placeholder {
   width: 100%;
   height: 100%;
@@ -594,6 +606,26 @@ html[data-theme="light"] .theme-toggle__moon { display: block; }
   );
   color: var(--text-muted);
   opacity: 0.6;
+}
+
+.project-card__image--sesame {
+  background: radial-gradient(circle at 50% 35%, #2a2a48 0%, #1a1a28 70%, #0e0e16 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md);
+}
+
+.project-card__logo {
+  width: 38%;
+  max-width: 140px;
+  height: auto;
+  filter: drop-shadow(0 8px 28px rgba(0, 0, 0, 0.5));
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project-card:hover .project-card__logo {
+  transform: scale(1.04);
 }
 
 .project-card__info {
@@ -1904,11 +1936,26 @@ html[data-theme="auto"] .cs-hero__overlay {
   margin-top: var(--space-md);
 }
 
+/* Enforce 16:9 for all paired images so heights always align */
 .cs-image-pair {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--space-sm);
   margin-top: var(--space-md);
+  align-items: stretch;
+}
+
+.cs-image-pair .cs-image-slot {
+  width: 100%;
+}
+
+.cs-image-pair .cs-image-slot img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--radius);
+  display: block;
 }
 
 .cs-image-trio {
@@ -1916,6 +1963,45 @@ html[data-theme="auto"] .cs-hero__overlay {
   grid-template-columns: 1fr 1fr 1fr;
   gap: var(--space-sm);
   margin-top: var(--space-md);
+  align-items: stretch;
+}
+
+.cs-image-trio .cs-image-slot img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--radius);
+  display: block;
+}
+
+/* Portrait-centred single image (used in Biology section) */
+.cs-image-portrait-center {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-md);
+}
+
+.cs-image-portrait-center .cs-image-slot {
+  width: min(520px, 100%);
+}
+
+/* Let the natural aspect of tall images decide the height — forcing 3:4 was
+   clipping the HBPV exploded view. */
+.cs-image-portrait-center .cs-image-slot img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: var(--radius);
+  display: block;
+}
+
+/* Small caption under an image-full block */
+.cs-caption {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin-top: 0.6rem;
+  line-height: 1.55;
 }
 
 .cs-image-slot {
@@ -2176,6 +2262,269 @@ html[data-theme="auto"] .cs-hero__overlay {
   font-family: var(--font-body);
   font-size: 0.8rem;
   color: var(--text-muted);
+}
+
+/* Publication card with inline poster thumbnail */
+.cs-pub--with-preview {
+  display: grid;
+  grid-template-columns: 1fr 180px;
+  gap: var(--space-md);
+  align-items: center;
+}
+
+.cs-pub--with-preview .cs-pub__body {
+  min-width: 0;
+}
+
+.cs-pub__preview {
+  display: block;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  transition: transform var(--transition), border-color var(--transition);
+  padding: 0;
+  background: transparent;
+  cursor: zoom-in;
+}
+
+.cs-pub__preview:hover {
+  border-color: rgba(168, 213, 162, 0.35);
+  transform: translateY(-1px);
+}
+
+.cs-pub__preview img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1.414;
+  object-fit: cover;
+  background: #141419;
+}
+
+.cs-pub__actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.cs-pub__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.9rem;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.cs-pub__btn:hover {
+  color: var(--accent-green);
+  border-color: rgba(168, 213, 162, 0.35);
+  background: var(--accent-green-dim);
+}
+
+/* Poster lightbox modal */
+.poster-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+/* The [hidden] attribute must hide the modal completely — otherwise its
+   transparent backdrop sits on top of the page eating every click. */
+.poster-modal[hidden] {
+  display: none !important;
+}
+
+.poster-modal.is-open {
+  opacity: 1;
+}
+
+.poster-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 8, 12, 0.85);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.poster-modal__content {
+  position: relative;
+  z-index: 1;
+  max-width: min(95vw, 900px);
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  background: #0e0e13;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+}
+
+.poster-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: 0.9rem 1.2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.poster-modal__title {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.poster-modal__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.poster-modal__btn {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition);
+}
+
+.poster-modal__btn:hover {
+  color: var(--accent-green);
+  border-color: rgba(168, 213, 162, 0.35);
+  background: var(--accent-green-dim);
+}
+
+.poster-modal__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.poster-modal__close:hover {
+  color: var(--text-primary);
+  border-color: var(--border-focus);
+}
+
+.poster-modal__close svg,
+.poster-modal__close * {
+  pointer-events: none;
+}
+
+.poster-modal__viewer {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  background: #ffffff;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 12px;
+}
+
+.poster-modal__viewer img {
+  width: auto !important;
+  max-width: 100%;
+  height: auto !important;
+  object-fit: contain;
+  display: block;
+  border-radius: 0 !important;
+  /* Fit tall poster to viewer height so aspect stays correct */
+  max-height: calc(92vh - 60px);
+}
+
+/* Biology — two portraits side by side.
+   The succession chart is taller than a 3:4 portrait, so we let each
+   slot size itself to its image's natural aspect ratio, centred vertically
+   against the shorter partner. */
+.cs-image-portrait-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+  align-items: center;
+}
+
+.cs-image-portrait-pair .cs-image-slot {
+  width: 100%;
+}
+
+.cs-image-portrait-pair .cs-image-slot img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: var(--radius);
+  display: block;
+}
+
+/* Computational Workflow — four 1:1 squares */
+.cs-image-grid-2x2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+}
+
+.cs-image-grid-2x2 .cs-image-slot img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: var(--radius);
+  display: block;
+}
+
+@media (max-width: 640px) {
+  .cs-image-portrait-pair,
+  .cs-image-grid-2x2 {
+    grid-template-columns: 1fr;
+  }
+  .poster-modal__content {
+    max-width: 100vw;
+    max-height: 100vh;
+    border-radius: 0;
+  }
+  .poster-modal__title { font-size: 0.75rem; }
+}
+
+@media (max-width: 768px) {
+  .cs-pub--with-preview {
+    grid-template-columns: 1fr;
+  }
+  .cs-pub__preview {
+    max-width: 260px;
+    margin: 0 auto;
+  }
 }
 
 /* Bulleted list (Water Purifier deliverables) */
