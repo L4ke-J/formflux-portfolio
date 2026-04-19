@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <defs>
+    <!-- Background: deep liquid-glass gradient, cool indigo-to-black -->
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#1c1c2e"/>
+      <stop offset="100%" stop-color="#0b0b10"/>
+    </linearGradient>
+    <!-- Ambient centre-top glow -->
+    <radialGradient id="glow" cx="50%" cy="22%" r="52%">
+      <stop offset="0%"   stop-color="#252540" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#0b0b10" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Specular top-fade (white shimmer, top ~38%) -->
+    <linearGradient id="spec" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#ffffff" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <!-- Seed gradients — subtle top-lit shine on each seed -->
+    <linearGradient id="g-gold" x1="0.25" y1="0" x2="0.75" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0%"   stop-color="#F0D278"/>
+      <stop offset="55%"  stop-color="#D4A853"/>
+      <stop offset="100%" stop-color="#B07A2A"/>
+    </linearGradient>
+    <linearGradient id="g-sage" x1="0.2" y1="0" x2="0.8" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0%"   stop-color="#9BC4A4"/>
+      <stop offset="55%"  stop-color="#7A9A82"/>
+      <stop offset="100%" stop-color="#4F7258"/>
+    </linearGradient>
+    <linearGradient id="g-terra" x1="0.8" y1="0" x2="0.2" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0%"   stop-color="#D88C6A"/>
+      <stop offset="55%"  stop-color="#C07055"/>
+      <stop offset="100%" stop-color="#904535"/>
+    </linearGradient>
+    <!-- Clip to rounded-square shape (local coords inside the scaled group) -->
+    <clipPath id="rr">
+      <rect width="1024" height="1024" rx="230"/>
+    </clipPath>
+  </defs>
+
+  <!-- All artwork scaled to 82% (840 × 840) centred in 1024 × 1024
+       with 92 px transparent margin — Apple HIG icon sizing compliance -->
+  <g transform="translate(92, 92) scale(0.8203125)">
+    <!-- ── Background layers ─────────────────────────────────────── -->
+    <rect width="1024" height="1024" rx="230" fill="url(#bg)"/>
+    <rect width="1024" height="1024" rx="230" fill="url(#glow)"/>
+    <!-- Specular top shimmer (clipped to rounded rect) -->
+    <rect width="1024" height="390" fill="url(#spec)" clip-path="url(#rr)"/>
+
+    <!-- ── Seeds (gradient-filled, depth shading) ────────────────── -->
+    <g transform="translate(164, 112) scale(5.47)">
+      <!-- Gold seed — top centre -->
+      <path fill="url(#g-gold)"
+        d="M75.38,65.19c4.21-4.74,6.56-10.85,6.62-17.19,0-13.74-12.35-32-18-32s-18,18.26-18,32,11.84,24,18,24c3.31,0,7.78-2.67,11.38-6.81Z"/>
+      <!-- Sage seed — bottom left -->
+      <path fill="url(#g-sage)"
+        d="M49.56,79.1c-9.72-9.72-31.36-13.89-35.35-9.9s.18,25.64,9.9,35.35c4.53,4.43,10.5,7.08,16.82,7.45.64,0,1.28.07,1.9.07,4.72,0,8.9-1.23,11-3.3,2.34-2.34,3.61-7.39,3.23-12.87-.39-6.32-3.06-12.29-7.5-16.8Z"/>
+      <!-- Terracotta seed — bottom right -->
+      <path fill="url(#g-terra)"
+        d="M78.44,79.1c-4.43,4.53-7.07,10.51-7.44,16.83-.38,5.47.89,10.52,3.23,12.87,2.07,2.07,6.25,3.3,11,3.3.63,0,1.26,0,1.9-.07,6.33-.38,12.31-3.04,16.83-7.48,9.72-9.72,13.89-31.36,9.9-35.35s-25.7.18-35.42,9.9Z"/>
+    </g>
+
+    <!-- ── Glass edge ring (inner border highlight) ───────────────── -->
+    <rect x="1.5" y="1.5" width="1021" height="1021" rx="229.5"
+          fill="none" stroke="white" stroke-opacity="0.14" stroke-width="3"/>
+    <!-- Top specular arc -->
+    <rect x="3" y="3" width="1018" height="360" rx="227"
+          fill="none" stroke="white" stroke-opacity="0.20" stroke-width="1.5"
+          clip-path="url(#rr)"/>
+  </g>
+</svg>
