@@ -1,598 +1,451 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="auto">
+<html lang="en" data-theme="dark" data-direction="editorial" data-density="comfy">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>formfluX — Design, Engineering & Strategy</title>
-  <meta name="description" content="Multi-disciplinary designer and engineer with expertise in product development, digital fabrication, bio-integrated design, and business strategy.">
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>James Lang — Design Engineer · formfluX</title>
+<meta name="description" content="James Lang — Designer–engineer. Products, systems, and bio-integrated materials — from wearables to water to living substrates.">
+<link rel="stylesheet" href="portfolio.css">
 </head>
 <body>
 
-  <!-- FRAMER: navigation -->
-  <nav class="nav" id="nav">
-    <a href="#hero" class="nav__logo" data-i18n="logo">formflu<span class="logo-x">X</span></a>
-    <ul class="nav__links" id="nav-links">
-      <li><a href="#projects" data-i18n="nav_projects">Projects</a></li>
-      <li><a href="#experience" data-i18n="nav_experience">Experience</a></li>
-      <li><a href="#publications" data-i18n="nav_publications">Publications</a></li>
-      <li><a href="#about" data-i18n="nav_about">About</a></li>
-      <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
-    </ul>
-    <div class="nav__controls">
-      <!-- Language Switcher -->
-      <div class="lang-switcher" id="lang-switcher">
-        <button class="lang-switcher__btn" id="lang-btn" aria-label="Switch language">
-          <span id="lang-current">EN</span>
-          <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-        </button>
-        <ul class="lang-switcher__menu" id="lang-menu">
-          <li><button data-lang="en" class="active">EN</button></li>
-          <li><button data-lang="zh">中文</button></li>
-          <!-- DISABLED: <li><button data-lang="es">ES</button></li> -->
-          <!-- DISABLED: <li><button data-lang="de">DE</button></li> -->
-        </ul>
-      </div>
-      <!-- Theme Toggle -->
-      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
-        <svg class="theme-toggle__sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-        <svg class="theme-toggle__moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-      </button>
-      <!-- Mobile Toggle -->
-      <button class="nav__toggle" id="nav-toggle" aria-label="Toggle menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-    </div>
+<!-- ============ NAV ============ -->
+<header class="nav">
+  <a href="#top" class="nav__logo">formflu<span class="x">X</span></a>
+  <nav class="nav__links">
+    <a href="#work">Work</a>
+    <a href="#process">Process</a>
+    <a href="#cv">CV</a>
+    <a href="#about">About</a>
   </nav>
+</header>
 
-  <!-- FRAMER: hero -->
-  <section class="hero" id="hero">
-    <canvas class="hero__canvas" id="hero-canvas"></canvas>
-    <div class="hero__content">
-      <p class="hero__label" data-i18n="hero_label">Design &middot; Engineering &middot; Strategy</p>
-      <h1 class="hero__title" data-i18n="hero_title">Turning complex<br>challenges into<br><span class="hero__accent">market-ready</span> products</h1>
-      <p class="hero__subtitle" data-i18n="hero_subtitle">Designer and engineer with a track record of building products from concept to production — blending bio-integrated innovation with commercial strategy.</p>
-      <a href="#projects" class="hero__cta" data-i18n="hero_cta">View Projects</a>
-    </div>
-  </section>
+<!-- ============ HERO ============ -->
+<section id="top" class="hero">
 
-  <!-- FRAMER: projects -->
-  <section class="section projects" id="projects">
-    <div class="section__header">
-      <span class="section__label">01</span>
-      <h2 class="section__title" data-i18n="section_projects">Selected Projects</h2>
-    </div>
-    <div class="projects__grid">
+  <div class="hero__meta">
+    <span class="meta-tag">JAMES LANG</span>
+    <span class="meta-tag">/ CSM</span>
+    <span class="meta-tag">/ UCL BARTLETT BIO-ID</span>
+  </div>
 
-      <article class="project-card fade-in" data-project="1">
-        <div class="project-card__image">
-          <img src="images/trace-terra/hero-main.jpg" alt="Trace Terra — printed clay cluster on the Tabernas slope" loading="lazy">
-        </div>
-        <div class="project-card__info">
-          <h3 class="project-card__title" data-i18n="proj1_title">Trace Terra</h3>
-          <p class="project-card__desc" data-i18n="proj1_desc">Computational design and robotic fabrication for climate-resilient systems, combining material R&amp;D, simulation-led iteration, and workflow optimisation.</p>
-          <div class="project-card__tags">
-            <span class="tag">Computational Design</span>
-            <span class="tag">Robotic Fabrication</span>
-            <span class="tag">Material R&amp;D</span>
-          </div>
-          <button class="project-card__cta" data-i18n="proj_view">View Project →</button>
-        </div>
-      </article>
+  <h1 class="hero__title">
+    Designer&ndash;<em>engineer</em>.
+  </h1>
+  <p class="hero__tagline">
+    I build products, systems, and bio-integrated materials &mdash; from wearables to water to living substrates.
+  </p>
 
-      <article class="project-card fade-in" data-project="2">
-        <div class="project-card__image">
-          <img src="images/hydro-plantea/vision-column-detail.jpg" alt="Hydro-Plantéa Atrium — HBPV cells nested into the tiled canopy supported by a central column." loading="lazy">
-        </div>
-        <div class="project-card__info">
-          <h3 class="project-card__title" data-i18n="proj2_title">Hydro-Plantéa Atrium</h3>
-          <p class="project-card__desc" data-i18n="proj2_desc">Group project exploring plant-based bio-photovoltaic prototypes, with site analysis, system integration, and iterative build-to-test refinement.</p>
-          <div class="project-card__tags">
-            <span class="tag">Bio-Systems</span>
-            <span class="tag">Prototyping</span>
-            <span class="tag">Systems Design</span>
-          </div>
-          <button class="project-card__cta" data-i18n="proj_view">View Project →</button>
-        </div>
-      </article>
+  <div class="hero__split">
+    <p class="hero__lede">
+      Computational design, robotic fabrication, and product engineering &mdash;
+      taken from research brief to validated prototype to commercial production.
+      Currently designing R&amp;D systems at <a href="#proj-ksm" class="ilink">KSM Technologies</a>;
+      previously built robotic clay-extrusion workflows at <a href="#proj-trace" class="ilink">UCL Bartlett</a>.
+    </p>
 
-      <article class="project-card fade-in" data-project="3">
-        <div class="project-card__image">
-          <div class="project-card__placeholder">Project Image</div>
-        </div>
-        <div class="project-card__info">
-          <h3 class="project-card__title" data-i18n="proj3_title">Beijing KSM Technologies</h3>
-          <p class="project-card__desc" data-i18n="proj3_desc">Product redesign work bridging visual identity and R&amp;D collaboration, focusing on enclosure design, airflow/thermal constraints, and usability.</p>
-          <div class="project-card__tags">
-            <span class="tag">Product Design</span>
-            <span class="tag">CI/VI System</span>
-            <span class="tag">R&amp;D Collaboration</span>
-          </div>
-          <button class="project-card__cta" data-i18n="proj_view">View Project →</button>
-        </div>
-      </article>
-
-      <article class="project-card fade-in" data-project="4">
-        <div class="project-card__image">
-          <div class="project-card__placeholder project-card__placeholder--confidential">Confidential</div>
-        </div>
-        <div class="project-card__info">
-          <h3 class="project-card__title" data-i18n="proj4_title">Household Water Purifier</h3>
-          <p class="project-card__desc" data-i18n="proj4_desc">Design-to-prototype delivery for a household water purifier under confidentiality, with engineering collaboration and IP outcomes. Full visuals and client identity are not shown.</p>
-          <div class="project-card__tags">
-            <span class="tag">Product Design</span>
-            <span class="tag">Prototype Delivery</span>
-            <span class="tag">Confidential</span>
-          </div>
-          <button class="project-card__cta" data-i18n="proj_view">View Project →</button>
-        </div>
-      </article>
-
-      <article class="project-card fade-in" data-project="5">
-        <div class="project-card__image">
-          <div class="project-card__placeholder">Project Image</div>
-        </div>
-        <div class="project-card__info">
-          <h3 class="project-card__title" data-i18n="proj5_title">Mel Studios</h3>
-          <p class="project-card__desc" data-i18n="proj5_desc">Co-founded a small 3D printing studio, running end-to-end client delivery, production scheduling, file preparation, and machine maintenance.</p>
-          <div class="project-card__tags">
-            <span class="tag">Additive Manufacturing</span>
-            <span class="tag">Production Workflow</span>
-            <span class="tag">Client Delivery</span>
-          </div>
-          <button class="project-card__cta" data-i18n="proj_view">View Project →</button>
-        </div>
-      </article>
-
-      <article class="project-card fade-in" data-project="6">
-        <div class="project-card__image">
-          <img src="images/final-year/hero-main.jpg" alt="Final Year Projects — WAM wearable artificial muscle and SOGES circular wind-energy system." loading="lazy">
-        </div>
-        <div class="project-card__info">
-          <h3 class="project-card__title" data-i18n="proj6_title">Final Year Projects</h3>
-          <p class="project-card__desc" data-i18n="proj6_desc">Two yearlong projects in parallel: a preventative knee support concept to reduce fall risk for older adults, and a circular reuse pathway for decommissioned satellite dishes as urban wind energy prototypes.</p>
-          <div class="project-card__tags">
-            <span class="tag">User-Centred Design</span>
-            <span class="tag">Circular Design</span>
-            <span class="tag">Prototyping</span>
-          </div>
-          <button class="project-card__cta" data-i18n="proj_view">View Project →</button>
-        </div>
-      </article>
-
-      <article class="project-card fade-in" data-project="7">
-        <div class="project-card__image project-card__image--sesame">
-          <img src="images/sesame/logo.svg" alt="Sesame app icon" class="project-card__logo">
-        </div>
-        <div class="project-card__info">
-          <h3 class="project-card__title" data-i18n="proj7_title">Sesame</h3>
-          <p class="project-card__desc" data-i18n="proj7_desc">A local-first visual inspiration tool that learns your aesthetic taste — semantic search, style briefs, and 3D cluster mapping. Built from scratch in 4 days as a native macOS app.</p>
-          <div class="project-card__tags">
-            <span class="tag">AI / ML</span>
-            <span class="tag">Desktop App</span>
-            <span class="tag">Rapid Prototyping</span>
-          </div>
-          <button class="project-card__cta" data-i18n="proj_view">View Project →</button>
-        </div>
-      </article>
-
-    </div>
-
-    <!-- Other Work -->
-    <div class="other-work">
-      <div class="other-work__header">
-        <h3 class="other-work__title" data-i18n="other_work_title">Other Work</h3>
-        <p class="other-work__caption" data-i18n="other_work_caption">Smaller studies, experiments, and side projects.</p>
+    <aside class="hero__proof">
+      <div class="proof-row">
+        <span class="proof-num">1</span>
+        <span class="proof-lbl">design&nbsp;patent<br><em>granted&nbsp;CN&nbsp;2025</em></span>
       </div>
-      <div class="other-work__grid">
-
-        <article class="other-card other-card--expandable fade-in">
-          <div class="other-card__header">
-            <h4 class="other-card__title">vas&eacute; &mdash; Urban Farming Tools</h4>
-            <svg class="other-card__chevron" width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-          </div>
-          <p class="other-card__desc">RSA Student Design Awards brief: design a product, system, or service using sustainable food and farming to improve health or well-being.</p>
-          <div class="other-card__detail">
-            <p>Inspired by bonsai cultivation and ikebana (Japanese flower arrangement), vas&eacute; is a set of three gardening tools &mdash; trowelling, shearing, and watering &mdash; designed for small-scale indoor growing. The organic forms reference natural growth patterns while the material palette prioritises recyclability. The project explored how ritual and aesthetics can encourage urban residents to engage with food growing as a daily practice.</p>
-          </div>
-          <div class="other-card__tags">
-            <span class="tag">RSA Brief</span>
-            <span class="tag">Product Concept</span>
-            <span class="tag">Sustainability</span>
-          </div>
-        </article>
-
-        <article class="other-card other-card--expandable fade-in">
-          <div class="other-card__header">
-            <h4 class="other-card__title">Cooktop Concept: Heat Hatch</h4>
-            <svg class="other-card__chevron" width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-          </div>
-          <p class="other-card__desc">Compact, foldable cooktop for city apartments with tiny kitchens.</p>
-          <div class="other-card__detail">
-            <p>Designed during a placement at Design 2 Gather (Shanghai), Heat Hatch uses conduction heating with integrated smoke extraction and task lighting. The folding mechanism lets the unit collapse flat when not in use, reclaiming counter space. The concept addressed a real market gap for users who want to cook properly but are constrained by micro-kitchen layouts common in urban China and the UK.</p>
-          </div>
-          <div class="other-card__tags">
-            <span class="tag">Consumer Product</span>
-            <span class="tag">Small-Kitchen Design</span>
-          </div>
-        </article>
-
-        <article class="other-card other-card--expandable fade-in">
-          <div class="other-card__header">
-            <h4 class="other-card__title">Blender Station: Blend Box</h4>
-            <svg class="other-card__chevron" width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-          </div>
-          <p class="other-card__desc">Integrated blender station expanding the functionality of the hand-held blender.</p>
-          <div class="other-card__detail">
-            <p>Also developed at Design 2 Gather, Blend Box integrates tools and functions into a countertop blender station. The concept was born from observing users who blend while cooking &mdash; needing quick access, easy cleanup, and noise containment. The station consolidates attachments, provides a dedicated prep surface, and encloses the blender during operation to reduce noise in open-plan living spaces.</p>
-          </div>
-          <div class="other-card__tags">
-            <span class="tag">Consumer Product</span>
-            <span class="tag">Integrated System</span>
-          </div>
-        </article>
-
-        <article class="other-card other-card--expandable fade-in">
-          <div class="other-card__header">
-            <h4 class="other-card__title">Product Renders &amp; Visualisation</h4>
-            <svg class="other-card__chevron" width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-          </div>
-          <p class="other-card__desc">Render studies and visualisation across client and personal projects.</p>
-          <div class="other-card__detail">
-            <p>A collection of product visualisation work spanning KeyShot and Redshift rendering pipelines. Includes photorealistic product shots for client presentations, material studies exploring CMF (colour, material, finish) options, and exploratory renders for concept communication. This work supports both commercial deliverables and portfolio presentation across all projects.</p>
-          </div>
-          <div class="other-card__tags">
-            <span class="tag">KeyShot</span>
-            <span class="tag">Redshift</span>
-            <span class="tag">CMF</span>
-          </div>
-        </article>
-
-        <article class="other-card other-card--expandable fade-in">
-          <div class="other-card__header">
-            <h4 class="other-card__title">Website Build (This Portfolio)</h4>
-            <svg class="other-card__chevron" width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-          </div>
-          <p class="other-card__desc">Designed and built from scratch using HTML, CSS, and JavaScript.</p>
-          <div class="other-card__detail">
-            <p>This portfolio site was built without frameworks or templates &mdash; pure HTML, CSS, and vanilla JavaScript. Features include a WebGL particle system on the hero, dark/light/auto theme system with localStorage persistence, bilingual support (EN/ZH), dedicated case study pages for each project, and full responsive design. The site is hosted on form-flux.com and demonstrates front-end development alongside design work.</p>
-          </div>
-          <div class="other-card__tags">
-            <span class="tag">HTML / CSS / JS</span>
-            <span class="tag">WebGL</span>
-          </div>
-        </article>
-
-        <article class="other-card other-card--expandable fade-in">
-          <div class="other-card__header">
-            <h4 class="other-card__title">AI Workflow Experiments</h4>
-            <svg class="other-card__chevron" width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-          </div>
-          <p class="other-card__desc">Integrating AI tools into design, fabrication, and research workflows.</p>
-          <div class="other-card__detail">
-            <p>Ongoing experiments exploring how large language models, computer vision, and generative AI can augment design workflows. This includes using Claude for research synthesis and code generation, CLIP embeddings for visual search (see Sesame), computational design parameter exploration, and investigating how AI can accelerate the gap between concept and testable prototype. The focus is on practical integration rather than novelty &mdash; tools that make real work faster.</p>
-          </div>
-          <div class="other-card__tags">
-            <span class="tag">LLMs</span>
-            <span class="tag">Computer Vision</span>
-            <span class="tag">Workflow</span>
-          </div>
-        </article>
-
+      <div class="proof-row">
+        <span class="proof-num">3</span>
+        <span class="proof-lbl">peer-reviewed<br><em>publications</em></span>
       </div>
-    </div>
-
-  </section>
-
-  <!-- FRAMER: experience -->
-  <section class="section experience" id="experience">
-    <div class="section__header">
-      <span class="section__label">02</span>
-      <h2 class="section__title" data-i18n="section_experience">Experience</h2>
-    </div>
-    <div class="timeline">
-
-      <div class="timeline__item fade-in">
-        <div class="timeline__marker"></div>
-        <div class="timeline__content">
-          <span class="timeline__date">2025</span>
-          <h3 class="timeline__title" data-i18n="exp1_title">R&amp;D Designer &middot; KSM Technologies</h3>
-          <p class="timeline__place" data-i18n="exp1_place">London / Remote, UK</p>
-          <p class="timeline__desc" data-i18n="exp1_desc">Led product design for the NX Water sub-brand: filter housings, control panels, and full exterior aesthetics. Created the NX Water brand identity (logo and typeface). Continued R&amp;D support on enclosure and structural design, building on earlier thermal and airflow work. Filter housing granted a Chinese design patent (Dec 2025).</p>
-        </div>
+      <div class="proof-row">
+        <span class="proof-num">~40<sub>%</sub></span>
+        <span class="proof-lbl">setup&nbsp;time<br><em>reduction</em></span>
       </div>
-
-      <div class="timeline__item fade-in">
-        <div class="timeline__marker"></div>
-        <div class="timeline__content">
-          <span class="timeline__date">2023 — 2025</span>
-          <h3 class="timeline__title" data-i18n="exp2_title">MArch Bio-Integrated Design</h3>
-          <p class="timeline__place" data-i18n="exp2_place">University College London (UCL) &middot; Bartlett School of Architecture</p>
-          <p class="timeline__desc" data-i18n="exp2_desc">Computational design and material R&amp;D for climate-resilient systems. Built and iterated prototypes using simulation-led workflows and robotic fabrication.</p>
-        </div>
+      <div class="proof-row">
+        <span class="proof-num">200<sub>+</sub></span>
+        <span class="proof-lbl">units shipped<br><em>at Mel Studio</em></span>
       </div>
+    </aside>
+  </div>
 
-      <div class="timeline__item fade-in">
-        <div class="timeline__marker"></div>
-        <div class="timeline__content">
-          <span class="timeline__date">2022 — 2023</span>
-          <h3 class="timeline__title" data-i18n="exp3_title">Co-Founder &middot; 3D Printing Studio (Mel Studios)</h3>
-          <p class="timeline__place" data-i18n="exp3_place">London, UK</p>
-          <p class="timeline__desc" data-i18n="exp3_desc">Co-founded a 3D printing studio (£5k seed) and scaled to 10+ machines within 5 months. Delivered 200+ unit batch orders, film-crew prop assets, and bespoke prototypes. Managed end-to-end operations: machine scheduling, maintenance, supplier quoting, and client delivery.</p>
-        </div>
-      </div>
+  <div class="hero__bottom">
+    <a href="#work" class="cta cta--ghost">See selected work</a>
+    <span class="hero__caret">↓ scroll</span>
+  </div>
 
-      <div class="timeline__item fade-in">
-        <div class="timeline__marker"></div>
-        <div class="timeline__content">
-          <span class="timeline__date">2021</span>
-          <h3 class="timeline__title" data-i18n="exp4_title">Design Intern &middot; Design 2 Gather</h3>
-          <p class="timeline__place" data-i18n="exp4_place">Shanghai, China</p>
-          <p class="timeline__desc" data-i18n="exp4_desc">Developed consumer product concepts for small-kitchen scenarios (cooktop, blender station). Facilitated client consultancy sessions covering competitive analysis, value mapping, consumer targeting, and pricing strategy.</p>
-        </div>
-      </div>
+  <!-- background grid -->
+  <div class="hero__grid" aria-hidden="true"></div>
+</section>
 
-      <div class="timeline__item fade-in">
-        <div class="timeline__marker"></div>
-        <div class="timeline__content">
-          <span class="timeline__date">2020 — 2021</span>
-          <h3 class="timeline__title" data-i18n="exp5_title">Freelance Product Designer &middot; Bottloop (Incom Resources)</h3>
-          <p class="timeline__place" data-i18n="exp5_place">Beijing / Remote, China</p>
-          <p class="timeline__desc" data-i18n="exp5_desc">Co-designed a consumer bag product from brief through to production. Product launched commercially and sold through retail channels.</p>
-        </div>
-      </div>
+<!-- ============ FEATURED PROJECT (Trace Terra) ============ -->
+<section id="work" class="featured" id-anchor="proj-trace">
+  <div class="featured__chrome">
+    <span class="chrome-id">001 / FEATURED</span>
+    <span class="chrome-meta">2024–2025 · Bartlett · 3 publications</span>
+  </div>
 
-      <div class="timeline__item fade-in">
-        <div class="timeline__marker"></div>
-        <div class="timeline__content">
-          <span class="timeline__date">2020 — 2021</span>
-          <h3 class="timeline__title" data-i18n="exp6_title">Product &amp; VI Designer (Placement) &middot; Beijing KSM Technologies</h3>
-          <p class="timeline__place" data-i18n="exp6_place">Beijing, China</p>
-          <p class="timeline__desc" data-i18n="exp6_desc">Delivered a visual identity refresh, then supported R&amp;D on product redesign. Continued part-time support through 2021 alongside other projects.</p>
-        </div>
-      </div>
-
-      <div class="timeline__item fade-in">
-        <div class="timeline__marker"></div>
-        <div class="timeline__content">
-          <span class="timeline__date">2017 — 2022</span>
-          <h3 class="timeline__title" data-i18n="exp7_title">BA Product &amp; Industrial Design</h3>
-          <p class="timeline__place" data-i18n="exp7_place">Central Saint Martins, University of the Arts London (UAL) &middot; London, UK</p>
-          <p class="timeline__desc" data-i18n="exp7_desc">User-centred product development with an industrial placement year (2019&ndash;2020) across interiors/office systems, visual identity, product R&amp;D, and cookware/furniture design.</p>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="experience__highlights fade-in">
-      <h4 class="experience__highlights-title" data-i18n="exp_highlights_title">Highlights</h4>
-      <ul class="experience__highlights-list">
-        <li class="hl-row">
-          <span class="hl-head" data-i18n="exp_hl1_head">~40%</span>
-          <span class="hl-body" data-i18n="exp_hl1_body">Reduced fabrication setup inefficiencies across testing cycles</span>
-        </li>
-        <li class="hl-row">
-          <span class="hl-head" data-i18n="exp_hl2_head">Design Patent</span>
-          <span class="hl-body" data-i18n="exp_hl2_body">Chinese Design Patent &middot; filter housing, NX Water (KSM Technologies, Dec 2025)</span>
-        </li>
-        <li class="hl-row">
-          <span class="hl-head" data-i18n="exp_hl3_head">Manufacturing Pack</span>
-          <span class="hl-body" data-i18n="exp_hl3_body">Full fabrication and delivery package across commercial client engagements</span>
-        </li>
-        <li class="hl-row">
-          <span class="hl-head" data-i18n="exp_hl4_head">R&amp;D Support</span>
-          <span class="hl-body" data-i18n="exp_hl4_body">Material and design research embedded in client development processes</span>
-        </li>
-        <li class="hl-row">
-          <span class="hl-head" data-i18n="exp_hl5_head">End-to-End Delivery</span>
-          <span class="hl-body" data-i18n="exp_hl5_body">Multiple projects taken from brief to validated prototype or production handover</span>
-        </li>
-        <li class="hl-row">
-          <span class="hl-head" data-i18n="exp_hl6_head">External Recognition</span>
-          <span class="hl-body" data-i18n="exp_hl6_body">Poster &middot; oral presentation &middot; conference paper &mdash; three outputs across international symposia (2025&ndash;2026)</span>
-        </li>
-      </ul>
-    </div>
-
-  </section>
-
-  <!-- FRAMER: publications -->
-  <section class="section publications" id="publications">
-    <div class="section__header">
-      <span class="section__label">03</span>
-      <h2 class="section__title" data-i18n="section_publications">Publications</h2>
-    </div>
-    <div class="publications__list">
-
-      <article class="pub-card fade-in">
-        <div class="pub-card__meta">
-          <span class="pub-card__year">2025</span>
-          <span class="pub-card__type tag" data-i18n="pub1_type">Poster</span>
-        </div>
-        <h3 class="pub-card__title" data-i18n="pub1_title">Trace Terra: Regenerative Systems in Arid Landscapes</h3>
-        <p class="pub-card__venue" data-i18n="pub1_venue">Circular Strategies Symposium, 2025</p>
-      </article>
-
-      <article class="pub-card fade-in">
-        <div class="pub-card__meta">
-          <span class="pub-card__year">2025</span>
-          <span class="pub-card__type tag" data-i18n="pub2_type">Conference Paper</span>
-        </div>
-        <h3 class="pub-card__title" data-i18n="pub2_title">Trace Terra: Integration of biological soil-crust microbiota into robotically extruded structures for arid contexts</h3>
-        <p class="pub-card__venue" data-i18n="pub2_venue">Biodesign for the Living Futures (Cocoon), 2025 &mdash; paper in publication</p>
-      </article>
-
-      <article class="pub-card fade-in">
-        <div class="pub-card__meta">
-          <span class="pub-card__year">2026</span>
-          <span class="pub-card__type tag" data-i18n="pub3_type">Under Review</span>
-        </div>
-        <h3 class="pub-card__title" data-i18n="pub3_title">Trace Terra: Integration of biological soil-crust microbiota into robotically extruded structures designed for arid environment contexts</h3>
-        <p class="pub-card__venue" data-i18n="pub3_venue">DigitalFUTURES CDRF 2026 &mdash; Masterclass &amp; 8th International Conference on Computational Design and Robotic Fabrication</p>
-      </article>
-
-    </div>
-  </section>
-
-  <!-- FRAMER: about -->
-  <section class="section about" id="about">
-    <div class="section__header">
-      <span class="section__label">04</span>
-      <h2 class="section__title" data-i18n="section_about">About</h2>
-    </div>
-    <div class="about__content fade-in">
-      <div class="about__photo">
-        <img src="images/about-photo.jpg" alt="James Lang — portrait" loading="lazy">
-      </div>
-      <div class="about__text">
-        <p data-i18n="about_p1">I'm a product and systems designer who turns research into working prototypes. I combine computational design, material testing, and additive manufacturing to build and iterate under real constraints, and to improve the workflows that make projects deliverable.</p>
-        <p data-i18n="about_p2">Recent work includes leading robotic extrusion workflows across multiple platforms and reducing setup inefficiencies by ~40% across testing cycles, as well as collaborating with R&D teams to resolve practical engineering issues such as heat, airflow, stability, and usability in product enclosures. I'm at my best when translating complex constraints into clear, testable design decisions and shipping outcomes.</p>
-        <div class="about__skills">
-          <h4 class="about__skills-title" data-i18n="about_skills_title">Skills</h4>
-
-          <!-- Default: 3 grouped columns -->
-          <div class="skills__groups">
-            <div class="skills__group">
-              <span class="skills__group-label" data-i18n="skills_g1_label">Innovation Strategy &amp; Systems</span>
-              <span class="tag" data-i18n="tag_bio_design">Bio-Integrated Design</span>
-              <span class="tag" data-i18n="tag_material_research">Material Research</span>
-              <span class="tag" data-i18n="tag_business_strategy">Business Strategy</span>
-            </div>
-            <div class="skills__group">
-              <span class="skills__group-label" data-i18n="skills_g2_label">Computational &amp; Prototyping</span>
-              <span class="tag" data-i18n="tag_additive_mfg">Additive Manufacturing</span>
-              <span class="tag" data-i18n="tag_parametric">Parametric Modelling</span>
-              <span class="tag">Rhino / Grasshopper</span>
-              <span class="tag">Houdini</span>
-            </div>
-            <div class="skills__group">
-              <span class="skills__group-label" data-i18n="skills_g3_label">Product Delivery</span>
-              <span class="tag">Fusion 360</span>
-              <span class="tag" data-i18n="tag_prototyping">Prototyping</span>
-              <span class="tag" data-i18n="tag_cmf">CMF Development</span>
-              <span class="tag">SolidWorks</span>
-            </div>
-          </div>
-
-          <!-- Expanded detail -->
-          <div class="skills__expanded" id="skills-expanded" aria-hidden="true">
-            <div class="skills__expanded-inner">
-              <div class="skills__category">
-                <span class="skills__category-label" data-i18n="skills_cat_robotics">Robotics &amp; Fabrication</span>
-                <div class="skills__category-tags">
-                  <span class="tag" data-i18n="tag_robotic_3dp">Robotic 3D Printing (KUKA / WASP)</span>
-                  <span class="tag" data-i18n="tag_end_effector">End-Effector Design</span>
-                  <span class="tag" data-i18n="tag_paste_extrusion">Paste Extrusion</span>
-                  <span class="tag" data-i18n="tag_toolpath">Toolpath Planning</span>
-                </div>
-              </div>
-              <div class="skills__category">
-                <span class="skills__category-label" data-i18n="skills_cat_simulation">Simulation &amp; Analysis</span>
-                <div class="skills__category-tags">
-                  <span class="tag" data-i18n="tag_env_sim">Environmental Simulation</span>
-                  <span class="tag" data-i18n="tag_cfd">Autodesk CFD</span>
-                </div>
-              </div>
-              <div class="skills__category">
-                <span class="skills__category-label" data-i18n="skills_cat_engineering">Product Engineering</span>
-                <div class="skills__category-tags">
-                  <span class="tag" data-i18n="tag_dfm_dfa">DFM / DFA</span>
-                </div>
-              </div>
-              <div class="skills__category">
-                <span class="skills__category-label" data-i18n="skills_cat_delivery">Delivery &amp; Operations</span>
-                <div class="skills__category-tags">
-                  <span class="tag" data-i18n="tag_project_mgmt">Project Management</span>
-                  <span class="tag" data-i18n="tag_supply_chain">Supply Chain</span>
-                </div>
-              </div>
-              <div class="skills__category">
-                <span class="skills__category-label" data-i18n="skills_cat_vis">Visualisation &amp; Creative Tools</span>
-                <div class="skills__category-tags">
-                  <span class="tag">Adobe Creative Suite</span>
-                  <span class="tag">KeyShot</span>
-                  <span class="tag">Redshift</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <button class="skills__toggle" id="skills-toggle" aria-expanded="false">
-            <span class="skills__toggle-more" data-i18n="skills_toggle_more">Show more</span>
-            <span class="skills__toggle-less" data-i18n="skills_toggle_less">Show less</span>
-            <svg class="skills__toggle-icon" width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-          </button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FRAMER: contact -->
-  <section class="section contact" id="contact">
-    <div class="section__header">
-      <span class="section__label">05</span>
-      <h2 class="section__title" data-i18n="section_contact">Get in Touch</h2>
-    </div>
-    <div class="contact__content fade-in">
-      <p class="contact__text" data-i18n="contact_text">Open to product and innovation roles worldwide. I work best at the intersection of computational design, prototyping, and real-world delivery. Remote or relocation friendly.</p>
-      <div class="contact__links">
-        <a href="mailto:langdg22@gmail.com" class="contact__link">
-          <span class="contact__link-label" data-i18n="contact_email_label">Email</span>
-          <span class="contact__link-value">langdg22@gmail.com</span>
-        </a>
-        <a href="https://linkedin.com/in/james-lang-design" class="contact__link" target="_blank" rel="noopener">
-          <span class="contact__link-label" data-i18n="contact_linkedin_label">LinkedIn</span>
-          <span class="contact__link-value">james-lang-design</span>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- FRAMER: footer -->
-  <footer class="footer">
-    <p>&copy; 2026 formflu<span class="logo-x">X</span></p>
-  </footer>
-
-  <!-- FRAMER: project-panel -->
-  <div class="project-panel" id="project-panel" aria-hidden="true">
-    <div class="project-panel__bar">
-      <button class="project-panel__back" id="project-back">
-        <svg width="16" height="10" viewBox="0 0 16 10" fill="none" aria-hidden="true">
-          <path d="M5 1L1 5L5 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <line x1="1" y1="5" x2="15" y2="5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
-        <span data-i18n="proj_back">Back to Projects</span>
-      </button>
-      <span class="project-panel__index" id="project-index">01 / 04</span>
-    </div>
-
-    <div class="project-panel__body">
-      <div class="proj-detail__image">
-        <div class="proj-detail__image-placeholder" id="proj-image-label">Project Image</div>
-      </div>
-      <div class="proj-detail__content">
-        <header class="proj-detail__header">
-          <h1 class="proj-detail__title" id="proj-title"></h1>
-          <div class="proj-detail__tags" id="proj-tags"></div>
-          <dl class="proj-detail__meta" id="proj-meta"></dl>
-        </header>
-        <div class="proj-detail__sections" id="proj-sections"></div>
-        <div class="proj-detail__nav">
-          <button class="proj-detail__nav-btn" id="proj-prev">
-            <svg width="14" height="10" viewBox="0 0 16 10" fill="none" aria-hidden="true"><path d="M5 1L1 5L5 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="1" y1="5" x2="15" y2="5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-            <span data-i18n="proj_prev">Previous</span>
-          </button>
-          <button class="proj-detail__nav-btn" id="proj-next">
-            <span data-i18n="proj_next">Next</span>
-            <svg width="14" height="10" viewBox="0 0 16 10" fill="none" aria-hidden="true"><path d="M11 1L15 5L11 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="15" y1="5" x2="1" y2="5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-          </button>
-        </div>
+  <div class="featured__hero">
+    <img src="images/trace-terra/hero-main.jpg" alt="Trace Terra — robotically printed clay vessels seeded with biological soil crust on the Tabernas slope" loading="lazy">
+    <div class="featured__overlay">
+      <div class="featured__title-block">
+        <span class="kicker">Computational Design · Robotic Fabrication · Material R&amp;D</span>
+        <h2 class="featured__title">Trace&nbsp;Terra</h2>
+        <p class="featured__sub">Robotically extruded clay vessels seeded with cyanobacteria, tested in the Tabernas desert &mdash; building soil where there is none.</p>
       </div>
     </div>
   </div>
 
-  <script src="script.js?v=9"></script>
+  <div class="featured__body">
+    <div class="featured__col featured__col--lead">
+      <span class="col-label">The brief</span>
+      <p>Most arid landscapes can&rsquo;t be reforested &mdash; but they can be reseeded with biological soil crust, the living skin that holds desert ecosystems together. The challenge: a fabrication system that places live microbiota at scale, in geometries that protect them long enough to colonise.</p>
+    </div>
+    <div class="featured__col">
+      <span class="col-label">My contribution</span>
+      <ul class="contrib">
+        <li>Designed the toolpath strategy and end-effector for paste extrusion on KUKA &amp; WASP arms</li>
+        <li>Iterated 14 clay-substrate recipes with the bio-team to keep cyanobacteria viable through extrusion</li>
+        <li>Built the Grasshopper definition that converts site survey to print code</li>
+        <li>Reduced setup-to-print time across testing cycles by ~40%</li>
+      </ul>
+    </div>
+    <div class="featured__col">
+      <span class="col-label">Outcome</span>
+      <p>Field-tested cluster on the Tabernas slope (Spain). Three peer-reviewed publications: poster &amp; conference paper at Cocoon 2025, masterclass paper under review at <span class="mono">DigitalFUTURES&nbsp;CDRF&nbsp;2026</span>.</p>
+      <a href="trace-terra.html" class="case-link">Read the case study →</a>
+    </div>
+  </div>
+
+  <!-- live mini-demo: parametric shape generator -->
+  <div class="featured__demo">
+    <div class="demo__chrome">
+      <span class="demo__title">Parametric vessel — illustrative</span>
+      <span class="demo__hint">a playful illustration of the design logic behind Trace Terra &mdash; drag to watch the parameters breathe</span>
+    </div>
+    <div class="demo__stage">
+      <svg id="vessel-svg" viewBox="0 0 280 220" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="demo__controls">
+        <label><span>Layer count</span><input type="range" min="6" max="40" value="22" data-key="layers"><output data-out="layers">22</output></label>
+        <label><span>Wave amplitude</span><input type="range" min="0" max="14" value="6" data-key="amp"><output data-out="amp">6</output></label>
+        <label><span>Twist (°)</span><input type="range" min="0" max="120" value="18" data-key="twist"><output data-out="twist">18°</output></label>
+        <label><span>Taper</span><input type="range" min="-30" max="30" value="-8" data-key="taper"><output data-out="taper">-8</output></label>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WORK GRID ============ -->
+<section class="work" id="work-grid">
+  <header class="work__head">
+    <span class="chrome-id">002 / SELECTED WORK</span>
+    <h2 class="work__h">Five other projects, in order of relevance.</h2>
+  </header>
+
+  <ol class="work__list">
+
+    <li class="proj" id="proj-hydro">
+      <span class="proj__num">02</span>
+      <div class="proj__media">
+        <a href="hydro-plantea.html">
+          <img src="images/hydro-plantea/vision-column-detail.jpg" alt="Hydro-Plantéa Atrium — bio-photovoltaic canopy" loading="lazy">
+        </a>
+      </div>
+      <div class="proj__body">
+        <h3 class="proj__title"><a href="hydro-plantea.html">Hydro&#8209;Plantéa Atrium</a></h3>
+        <p class="proj__why"><em>Why this matters:</em> atria and glazed buildings burn energy passively &mdash; a canopy that photosynthesises power turns dead overhead surface into a working skin.</p>
+        <p class="proj__sub">Bio-photovoltaic canopy prototype integrating plant-based HBPV cells into a tessellated structure. Group MArch project, UCL.</p>
+        <ul class="proj__tags">
+          <li>Bio-Systems</li><li>Prototyping</li><li>Integration</li>
+        </ul>
+        <div class="proj__meta">
+          <span><em>Role</em> Systems integration · prototype build</span>
+          <span><em>Year</em> 2024</span>
+        </div>
+      </div>
+    </li>
+
+    <li class="proj" id="proj-ksm">
+      <span class="proj__num">03</span>
+      <div class="proj__media proj__media--placeholder">
+        <div class="ph-grid">
+          <span>NX&nbsp;WATER</span>
+          <span class="ph-tag">KSM TECHNOLOGIES · PATENT CN 2025</span>
+        </div>
+      </div>
+      <div class="proj__body">
+        <h3 class="proj__title">NX Water · KSM Technologies</h3>
+        <p class="proj__why"><em>Why this matters:</em> a home-water product a family actually brings into their kitchen &mdash; shipped, not conceptual.</p>
+        <p class="proj__sub">Lead product design for the NX Water sub-brand at KSM Technologies: filter housing, control panel, exterior aesthetics, and full brand identity. Chinese design patent granted on the filter housing (Dec 2025). Brief-to-prototype engineering collaboration delivered IP outcomes for the programme. Further engineering and testing specifics available under NDA.</p>
+        <ul class="proj__tags">
+          <li>Product Design</li><li>CI/VI System</li><li>Patent</li><li>NDA</li>
+        </ul>
+        <div class="proj__meta">
+          <span><em>Role</em> R&amp;D Designer (lead)</span>
+          <span><em>Year</em> 2023 &mdash; 2025</span>
+        </div>
+      </div>
+    </li>
+
+    <li class="proj" id="proj-wam">
+      <span class="proj__num">04</span>
+      <div class="proj__media">
+        <a href="final-year-projects.html">
+          <img src="images/final-year/wam-product.jpg" alt="WAM — wearable artificial muscle knee-support" loading="lazy">
+        </a>
+      </div>
+      <div class="proj__body">
+        <h3 class="proj__title"><a href="final-year-projects.html">WAM <span class="proj__inline">wearable artificial muscle</span></a></h3>
+        <p class="proj__why"><em>Why this matters:</em> one in three adults over 65 falls each year &mdash; a soft, unobtrusive knee-support can keep someone independent for another decade.</p>
+        <p class="proj__sub">A preventative knee-support concept for older adults, built around a soft artificial-muscle actuator. User-research driven, prototyped through soft-fabrication, tested on stair-descent scenarios.</p>
+        <ul class="proj__tags">
+          <li>Wearables</li><li>User Research</li><li>Soft-goods Fabrication</li>
+        </ul>
+        <div class="proj__meta">
+          <span><em>Role</em> Solo &mdash; BA final-year</span>
+          <span><em>Year</em> 2022</span>
+        </div>
+      </div>
+    </li>
+
+    <li class="proj" id="proj-soges">
+      <span class="proj__num">05</span>
+      <div class="proj__media">
+        <a href="final-year-projects.html">
+          <img src="images/final-year/hero-main.jpg" alt="SOGES — circular wind-energy from decommissioned satellite dishes, sited next to a coastal building" loading="lazy">
+        </a>
+      </div>
+      <div class="proj__body">
+        <h3 class="proj__title"><a href="final-year-projects.html">SOGES <span class="proj__inline">circular wind-energy system</span></a></h3>
+        <p class="proj__why"><em>Why this matters:</em> decommissioned satellite dishes are industrial-grade parabolas already sitting on roofs &mdash; giving them a second life as urban wind collectors is infrastructure you don&rsquo;t have to manufacture.</p>
+        <p class="proj__sub">A circular reuse pathway that converts end-of-life satellite dishes into urban vertical-axis wind-turbine prototypes. Strategy, systems model, and functional prototype; published as part of my BA final-year portfolio.</p>
+        <ul class="proj__tags">
+          <li>Circular Economy</li><li>Systems Design</li><li>Prototyping</li>
+        </ul>
+        <div class="proj__meta">
+          <span><em>Role</em> Solo &mdash; BA final-year</span>
+          <span><em>Year</em> 2022</span>
+        </div>
+      </div>
+    </li>
+
+    <li class="proj" id="proj-mel">
+      <span class="proj__num">06</span>
+      <div class="proj__media proj__media--mel">
+        <div class="mel-vis">
+          <div class="mel-printer"><span></span><span></span><span></span></div>
+          <div class="mel-stat"><em>£5k</em> seed</div>
+          <div class="mel-stat"><em>10+</em> machines · 5 mo</div>
+          <div class="mel-stat"><em>200+</em> unit batches</div>
+        </div>
+      </div>
+      <div class="proj__body">
+        <h3 class="proj__title">Mel Studio <span class="proj__inline">3D-print studio · co-founder</span></h3>
+        <p class="proj__why"><em>Why this matters:</em> running a studio teaches you the part design school can&rsquo;t &mdash; quoting, scheduling, failure, and delivering to a paying client on a real deadline.</p>
+        <p class="proj__sub">Co-founded and bootstrapped a 3D-printing studio from £5k to 10+ machines in 5 months. Delivered batch orders, film props, and bespoke prototypes; ran scheduling, maintenance, supplier quoting, and client delivery end-to-end.</p>
+        <ul class="proj__tags">
+          <li>Additive Manufacturing</li><li>Operations</li><li>Client Delivery</li>
+        </ul>
+        <div class="proj__meta">
+          <span><em>Role</em> Co-founder</span>
+          <span><em>Year</em> 2022–2023</span>
+        </div>
+      </div>
+    </li>
+
+    <li class="proj" id="proj-sesame">
+      <span class="proj__num">07</span>
+      <div class="proj__media proj__media--sesame">
+        <img src="images/sesame/logo.svg" alt="Sesame app icon" class="sesame-logo">
+        <div class="sesame-meta">
+          <span class="sesame-tag">Beta &middot; 2026 &middot; native macOS</span>
+        </div>
+      </div>
+      <div class="proj__body">
+        <h3 class="proj__title">Sesame <span class="proj__inline">local-first visual taste tool</span></h3>
+        <p class="proj__why"><em>Why this matters:</em> designers carry visual references in scattered folders &mdash; an embedding-native tool lets taste itself become searchable, without uploading your work to a server.</p>
+        <p class="proj__sub">A desktop app that learns your aesthetic taste using CLIP embeddings &mdash; semantic search, style briefs, and 3D cluster mapping. Built from scratch as a native macOS app in 4 days. <strong>Now in private beta.</strong></p>
+        <ul class="proj__tags">
+          <li>AI / ML</li><li>Desktop</li><li>Local-first</li>
+        </ul>
+        <div class="proj__meta">
+          <span><em>Role</em> Solo &mdash; design + build</span>
+          <span><em>Year</em> 2025 &ndash; 26</span>
+        </div>
+      </div>
+    </li>
+
+  </ol>
+
+  <details class="other-fold">
+    <summary>+ 6 smaller studies, experiments, and side projects</summary>
+    <div class="other-grid">
+      <article><h4>vasé — Urban Farming Tools</h4><p>RSA brief. Bonsai- and ikebana-inspired tool set for indoor growing.</p></article>
+      <article><h4>Heat Hatch — Foldable Cooktop</h4><p>Compact conduction cooktop with smoke extraction. Design 2 Gather, Shanghai.</p></article>
+      <article><h4>Blend Box — Blender Station</h4><p>Counter-top blender enclosure that consolidates attachments and dampens noise.</p></article>
+      <article><h4>Product Renders &amp; CMF</h4><p>KeyShot &amp; Redshift visualisation across client and personal work.</p></article>
+      <article><h4>This portfolio</h4><p>Pure HTML/CSS/JS. EN/ZH bilingual, dark/light themes, dedicated case-study pages.</p></article>
+      <article><h4>AI workflow experiments</h4><p>Practical LLM + computer-vision integrations for design research and parameter exploration.</p></article>
+    </div>
+  </details>
+</section>
+
+<!-- ============ PROCESS ============ -->
+<section class="process" id="process">
+  <header class="proc__head">
+    <span class="chrome-id">003 / HOW I WORK</span>
+    <h2 class="proc__h">Four moves, repeated until something ships.</h2>
+  </header>
+
+  <ol class="proc__list">
+    <li>
+      <span class="proc__num">⟶ 01</span>
+      <h3>Get to the constraint, fast.</h3>
+      <p>Most briefs underspecify the thing that will actually kill the project &mdash; a tolerance, a regulation, a commercial margin. Finding that constraint first saves weeks.</p>
+    </li>
+    <li>
+      <span class="proc__num">⟶ 02</span>
+      <h3>Prototype in the cheapest medium that proves the point.</h3>
+      <p>Cardboard before resin. Sketch before CAD. One print before a batch. A prototype&rsquo;s job is to be <em>wrong</em> early, not to look finished.</p>
+    </li>
+    <li>
+      <span class="proc__num">⟶ 03</span>
+      <h3>Improve the workflow, not just the artefact.</h3>
+      <p>The ~40% setup-time reduction on Trace Terra wasn&rsquo;t a single change &mdash; it was rebuilding the path from CAD to KUKA so each iteration cost minutes instead of hours. Tooling compounds.</p>
+    </li>
+    <li>
+      <span class="proc__num">⟶ 04</span>
+      <h3>Ship to a real user, not a jury.</h3>
+      <p>A studio-only prototype is still a sketch. The work I&rsquo;m proudest of made it into a desert, a factory, or a customer&rsquo;s kitchen.</p>
+    </li>
+  </ol>
+</section>
+
+<!-- ============ CV ============ -->
+<section class="cv" id="cv">
+  <header class="cv__head">
+    <span class="chrome-id">004 / EXPERIENCE</span>
+    <h2 class="cv__h">Five years across product, fabrication, and research.</h2>
+  </header>
+
+  <div class="cv__grid">
+    <div class="cv__col cv__col--exp">
+      <table class="cv-table">
+        <tr><td class="cv-yr">2025</td><td class="cv-role"><strong>R&amp;D Designer</strong> &middot; KSM Technologies <span>London / Remote</span><p>Led NX Water sub-brand: filter housings, control panels, full exterior aesthetics + brand identity. Continued thermal/airflow R&amp;D. Patent granted Dec 2025.</p></td></tr>
+        <tr><td class="cv-yr">2023–25</td><td class="cv-role"><strong>MArch Bio-Integrated Design</strong> &middot; UCL Bartlett <span>London</span><p>Computational design, material R&amp;D, robotic fabrication for climate-resilient systems.</p></td></tr>
+        <tr><td class="cv-yr">2022–23</td><td class="cv-role"><strong>Co-Founder</strong> &middot; Mel Studio (3D-print) <span>London</span><p>£5k seed → 10+ machines in 5 months. 200+ unit batches, film-crew props, bespoke prototypes.</p></td></tr>
+        <tr><td class="cv-yr">2021</td><td class="cv-role"><strong>Design Intern</strong> &middot; Design 2 Gather <span>Shanghai</span><p>Cooktop &amp; blender concepts. Client-consultancy sessions on competitive analysis &amp; pricing.</p></td></tr>
+        <tr><td class="cv-yr">2020–21</td><td class="cv-role"><strong>Freelance Product Designer</strong> &middot; Bottloop / Incom <span>Beijing</span><p>Co-designed a consumer bag from brief through to retail launch.</p></td></tr>
+        <tr><td class="cv-yr">2020–21</td><td class="cv-role"><strong>Product &amp; VI Designer (placement)</strong> &middot; Beijing KSM <span>Beijing</span><p>Visual identity refresh, then R&amp;D on product redesign. Continued part-time through 2021.</p></td></tr>
+        <tr><td class="cv-yr">2017–22</td><td class="cv-role"><strong>BA Product &amp; Industrial Design</strong> &middot; CSM, UAL <span>London</span><p>User-centred product development with industrial placement year (2019–20).</p></td></tr>
+      </table>
+    </div>
+
+    <aside class="cv__col cv__col--side">
+
+      <div class="cv-block">
+        <h4>Publications</h4>
+        <ul class="pubs">
+          <li><span class="pub-yr">2026</span> <strong>Trace Terra</strong> — DigitalFUTURES CDRF 2026 Masterclass <em>(under review)</em></li>
+          <li><span class="pub-yr">2025</span> <strong>Trace Terra</strong> — Cocoon: Biodesign for the Living Futures <em>(in publication)</em></li>
+          <li><span class="pub-yr">2025</span> <strong>Trace Terra</strong> — Circular Strategies Symposium <em>(poster)</em></li>
+        </ul>
+      </div>
+
+      <div class="cv-block">
+        <h4>Recognition</h4>
+        <ul class="dot-list">
+          <li>Chinese Design Patent — NX Water filter housing (Dec 2025)</li>
+          <li>3 international symposium outputs (2025–26)</li>
+          <li>End-to-end delivery on multiple commercial briefs</li>
+        </ul>
+      </div>
+
+      <div class="cv-block">
+        <h4>Stack</h4>
+        <div class="stack">
+          <div><span>Computational</span> Rhino · Grasshopper · Houdini</div>
+          <div><span>Engineering</span> Fusion 360 · SolidWorks · DFM/DFA</div>
+          <div><span>Robotics</span> KUKA · WASP · paste extrusion · toolpath</div>
+          <div><span>Simulation</span> Autodesk CFD · environmental sim</div>
+          <div><span>Visual</span> KeyShot · Redshift · Adobe CS</div>
+          <div><span>Build</span> HTML/CSS/JS · Python · Swift (this site, Sesame)</div>
+        </div>
+      </div>
+
+    </aside>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section class="about" id="about">
+  <header class="about__head">
+    <span class="chrome-id">005 / ABOUT</span>
+  </header>
+  <div class="about__grid">
+    <div class="about__photo">
+      <img src="images/about-photo.jpg" alt="James Lang">
+      <span class="photo-cap">James Lang · London, 2025</span>
+    </div>
+    <div class="about__text">
+      <ul class="about__skills" aria-label="Practice areas">
+        <li>Product design</li>
+        <li>Bio-integrated materials</li>
+        <li>Computational &amp; robotic fabrication</li>
+        <li>Wearables &amp; user research</li>
+        <li>Systems &amp; circular design</li>
+      </ul>
+      <p class="lede">
+        I sit at the seam between design and engineering &mdash; the place where a CAD file
+        becomes a thing that has to actually work.
+      </p>
+      <p>I started in industrial design at Central Saint Martins, then spent five years
+      moving deliberately between studios, factories, and research labs. The thread is the
+      same throughout: take an ambitious brief, find the constraint that&rsquo;ll kill it,
+      and build the workflow that makes shipping possible.</p>
+      <p>Recent work has been heavy on robotic fabrication and bio-integrated systems
+      (Trace Terra at UCL, NX Water at KSM Technologies). Alongside that I co-founded
+      <strong>Mel Studio</strong>, a 3D-printing studio that bootstrapped from a £5k seed to 200+-unit
+      batch orders in its first year. I read papers, run material tests in the kitchen,
+      and write the scripts that connect them. I&rsquo;m looking for a team where the
+      answer to &ldquo;can we actually make this&rdquo; is the most interesting question in the
+      room.</p>
+      <ul class="about__pings">
+        <li><strong>Based</strong> London &middot; open to relocation</li>
+        <li><strong>Languages</strong> English &middot; Mandarin (native) &middot; Spanish (learning)</li>
+        <li><strong>Right to work</strong> EU &middot; China &middot; UK (in application)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="contact" id="contact">
+  <div class="contact__inner">
+    <p class="contact__kicker">006 / GET IN TOUCH</p>
+    <h2 class="contact__h">If a brief looks <em>maybe-impossible,</em><br>that&rsquo;s usually the brief I want.</h2>
+    <p class="contact__sub">Open to product, R&amp;D, and design-engineering roles &mdash; in-house or studio. Freelance considered for projects that involve prototyping or fabrication R&amp;D.</p>
+    <div class="contact__rows">
+      <a href="mailto:langdg22@gmail.com" class="contact-row">
+        <span class="cr-lbl">Email</span>
+        <span class="cr-val">langdg22@gmail.com</span>
+        <span class="cr-arr">↗</span>
+      </a>
+      <a href="https://linkedin.com/in/james-lang-design" class="contact-row" target="_blank" rel="noopener">
+        <span class="cr-lbl">LinkedIn</span>
+        <span class="cr-val">james-lang-design</span>
+        <span class="cr-arr">↗</span>
+      </a>
+      <a href="mailto:langdg22@gmail.com?subject=CV%20request" class="contact-row">
+        <span class="cr-lbl">CV / Résumé</span>
+        <span class="cr-val">Available on request &mdash; email me</span>
+        <span class="cr-arr">↗</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <span>© 2026 formflu<span class="x">X</span></span>
+  <span class="foot-mid">Built by hand &middot; no frameworks &middot; <a href="https://github.com/L4ke-J/formflux-portfolio" target="_blank" rel="noopener">source ↗</a></span>
+  <span class="foot-time" id="foot-time">London · —</span>
+</footer>
+
+<script src="portfolio.js"></script>
 </body>
 </html>
