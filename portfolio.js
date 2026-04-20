@@ -8,24 +8,6 @@ if (nav) {
   }, { passive: true });
 }
 
-/* ---------- London time in footer ---------- */
-function tickClock() {
-  const el = document.getElementById('foot-time');
-  if (!el) return;
-  try {
-    const now = new Date();
-    const fmt = new Intl.DateTimeFormat('en-GB', {
-      timeZone: 'Europe/London',
-      hour: '2-digit', minute: '2-digit', hour12: false
-    }).format(now);
-    el.textContent = `London · ${fmt}`;
-  } catch(e) {
-    el.textContent = 'London · ' + new Date().toTimeString().slice(0, 5);
-  }
-}
-tickClock();
-setInterval(tickClock, 30000);
-
 /* ---------- Vessel SVG generator (parametric Trace Terra illustration) ---------- */
 const vessel = document.getElementById('vessel-svg');
 const vesselState = { layers: 22, amp: 6, twist: 18, taper: -8 };
