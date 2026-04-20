@@ -1,436 +1,324 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="auto">
+<html lang="en" data-theme="dark" data-direction="editorial" data-density="comfy">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Trace Terra — formfluX</title>
-  <meta name="description" content="Integrating biological soil-crust microbiota into robotically extruded structures for arid environments. UCL Bio-Integrated Design, Year 2, 2024–2025.">
-  <link rel="stylesheet" href="case-study.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trace Terra · formfluX</title>
+<meta name="description" content="Integrating biological soil-crust microbiota into robotically extruded structures for arid environments. UCL Bartlett, 2024–2025.">
+<link rel="stylesheet" href="portfolio.css">
+<link rel="stylesheet" href="case-study.css">
 </head>
 <body>
 
-  <!-- Nav -->
-  <nav class="nav nav--case-study" id="nav">
-    <a href="index.html" class="nav__logo">formflu<span class="logo-x">X</span></a>
-    <div class="nav__controls">
-      <a href="index.html#work" class="cs-back-link">
-        <svg width="16" height="10" viewBox="0 0 16 10" fill="none" aria-hidden="true">
-          <path d="M5 1L1 5L5 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <line x1="1" y1="5" x2="15" y2="5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
-        Back to Projects
-      </a>
-      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
-        <svg class="theme-toggle__sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-        <svg class="theme-toggle__moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+<!-- ============ NAV ============ -->
+<header class="nav">
+  <a href="index.html#top" class="nav__logo">formflu<span class="x">X</span></a>
+  <nav class="nav__links">
+    <a href="index.html#work">Work</a>
+    <a href="index.html#process">Process</a>
+    <a href="index.html#cv">CV</a>
+    <a href="index.html#about">About</a>
+  </nav>
+</header>
+
+<main class="cs">
+
+  <!-- ============ HERO ============ -->
+  <section class="cs-hero">
+    <div class="cs-hero__chrome">
+      <span class="chrome-id">CASE&nbsp;001 · TRACE TERRA</span>
+      <span class="chrome-meta">2024–2025 · UCL Bartlett · 3 publications</span>
+    </div>
+    <div class="cs-hero__image-wrap">
+      <img src="images/trace-terra/hero-main.jpg" alt="Trace Terra — printed clay vessels seeded with biological soil crust on the Tabernas slope">
+      <div class="cs-hero__overlay">
+        <div class="cs-hero__kicker">Computational Design · Robotic Fabrication · Material R&amp;D</div>
+        <h1 class="cs-hero__title">Trace <em>Terra</em>.</h1>
+        <p class="cs-hero__sub">Robotically extruded clay vessels seeded with cyanobacteria, tested in the Tabernas desert — building soil where there is none.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ OVERVIEW ============ -->
+  <section class="cs-overview">
+    <div class="cs-overview__text">
+      <p>Trace Terra is a computational-design and robotic-fabrication research project that asks the landscape what it needs, then prints it. Topographic and environmental data from the Tabernas Desert, southern Spain, are translated — through Grasshopper, CFD, and custom extrusion tooling — into multi-material clay structures designed to host biological soil crust: the cyanobacteria, lichens, and mosses that stabilise dryland soils and capture atmospheric carbon.</p>
+      <p>The work was developed inside <strong>The Arid Group (TAG)</strong> at UCL Bartlett — a three-person studio I ran alongside Sarvin Farhangi and Humberto David Gil Garzon — and extends into a peer-reviewed publication at the IAAC BioDLF, a poster at Circular Strategies 2025, and a masterclass paper under review at DigitalFUTURES CDRF 2026.</p>
+      <p>My role sat at the interface between the computational model and the physical print: terrain-to-toolpath logic, material-mix development, and all the end-effector and robot-cell engineering needed to actually make a brick.</p>
+    </div>
+    <dl class="cs-overview__meta">
+      <div class="cs-meta-row"><dt>Institution</dt><dd>UCL Bartlett School of Architecture</dd></div>
+      <div class="cs-meta-row"><dt>Programme</dt><dd>MArch Bio-Integrated Design</dd></div>
+      <div class="cs-meta-row"><dt>Year</dt><dd>2024–2025 (Year 2)</dd></div>
+      <div class="cs-meta-row"><dt>Role</dt><dd>Design Researcher &amp; Fabrication Lead</dd></div>
+      <div class="cs-meta-row"><dt>Team</dt><dd>TAG — James Lang, Sarvin Farhangi, Humberto David Gil Garzon</dd></div>
+      <div class="cs-meta-row"><dt>Tools</dt><dd>Rhino · Grasshopper · Fusion 360 · Houdini · Autodesk CFD · GIS · KUKA KR60 L45 · KUKA LBR iiwa · WASP 40100</dd></div>
+      <div class="cs-meta-row"><dt>Outputs</dt><dd>IAAC BioDLF 2025 (peer-reviewed paper), Circular Strategies 2025 (poster), DigitalFUTURES CDRF 2026 (under review)</dd></div>
+    </dl>
+  </section>
+
+  <!-- ============ CH 01 · CONTEXT ============ -->
+  <section class="cs-chapter">
+    <div class="cs-chapter__head">
+      <h2 class="cs-chapter__h">Context — <em>arid lands &amp; climate</em>.</h2>
+      <span class="chrome-id">01 / CONTEXT</span>
+    </div>
+    <div class="cs-chapter__body">
+      <div class="cs-prose">
+        <p>Drylands cover about 41% of the Earth's land surface and are the fastest-warming biome on the planet. In Almería, the Tabernas Desert receives under 250 mm of annual precipitation, sits at 40 °C summer peaks, and is losing topsoil faster than it can be re-formed. The surface that once held it together — a thin, living crust of microbes — is disappearing with it.</p>
+        <p>The site visit to Tabernas in November 2024 grounded the project in that reality: dry riverbeds cut through mountains that look fertile from a distance and are essentially sterile when you're on them.</p>
+      </div>
+      <aside class="cs-aside">
+        <span class="cs-aside__label">Site at a glance</span>
+        <div class="cs-stats" style="margin-top:0">
+          <div class="cs-stat"><span class="cs-stat__val">&lt;250<em>mm</em></span><span class="cs-stat__lbl">annual rainfall</span></div>
+          <div class="cs-stat"><span class="cs-stat__val">40<em>°C</em></span><span class="cs-stat__lbl">summer peak</span></div>
+          <div class="cs-stat"><span class="cs-stat__val">41<em>%</em></span><span class="cs-stat__lbl">global drylands</span></div>
+        </div>
+      </aside>
+    </div>
+    <div class="cs-media cs-media--full">
+      <img src="images/trace-terra/context-tabernas-landscape.jpg" alt="Tabernas Desert at dusk — arid mountains rising behind a small Almerían settlement">
+    </div>
+    <div class="cs-media cs-media--pair">
+      <img src="images/trace-terra/context-site-visit.jpg" alt="TAG team during the Tabernas site visit — Land Rover Defender parked on a ridge, three researchers in the desert">
+      <img src="images/trace-terra/context-climate-temp.jpg" alt="Global mean surface temperature anomaly 1880–2024, showing the acceleration of warming relevant to arid regions">
+    </div>
+  </section>
+
+  <!-- ============ CH 02 · QUESTION ============ -->
+  <section class="cs-chapter">
+    <div class="cs-chapter__head">
+      <h2 class="cs-chapter__h">Research question.</h2>
+      <span class="chrome-id">02 / QUESTION</span>
+    </div>
+    <div class="cs-chapter__body cs-chapter__body--single">
+      <div class="cs-prose">
+        <p>Can topographic, climatic, and biological data directly drive fabrication parameters — producing structures that are functionally responsive to their site <em>and</em> capable of hosting living biological soil crust?</p>
+        <p>Concretely: if we already know where the wind hits hardest, where the water collects, and where solar exposure peaks on a real piece of terrain, can those values be pushed straight into a robotic toolpath — so that every square metre of printed surface is tuned for the microbial community it needs to grow?</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CH 03 · BIOLOGY ============ -->
+  <section class="cs-chapter">
+    <div class="cs-chapter__head">
+      <h2 class="cs-chapter__h">Biology — <em>the living system</em>.</h2>
+      <span class="chrome-id">03 / BIOLOGY</span>
+    </div>
+    <div class="cs-chapter__body cs-chapter__body--single">
+      <div class="cs-prose">
+        <p>Biological soil crust (BSC) is a community of cyanobacteria, lichens, mosses, and fungi that grows across the top millimetres of dryland soil. A mature crust reduces wind erosion on horizontal surfaces by roughly 85%, binds sand into stable aggregates, and fixes both carbon and atmospheric nitrogen. It's effectively the skin of the desert — fragile, self-healing, and almost invisible.</p>
+        <p>Trace Terra's inoculation mix is tuned around three organisms: <em>Nostoc commune</em> for nitrogen-fixing cyanobacterial cover, <em>Rhizobium spp.</em> to support pioneer vegetation, and <em>Actinomycetes</em> to stabilise decomposed organic matter. Ratio 3 : 1 : 1, delivered in a growth medium that the printed surface can actually hold onto.</p>
+      </div>
+    </div>
+    <div class="cs-media cs-media--portrait-pair">
+      <img src="images/trace-terra/bio-succession-vertical.jpg" alt="Five-stage BSC succession chart — early cyanobacterial dominance through lichen, moss and mature crust">
+      <img src="images/trace-terra/bio-growth-portrait.jpg" alt="Close-up of Nostoc commune colonising a clay substrate — green filaments and early colonies across a brown surface">
+    </div>
+  </section>
+
+  <!-- ============ CH 04 · COMPUTATIONAL WORKFLOW ============ -->
+  <section class="cs-chapter">
+    <div class="cs-chapter__head">
+      <h2 class="cs-chapter__h">Computational workflow.</h2>
+      <span class="chrome-id">04 / METHOD</span>
+    </div>
+    <div class="cs-chapter__body cs-chapter__body--single">
+      <span class="cs-chapter__tag">● Lead contributor</span>
+      <div class="cs-prose">
+        <p>The pipeline starts with raw terrain: elevation meshes, slope and aspect rasters, wind-exposure and solar-irradiance maps derived from GIS and local climate datasets. Those inputs are imported into Grasshopper, where a parametric system decides four things for every location on the site — orientation, aperture, surface texture, and extrusion toolpath density.</p>
+        <p>Airflow and moisture behaviour are validated in Autodesk CFD, then fed back into the Grasshopper definition to refine placement and geometry. The resulting toolpaths can be produced at any resolution the robot can print: from single bricks for material testing up to full wall sections.</p>
+      </div>
+    </div>
+    <div class="cs-media cs-media--grid2">
+      <img src="images/trace-terra/workflow-terrain-square.jpg" alt="Greyscale terrain mesh of the Tabernas site — GIS-derived elevation input">
+      <img src="images/trace-terra/workflow-rain-square.jpg" alt="Site-scale rainfall simulation — isometric of water-collection patterns">
+      <img src="images/trace-terra/workflow-placement-square.jpg" alt="Placement logic — candidate structures distributed by slope, exposure, and catchment">
+      <img src="images/trace-terra/workflow-windflow-square.jpg" alt="Autodesk CFD wind-flow analysis — streamlines passing around a candidate tower geometry">
+    </div>
+  </section>
+
+  <!-- ============ CH 05 · MATERIAL SYSTEM ============ -->
+  <section class="cs-chapter">
+    <div class="cs-chapter__head">
+      <h2 class="cs-chapter__h">Material system — <em>three layers, one wall</em>.</h2>
+      <span class="chrome-id">05 / MATERIAL</span>
+    </div>
+    <div class="cs-chapter__body cs-chapter__body--single">
+      <span class="cs-chapter__tag">● Lead contributor</span>
+      <div class="cs-prose">
+        <p>A single clay mix can't do everything the project needs, so we developed a three-layer wall. The <strong>outer layer</strong> is a porous clay-and-fibre blend tuned to host the BSC inoculation — rough enough for biofilm attachment, permeable enough to hold water long enough for microbes to use it. The <strong>middle layer</strong> uses an olive-pomace binder to create a hydrophobic retention boundary: water stays on the living face instead of draining through to the core. The <strong>inner layer</strong> is the structural workhorse — clay reinforced with hemp and palm fibres, set with alginate.</p>
+        <p>The three mixes were developed from a sequence of soil-substrate trays, testing how different fibre loads, binders (chitosan, alginate, methylcellulose, gelatine), and water ratios affected printability, dry strength, and biocrust retention. Each mix was then tuned for flow behaviour in the extruder.</p>
+      </div>
+    </div>
+    <div class="cs-media cs-media--full">
+      <img src="images/trace-terra/material-wall-section.jpg" alt="Three-layer wall-section diagram — outer microbial host surface, middle hydrophobic barrier, inner structural core with water-flow arrows and retention boundary">
+    </div>
+    <div class="cs-media cs-media--pair">
+      <img src="images/trace-terra/material-soil-sample.jpg" alt="Hand holding a soil sample from the Tabernas site — coarse, dry, minimal organic content">
+      <img src="images/trace-terra/material-soil-trays.jpg" alt="Soil-tray testing — substrates with varying fibre and binder mixes">
+    </div>
+  </section>
+
+  <!-- ============ CH 06 · ROBOTIC FABRICATION ============ -->
+  <section class="cs-chapter">
+    <div class="cs-chapter__head">
+      <h2 class="cs-chapter__h">Robotic fabrication.</h2>
+      <span class="chrome-id">06 / FABRICATION</span>
+    </div>
+    <div class="cs-chapter__body cs-chapter__body--single">
+      <span class="cs-chapter__tag">● Lead contributor</span>
+      <div class="cs-prose">
+        <p>The fabrication work ran across two robots at UCL Here East and the WASP 40100 delta printer. The primary production platform was a <strong>KUKA LBR iiwa</strong> running a custom pneumatic paste-extrusion end effector I designed and built: dual-pressure control so the outer and inner layers can flow at independent rates, an exchangeable cartridge, and a nozzle geometry matched to the three mixes.</p>
+        <p>I also set up and validated a second rig on a <strong>KUKA KR60 L45</strong> — a 60 kg-payload, 2430 mm-reach industrial arm — to test whether the workflow would scale beyond the iiwa's build envelope. The rig hardware was built from scratch; the extruder malfunctioned mid-trials, which pushed the project back onto the iiwa but produced a working larger-format rig that subsequent cohorts can pick up.</p>
+        <p>The toolpath generator takes the Grasshopper geometry and turns it into robot-ready motion commands — infill density, spiral direction, layer-bonding dwells, and pressure ramps — all parameterised from the environmental model. Across iterations, setup inefficiencies dropped by roughly 40% as we standardised the nozzle-change and mix-prime routines.</p>
+      </div>
+    </div>
+    <div class="cs-media cs-media--full">
+      <img src="images/trace-terra/fab-kuka-iiwa.jpg" alt="KUKA LBR iiwa mid-print — robotic arm extruding a clay brick with the custom pneumatic end effector">
+    </div>
+    <div class="cs-media cs-media--trio">
+      <img src="images/trace-terra/fab-extrusion-layers.jpg" alt="Close-up of extruded clay layers — visible stratification from the spiral toolpath">
+      <img src="images/trace-terra/fab-brick-print.jpg" alt="Completed test brick — diamond-infill pattern at 100% fill, clay still damp">
+      <img src="images/trace-terra/fab-wind-tower-print.jpg" alt="KUKA LBR iiwa mid-print of a wind-tower geometry generated from the Grasshopper definition">
+    </div>
+    <div class="cs-stats">
+      <div class="cs-stat"><span class="cs-stat__val">~40<em>%</em></span><span class="cs-stat__lbl">setup-time reduction across iterations</span></div>
+      <div class="cs-stat"><span class="cs-stat__val">3</span><span class="cs-stat__lbl">robot platforms configured (iiwa, KR60 L45, WASP 40100)</span></div>
+      <div class="cs-stat"><span class="cs-stat__val">3</span><span class="cs-stat__lbl">layers, one extruder — dual-pressure pneumatic design</span></div>
+    </div>
+  </section>
+
+  <!-- ============ CH 07 · TESTING ============ -->
+  <section class="cs-chapter">
+    <div class="cs-chapter__head">
+      <h2 class="cs-chapter__h">Testing &amp; evidence.</h2>
+      <span class="chrome-id">07 / TESTING</span>
+    </div>
+    <div class="cs-chapter__body cs-chapter__body--single">
+      <div class="cs-prose">
+        <p>Thermal performance was measured with a FLIR imager across solar-heating cycles. Under a 67 °C exposure, the diamond-infill brick held its interior surface roughly 3–4 °C cooler than a flat equivalent for the duration of the test — a small but consistent buffering effect that tracks the CFD predictions for airflow through the infill cavities.</p>
+        <p>Moisture-retention and biocrust-adhesion testing continued on soil trays in parallel, with weekly measurements of colony-forming units for the <em>Nostoc</em> inoculation. Early-stage growth confirmed that the outer-layer mix holds inoculant better than the structural mix on its own, validating the split-layer approach.</p>
+      </div>
+    </div>
+    <div class="cs-media cs-media--full">
+      <img src="images/trace-terra/testing-thermal-comparison.jpg" alt="Four-panel FLIR thermal comparison — diamond-infill brick vs reference brick, top and bottom rows across exposure sequence">
+      <p class="cs-media__cap">Top row: 02:14 into exposure — surface still heating. Bottom row: full exposure at 67.3 °C ambient — the diamond-infill geometry routes heat along the ribs while the interior face stabilises cooler.</p>
+    </div>
+  </section>
+
+  <!-- ============ CH 08 · FINAL DESIGN ============ -->
+  <section class="cs-chapter">
+    <div class="cs-chapter__head">
+      <h2 class="cs-chapter__h">Final proposal.</h2>
+      <span class="chrome-id">08 / OUTCOME</span>
+    </div>
+    <div class="cs-chapter__body cs-chapter__body--single">
+      <div class="cs-prose">
+        <p>At full scale, the proposal is a cluster of terrain-responsive towers and low walls distributed across a selected Tabernas catchment — each element placed and shaped by the same Grasshopper model that drives its toolpath. Towers channel wind to shaded alcoves, walls terrace the slope to trap moisture, and every exterior face is a microbial host surface inoculated at the point of printing.</p>
+        <p>The masterplan doesn't pretend to re-green the desert. It defines a small, instrumented footprint where biocrust can be re-established measurably faster than on bare soil — a template that can be re-deployed across other degraded drylands by swapping only the input datasets.</p>
+      </div>
+    </div>
+    <div class="cs-media cs-media--full">
+      <img src="images/trace-terra/final-secondary.jpg" alt="Aerial render of the printed cluster sited into the Tabernas slope">
+    </div>
+    <div class="cs-media cs-media--full">
+      <img src="images/trace-terra/final-main.jpg" alt="Trace Terra courtyard render — the printed clay cluster seen from within, pioneer vegetation establishing between the forms">
+    </div>
+    <div class="cs-stats">
+      <div class="cs-stat"><span class="cs-stat__val">&lt;250<em>mm</em></span><span class="cs-stat__lbl">annual precipitation at the Tabernas site</span></div>
+      <div class="cs-stat"><span class="cs-stat__val">85<em>%</em></span><span class="cs-stat__lbl">reduction in surface erosion where BSC is established</span></div>
+      <div class="cs-stat"><span class="cs-stat__val">3<em>:1:1</em></span><span class="cs-stat__lbl">Nostoc · Rhizobium · Actinomycetes inoculation ratio</span></div>
+    </div>
+  </section>
+
+  <!-- ============ CH 09 · PUBLICATIONS ============ -->
+  <section class="cs-chapter">
+    <div class="cs-chapter__head">
+      <h2 class="cs-chapter__h">Publications.</h2>
+      <span class="chrome-id">09 / OUTPUTS</span>
+    </div>
+    <div class="cs-chapter__body cs-chapter__body--single">
+      <div class="cs-prose">
+        <p>The research has produced three academic outputs, led by the peer-reviewed IAAC BioDLF paper co-authored with Brenda Parker, Marcos Cruz, Anete Salmane, Jingyuan Meng, and Pradeep Devadass.</p>
+      </div>
+      <ul class="cs-pubs">
+        <li>
+          <span class="cs-pubs__venue">Peer-reviewed paper</span>
+          <span class="cs-pubs__title">Trace Terra: Integration of biological soil-crust microbiota into robotically extruded structures for arid contexts</span>
+          <span class="cs-pubs__meta">IAAC BioDLF (Cocoon) · 2025</span>
+        </li>
+        <li>
+          <span class="cs-pubs__venue">Poster — accepted</span>
+          <span class="cs-pubs__title">Trace Terra: Awakening the Soil for Futures to Come</span>
+          <span class="cs-pubs__meta">Circular Strategies 6 · Vienna · Nov 2025</span>
+        </li>
+        <li>
+          <span class="cs-pubs__venue">Under review</span>
+          <span class="cs-pubs__title">Trace Terra: Integration of biological soil-crust microbiota into robotically extruded structures for arid environment contexts</span>
+          <span class="cs-pubs__meta">DigitalFUTURES CDRF 2026 · Masterclass</span>
+        </li>
+      </ul>
+      <button type="button" class="cs-expand-btn" id="poster-expand">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+        Expand poster
       </button>
     </div>
-  </nav>
+  </section>
 
-  <!-- Hero -->
-  <header class="cs-hero">
-    <div class="cs-hero__image">
-      <img src="images/trace-terra/hero-main.jpg" alt="Trace Terra cluster render — printed clay vessels nested into the Tabernas slope, planted and active.">
-    </div>
-    <div class="cs-hero__overlay">
-      <div class="cs-hero__content">
-        <p class="cs-hero__label">UCL Bio-Integrated Design &middot; Year 2 &middot; 2024&ndash;2025</p>
-        <h1 class="cs-hero__title">Trace Terra</h1>
-        <p class="cs-hero__subtitle">Integrating biological soil-crust microbiota into robotically extruded structures for arid environments.</p>
-      </div>
-    </div>
-  </header>
+  <!-- ============ CH 10 · REFLECTION ============ -->
+  <section class="cs-reflection">
+    <span class="cs-reflection__mark">10 / REFLECTION</span>
+    <p>The strongest result of Trace Terra wasn't any single print — it was proving that the whole loop closes. Landscape data drove toolpath generation, toolpath generation drove physical prints, physical prints validated the CFD predictions, and measured biocrust growth fed the next iteration of the outer-layer mix. That's not a styling exercise; that's an engineered workflow that happens to end in something alive.</p>
+    <p>The harder lesson was about ownership. Pulling the pipeline end-to-end — data, parametric definition, material, extruder hardware, robot cell — made every assumption testable. When the KR60 extruder failed mid-trials, the answer wasn't to outsource it; it was to diagnose it, move back to the iiwa, and document what the larger rig needed next. Owning the full stack is slower, but it's the only way to know what the model is actually telling you.</p>
+  </section>
 
-  <main class="cs-main">
-
-    <!-- Overview -->
-    <section class="cs-section cs-overview">
-      <div class="cs-section__body">
-        <div class="cs-overview__grid">
-          <div class="cs-overview__text">
-            <h2 class="cs-section__heading">Overview</h2>
-            <p>Trace Terra is a computational design and robotic-fabrication research project that asks the landscape what it needs, then prints it. Topographic and environmental data from the Tabernas Desert, southern Spain, are translated — through Grasshopper, CFD, and custom extrusion tooling — into multi-material clay structures designed to host biological soil crust: the cyanobacteria, lichens, and mosses that stabilise dryland soils and capture atmospheric carbon.</p>
-            <p>The work was developed inside The Arid Group (TAG) at UCL&nbsp;Bartlett — a three-person studio I ran alongside Sarvin&nbsp;Farhangi and Humberto David&nbsp;Gil Garzon — and extends into a peer-reviewed publication at the IAAC&nbsp;BioDLF, with two further submissions to Circular Strategies 2025 and DigitalFUTURES&nbsp;CDRF&nbsp;2026.</p>
-            <p>My role sat at the interface between the computational model and the physical print: terrain-to-toolpath logic, material mix development, and all the end-effector and robot-cell engineering needed to actually make a brick.</p>
-          </div>
-          <aside class="cs-overview__meta">
-            <dl class="cs-meta">
-              <div class="cs-meta__item">
-                <dt>Institution</dt>
-                <dd>UCL Bartlett School of Architecture</dd>
-              </div>
-              <div class="cs-meta__item">
-                <dt>Programme</dt>
-                <dd>MArch Bio-Integrated Design</dd>
-              </div>
-              <div class="cs-meta__item">
-                <dt>Year</dt>
-                <dd>2024&ndash;2025 (Year 2)</dd>
-              </div>
-              <div class="cs-meta__item">
-                <dt>My Role</dt>
-                <dd>Design Researcher &amp; Fabrication Lead</dd>
-              </div>
-              <div class="cs-meta__item">
-                <dt>Team</dt>
-                <dd>The Arid Group (TAG): James Lang, Sarvin Farhangi, Humberto David Gil Garzon</dd>
-              </div>
-              <div class="cs-meta__item">
-                <dt>Tools</dt>
-                <dd>Rhino, Grasshopper, Fusion 360, Houdini, Autodesk CFD, GIS, KUKA KR60 L45, KUKA LBR iiwa, WASP 40100</dd>
-              </div>
-              <div class="cs-meta__item">
-                <dt>Outputs</dt>
-                <dd>Peer-reviewed paper (IAAC BioDLF 2025), poster (Circular Strategies 2025), masterclass submission (DigitalFUTURES CDRF 2026)</dd>
-              </div>
-            </dl>
-          </aside>
-        </div>
-      </div>
-    </section>
-
-    <!-- Context -->
-    <section class="cs-section">
-      <div class="cs-section__body">
-        <h2 class="cs-section__heading">Context &mdash; Arid Lands &amp; Climate</h2>
-        <div class="cs-text-block">
-          <p>Drylands cover about 41&nbsp;% of the Earth&rsquo;s land surface and are the fastest-warming biome on the planet. In Almería, the Tabernas Desert receives under 250&nbsp;mm of annual precipitation, sits at 40&nbsp;°C summer peaks, and is losing topsoil faster than it can be re-formed. The surface that once held it together — a thin, living crust of microbes — is disappearing with it.</p>
-          <p>The site visit to Tabernas in November 2024 grounded the project in that reality: dry riverbeds cut through mountains that look fertile from a distance and are essentially sterile when you&rsquo;re on them.</p>
-        </div>
-        <div class="cs-image-full">
-          <div class="cs-image-slot">
-            <img src="images/trace-terra/context-tabernas-landscape.jpg" alt="Tabernas Desert at dusk — arid mountains rising behind a small Almerían settlement.">
-          </div>
-        </div>
-        <div class="cs-image-pair">
-          <div class="cs-image-slot">
-            <img src="images/trace-terra/context-site-visit.jpg" alt="TAG team during the Tabernas site visit — Land Rover Defender parked on a ridge, three researchers in the desert.">
-          </div>
-          <div class="cs-image-slot">
-            <img src="images/trace-terra/context-climate-temp.jpg" alt="Global mean surface temperature anomaly chart, 1880–2024, showing the acceleration of warming relevant to arid regions.">
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Research Question -->
-    <section class="cs-section">
-      <div class="cs-section__body">
-        <h2 class="cs-section__heading">Research Question</h2>
-        <div class="cs-text-block">
-          <p>Can topographic, climatic, and biological data directly drive fabrication parameters &mdash; producing structures that are functionally responsive to their site <em>and</em> capable of hosting living biological soil crust?</p>
-          <p>Concretely: if we already know where the wind hits hardest, where the water collects, and where solar exposure peaks on a real piece of terrain, can those values be pushed straight into a robotic toolpath — so that every square metre of printed surface is tuned for the microbial community it needs to grow?</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Biology -->
-    <section class="cs-section cs-section--highlight">
-      <div class="cs-section__body">
-        <h2 class="cs-section__heading">Biology &mdash; The Living System</h2>
-        <div class="cs-text-block">
-          <p>Biological soil crust (BSC) is a community of cyanobacteria, lichens, mosses, and fungi that grows across the top millimetres of dryland soil. A mature crust reduces wind erosion on horizontal surfaces by roughly 85&nbsp;%, binds sand into stable aggregates, and fixes both carbon and atmospheric nitrogen. It&rsquo;s effectively the skin of the desert — fragile, self-healing, and almost invisible.</p>
-          <p>Trace Terra&rsquo;s inoculation mix is tuned around three organisms: <em>Nostoc&nbsp;commune</em> for nitrogen-fixing cyanobacterial cover, <em>Rhizobium&nbsp;spp.</em> to support pioneer vegetation, and <em>Actinomycetes</em> to stabilise decomposed organic matter. Ratio 3&thinsp;:&thinsp;1&thinsp;:&thinsp;1, delivered in a growth medium that the printed surface can actually hold onto.</p>
-        </div>
-        <div class="cs-image-portrait-pair">
-          <div class="cs-image-slot">
-            <img src="images/trace-terra/bio-succession-vertical.jpg" alt="Five-stage BSC succession chart — early cyanobacterial dominance through lichen, moss and mature crust — rotated to read top-to-bottom.">
-          </div>
-          <div class="cs-image-slot">
-            <img src="images/trace-terra/bio-growth-portrait.jpg" alt="Close-up of Nostoc commune colonising a clay substrate — green filaments and early colonies across a brown surface.">
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Computational Workflow -->
-    <section class="cs-section">
-      <div class="cs-section__body">
-        <h2 class="cs-section__heading">Computational Workflow</h2>
-        <span class="cs-contribution-tag">Lead contributor</span>
-        <div class="cs-text-block">
-          <p>The pipeline starts with raw terrain: elevation meshes, slope and aspect rasters, wind-exposure and solar-irradiance maps derived from GIS and local climate datasets. Those inputs are imported into Grasshopper, where a parametric system decides four things for every location on the site — orientation, aperture, surface texture, and extrusion toolpath density.</p>
-          <p>Airflow and moisture behaviour are validated in Autodesk&nbsp;CFD, then fed back into the Grasshopper definition to refine placement and geometry. The resulting toolpaths can be produced at any resolution the robot can print: from single bricks for material testing up to full wall sections.</p>
-        </div>
-        <div class="cs-image-grid-2x2">
-          <div class="cs-image-slot">
-            <img src="images/trace-terra/workflow-terrain-square.jpg" alt="Greyscale terrain mesh of the Tabernas site — the GIS-derived elevation input that drives placement and toolpath logic.">
-          </div>
-          <div class="cs-image-slot">
-            <img src="images/trace-terra/workflow-rain-square.jpg" alt="Site-scale rainfall simulation — isometric showing water-collection patterns across the terrain model.">
-          </div>
-          <div class="cs-image-slot">
-            <img src="images/trace-terra/workflow-placement-square.jpg" alt="Placement logic — candidate structures distributed across the site according to slope, exposure, and catchment.">
-          </div>
-          <div class="cs-image-slot">
-            <img src="images/trace-terra/workflow-windflow-square.jpg" alt="Autodesk CFD wind-flow analysis — streamlines passing around a candidate tower geometry.">
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Material System -->
-    <section class="cs-section cs-section--highlight">
-      <div class="cs-section__body">
-        <h2 class="cs-section__heading">Material System</h2>
-        <span class="cs-contribution-tag">Lead contributor</span>
-        <div class="cs-text-block">
-          <p>A single clay mix can&rsquo;t do everything the project needs, so we developed a three-layer wall. The <strong>outer layer</strong> is a porous clay-and-fibre blend tuned to host the BSC inoculation — rough enough for biofilm attachment, permeable enough to hold water long enough for microbes to use it. The <strong>middle layer</strong> uses an olive-pomace binder to create a hydrophobic retention boundary: water stays on the living face instead of draining through to the core. The <strong>inner layer</strong> is the structural workhorse — clay reinforced with hemp and palm fibres, set with alginate.</p>
-          <p>The three mixes were developed from a sequence of soil-substrate trays, testing how different fibre loads, binders (chitosan, alginate, methylcellulose, gelatine), and water ratios affected printability, dry strength, and biocrust retention. Each mix was then tuned for flow behaviour in the extruder.</p>
-        </div>
-        <div class="cs-image-full">
-          <div class="cs-image-slot">
-            <img src="images/trace-terra/material-wall-section.jpg" alt="Three-layer wall-section diagram — outer microbial host surface, middle hydrophobic barrier, inner structural core with water-flow arrows and labelled retention boundary.">
-          </div>
-        </div>
-        <div class="cs-image-pair">
-          <div class="cs-image-slot">
-            <img src="images/trace-terra/material-soil-sample.jpg" alt="Hand holding a soil sample from the Tabernas site — coarse, dry, minimal organic content.">
-          </div>
-          <div class="cs-image-slot">
-            <img src="images/trace-terra/material-soil-trays.jpg" alt="Soil-tray testing — substrates with varying fibre and binder mixes comparing dry strength, printability, and biocrust retention.">
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Robotic Fabrication -->
-    <section class="cs-section">
-      <div class="cs-section__body">
-        <h2 class="cs-section__heading">Robotic Fabrication</h2>
-        <span class="cs-contribution-tag">Lead contributor</span>
-        <div class="cs-text-block">
-          <p>The fabrication work ran across two robots at UCL&nbsp;Here&nbsp;East and the WASP&nbsp;40100 delta printer. The primary production platform was a <strong>KUKA&nbsp;LBR&nbsp;iiwa</strong> running a custom pneumatic paste-extrusion end effector I designed and built: dual-pressure control so the outer and inner layers can flow at independent rates, an exchangeable cartridge, and a nozzle geometry matched to the three mixes. I also set up and validated a second rig on a <strong>KUKA&nbsp;KR60&nbsp;L45</strong> — a 60&thinsp;kg-payload, 2430&thinsp;mm-reach industrial arm — to test whether the workflow would scale beyond the IIWA&rsquo;s build envelope. The rig hardware was built from scratch; the extruder malfunctioned mid-trials, which pushed the project back onto the IIWA but produced a working larger-format rig that subsequent cohorts can pick up.</p>
-          <p>The toolpath generator takes the Grasshopper geometry and turns it into robot-ready motion commands — infill density, spiral direction, layer-bonding dwells, and pressure ramps — all parameterised from the environmental model. Across iterations, setup inefficiencies dropped by roughly 40&nbsp;% as we standardised the nozzle-change and mix-prime routines.</p>
-        </div>
-        <div class="cs-image-full">
-          <div class="cs-image-slot">
-            <img src="images/trace-terra/fab-kuka-iiwa.jpg" alt="KUKA LBR iiwa mid-print — robotic arm extruding a clay brick with the custom pneumatic end effector, teach pendant in the operator's hand.">
-          </div>
-        </div>
-        <div class="cs-image-trio">
-          <div class="cs-image-slot">
-            <img src="images/trace-terra/fab-extrusion-layers.jpg" alt="Close-up of extruded clay layers — visible stratification from the spiral toolpath.">
-          </div>
-          <div class="cs-image-slot">
-            <img src="images/trace-terra/fab-brick-print.jpg" alt="Completed test brick — diamond-infill pattern at 100% fill, clay still damp.">
-          </div>
-          <div class="cs-image-slot">
-            <img src="images/trace-terra/fab-wind-tower-print.jpg" alt="KUKA LBR iiwa mid-print — a wind-tower geometry generated from the Grasshopper definition being extruded on the robot cell.">
-          </div>
-        </div>
-        <div class="cs-stats">
-          <div class="cs-stat">
-            <span class="cs-stat__value">~40%</span>
-            <span class="cs-stat__label">Setup-time reduction over the iteration cycle</span>
-          </div>
-          <div class="cs-stat">
-            <span class="cs-stat__value">3</span>
-            <span class="cs-stat__label">Robotic platforms configured (IIWA, KR60 L45, WASP&nbsp;40100)</span>
-          </div>
-          <div class="cs-stat">
-            <span class="cs-stat__value">3</span>
-            <span class="cs-stat__label">Layers, one extruder — dual-pressure pneumatic design</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Testing & Evidence -->
-    <section class="cs-section">
-      <div class="cs-section__body">
-        <h2 class="cs-section__heading">Testing &amp; Evidence</h2>
-        <div class="cs-text-block">
-          <p>Thermal performance was measured with a FLIR imager across solar-heating cycles. Under a 67&nbsp;°C exposure, the diamond-infill brick held its interior surface roughly 3&ndash;4&nbsp;°C cooler than a flat equivalent for the duration of the test — a small but consistent buffering effect that tracks the CFD predictions for airflow through the infill cavities.</p>
-          <p>Moisture-retention and biocrust-adhesion testing continued on soil trays in parallel, with weekly measurements of colony-forming units for the Nostoc inoculation. Early-stage growth confirmed that the outer-layer mix holds inoculant better than the structural mix on its own, validating the split-layer approach.</p>
-        </div>
-        <div class="cs-image-full">
-          <div class="cs-image-slot">
-            <img src="images/trace-terra/testing-thermal-comparison.jpg" alt="Four-panel comparison — diamond-infill brick (left, visible light) vs its FLIR thermal image (right), top and bottom rows showing identical solar-exposure sequence and the measured cool interior surface temperature differential.">
-          </div>
-        </div>
-        <div class="cs-text-block">
-          <p class="cs-caption">Top row: 02:14 into exposure — surface still heating. Bottom row: full exposure at 67.3&nbsp;°C ambient — the diamond-infill geometry routes heat along the ribs while the interior face stabilises cooler.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Final Design -->
-    <section class="cs-section cs-section--highlight">
-      <div class="cs-section__body">
-        <h2 class="cs-section__heading">Final Design Proposal</h2>
-        <div class="cs-text-block">
-          <p>At full scale, the proposal is a cluster of terrain-responsive towers and low walls distributed across a selected Tabernas catchment — each element placed and shaped by the same Grasshopper model that drives its toolpath. Towers channel wind to shaded alcoves, walls terrace the slope to trap moisture, and every exterior face is a microbial host surface inoculated at the point of printing.</p>
-          <p>The masterplan doesn&rsquo;t pretend to re-green the desert. It defines a small, instrumented footprint where biocrust can be re-established measurably faster than on bare soil — a template that can be re-deployed across other degraded drylands by swapping only the input datasets.</p>
-        </div>
-        <div class="cs-image-full">
-          <div class="cs-image-slot">
-            <img src="images/trace-terra/final-secondary.jpg" alt="Aerial render of the printed cluster sited into the Tabernas slope — multiple vessel forms with pioneer vegetation establishing between them.">
-          </div>
-        </div>
-        <div class="cs-image-full">
-          <div class="cs-image-slot">
-            <img src="images/trace-terra/final-main.jpg" alt="Trace Terra courtyard render — the printed clay cluster seen from within, pioneer vegetation establishing between the forms at the Tabernas site.">
-          </div>
-        </div>
-        <div class="cs-stats">
-          <div class="cs-stat">
-            <span class="cs-stat__value">&lt;&nbsp;250&nbsp;mm</span>
-            <span class="cs-stat__label">Annual precipitation at the Tabernas site</span>
-          </div>
-          <div class="cs-stat">
-            <span class="cs-stat__value">85%</span>
-            <span class="cs-stat__label">Reduction in surface erosion where BSC is established</span>
-          </div>
-          <div class="cs-stat">
-            <span class="cs-stat__value">3:1:1</span>
-            <span class="cs-stat__label">Nostoc · Rhizobium · Actinomycetes inoculation ratio</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Publications -->
-    <section class="cs-section">
-      <div class="cs-section__body">
-        <h2 class="cs-section__heading">Publications</h2>
-        <div class="cs-text-block">
-          <p>The research has produced three academic outputs, led by the peer-reviewed IAAC&nbsp;BioDLF paper co-authored with Brenda Parker, Marcos Cruz, Anete Salmane, Jingyuan Meng, and Pradeep Devadass.</p>
-        </div>
-        <div class="cs-publications">
-          <div class="cs-pub">
-            <span class="cs-pub__type">Peer-reviewed paper</span>
-            <h3 class="cs-pub__title">Trace Terra: Integration of biological soil-crust microbiota into robotically extruded structures for arid contexts</h3>
-            <p class="cs-pub__venue">IAAC BioDLF — Biodesign for the Living Futures (Cocoon), 2025</p>
-          </div>
-          <div class="cs-pub">
-            <span class="cs-pub__type">Poster — accepted</span>
-            <h3 class="cs-pub__title">Trace Terra: Awakening the Soil for Futures to Come</h3>
-            <p class="cs-pub__venue">Cultivating Matter · Circular Strategies Symposium&nbsp;6, University of Applied Arts Vienna, 20–21&nbsp;November&nbsp;2025</p>
-            <div class="cs-pub__actions">
-              <button type="button" class="cs-pub__btn" id="poster-expand" aria-label="Expand poster to full view">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
-                Expand poster
-              </button>
-            </div>
-          </div>
-          <div class="cs-pub">
-            <span class="cs-pub__type">Under review</span>
-            <h3 class="cs-pub__title">Trace Terra: Integration of biological soil-crust microbiota into robotically extruded structures designed for arid environment contexts</h3>
-            <p class="cs-pub__venue">DigitalFUTURES CDRF 2026 — Masterclass &amp; 8th International Conference on Computational Design and Robotic Fabrication</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Reflection -->
-    <section class="cs-section cs-section--final">
-      <div class="cs-section__body">
-        <h2 class="cs-section__heading">Reflection</h2>
-        <div class="cs-text-block">
-          <p>The strongest result of Trace Terra wasn&rsquo;t any single print — it was proving that the whole loop closes. Landscape data drove toolpath generation, toolpath generation drove physical prints, physical prints validated the CFD predictions, and measured biocrust growth fed the next iteration of the outer-layer mix. That&rsquo;s not a styling exercise; that&rsquo;s an engineered workflow that happens to end in something alive.</p>
-          <p>The harder lesson was about ownership. Pulling the pipeline end-to-end — data, parametric definition, material, extruder hardware, robot cell — made every assumption testable. When the KR60 extruder failed mid-trials, the answer wasn&rsquo;t to outsource it; it was to diagnose it, move back to the IIWA, and document what the larger rig needed next. Owning the full stack is slower, but it&rsquo;s the only way to know what the model is actually telling you.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Back -->
-    <div class="cs-back">
-      <a href="index.html#work" class="cs-back__btn">
-        <svg width="16" height="10" viewBox="0 0 16 10" fill="none" aria-hidden="true">
-          <path d="M5 1L1 5L5 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <line x1="1" y1="5" x2="15" y2="5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
-        Back to Projects
-      </a>
-    </div>
-
-  </main>
-
-  <!-- Poster lightbox modal -->
-  <div class="poster-modal" id="poster-modal" role="dialog" aria-modal="true" aria-labelledby="poster-modal-title" hidden>
-    <div class="poster-modal__backdrop" data-close></div>
-    <div class="poster-modal__content" role="document">
-      <div class="poster-modal__header">
-        <h3 class="poster-modal__title" id="poster-modal-title">Trace Terra · Accepted A1 poster · Circular Strategies 6, Vienna</h3>
-        <div class="poster-modal__actions">
-          <a class="poster-modal__btn" href="Images & Ref/Template Poster A1 F.pdf" target="_blank" rel="noopener" aria-label="Open original PDF in a new tab">Open PDF</a>
-          <button type="button" class="poster-modal__close" data-close aria-label="Close poster viewer">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-          </button>
-        </div>
-      </div>
-      <div class="poster-modal__viewer">
-        <img src="images/trace-terra/poster-full.jpg?v=2" alt="Trace Terra accepted A1 poster — full view.">
-      </div>
-    </div>
+  <div class="cs-return">
+    <a href="index.html#work" class="cta cta--ghost">← Back to work</a>
   </div>
 
-  <footer class="footer">
-    <p>&copy; 2026 formflu<span class="logo-x">X</span></p>
-  </footer>
+</main>
 
-  <script>
-    (function() {
-      const toggle = document.getElementById('theme-toggle');
-      const html = document.documentElement;
-      const saved = localStorage.getItem('theme');
-      if (saved) html.setAttribute('data-theme', saved);
-      if (toggle) {
-        toggle.addEventListener('click', () => {
-          const current = html.getAttribute('data-theme');
-          let next;
-          if (current === 'dark') next = 'light';
-          else if (current === 'light') next = 'auto';
-          else next = 'dark';
-          html.setAttribute('data-theme', next);
-          localStorage.setItem('theme', next);
-        });
-      }
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
-      }, { threshold: 0.1 });
-      document.querySelectorAll('.cs-section, .cs-image-slot, .cs-stat').forEach(el => observer.observe(el));
+<footer class="foot">
+  <span>© 2026 formflu<span class="x">X</span> · James Lang</span>
+</footer>
 
-      // Safety: make sure the page can always scroll when it first loads,
-      // even if a previous navigation left body.style.overflow set.
-      document.body.style.overflow = '';
+<!-- Poster modal -->
+<div class="cs-modal" id="poster-modal" role="dialog" aria-modal="true" aria-labelledby="poster-modal-title" hidden>
+  <div class="cs-modal__backdrop" data-close></div>
+  <div class="cs-modal__content">
+    <div class="cs-modal__head">
+      <span class="cs-modal__title" id="poster-modal-title">Trace Terra · accepted A1 poster · Circular Strategies 6 · Vienna</span>
+      <button type="button" class="cs-modal__close" data-close aria-label="Close">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="cs-modal__viewer">
+      <img src="images/trace-terra/poster-full.jpg" alt="Trace Terra accepted A1 poster">
+    </div>
+  </div>
+</div>
 
-      // Poster lightbox
-      const modal = document.getElementById('poster-modal');
-      const triggers = [document.getElementById('poster-expand'), document.getElementById('poster-expand-thumb')].filter(Boolean);
-      const openModal = () => {
-        if (!modal) return;
-        modal.hidden = false;
-        document.body.style.overflow = 'hidden';
-        requestAnimationFrame(() => modal.classList.add('is-open'));
-      };
-      const closeModal = () => {
-        if (!modal) return;
-        modal.classList.remove('is-open');
-        // Always restore body scroll IMMEDIATELY — never wait for animation.
-        document.body.style.overflow = '';
-        setTimeout(() => { modal.hidden = true; }, 180);
-      };
-      triggers.forEach(t => t.addEventListener('click', openModal));
-      if (modal) {
-        modal.addEventListener('click', (e) => {
-          // Close when the click lands anywhere inside an element marked
-          // data-close — including clicks on child SVGs/paths.
-          if (e.target.closest('[data-close]')) closeModal();
-        });
-        document.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
-        });
-      }
-
-      // Global safety net: any click on the Back-to-Projects link ALWAYS
-      // releases scroll lock, so navigation can never be trapped by a
-      // misbehaving modal.
-      document.querySelectorAll('.cs-back-link, .cs-back__btn').forEach(a => {
-        a.addEventListener('click', () => { document.body.style.overflow = ''; });
-      });
-    })();
-  </script>
+<script>
+// Poster modal
+(function(){
+  document.body.style.overflow = '';
+  const modal = document.getElementById('poster-modal');
+  const openBtn = document.getElementById('poster-expand');
+  if (!modal) return;
+  const open = () => { modal.hidden = false; requestAnimationFrame(()=>modal.classList.add('is-open')); document.body.style.overflow = 'hidden'; };
+  const close = () => { modal.classList.remove('is-open'); document.body.style.overflow = ''; setTimeout(()=>{modal.hidden = true;}, 180); };
+  openBtn?.addEventListener('click', open);
+  modal.addEventListener('click', e => { if (e.target.closest('[data-close]')) close(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('is-open')) close(); });
+})();
+// Nav scroll state
+(function(){
+  const nav = document.querySelector('.nav');
+  if (!nav) return;
+  window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 8); }, { passive: true });
+})();
+</script>
 </body>
 </html>
