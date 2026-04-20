@@ -19,3 +19,4 @@ serve.py
 # Temp files
 *.tmp
 *.swp
+scripts/
