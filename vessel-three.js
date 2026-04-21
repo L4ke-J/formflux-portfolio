@@ -2,18 +2,25 @@
    3D differential-growth vessel generator.
 
    Generates a Trace-Terra-style vessel by running differential growth
-   across N stacked layers. Each layer evolves from the previous one
-   (more expansive, more folded), then is placed at increasing Y.
-   Rendered as wireframe line loops in a Three.js scene with an orbit
-   camera that auto-rotates gently and pauses when the user drags.
+   across N stacked layers. Each layer evolves from the previous one,
+   accumulating folds and flare, then is placed at increasing Y.
 
-   Exposed: init() — call once the module loads.
+   Two render modes:
+     - "wire"  — sage-green line loops, shows the algorithm's bones
+     - "print" — warm clay tube geometry, shows what it looks like
+                 coming off a clay 3D printer, filament by filament
+
+   Camera orbits with gentle auto-rotate, pauses on user drag, resumes
+   after idle. Near-full vertical rotation. Vessel auto-scales so any
+   layer count fits the viewport.
+
+   Exposed: init()
 ============================================== */
 
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-/* ---------- Differential growth in 2D ---------- */
+/* ---------- 2D differential growth ---------- */
 
 function seedCircle(n, r, jitter = 0.4) {
   const pts = [];
@@ -28,10 +35,6 @@ function seedCircle(n, r, jitter = 0.4) {
   return pts;
 }
 
-function clonePts(pts) {
-  return pts.map(p => ({ x: p.x, y: p.y, vx: 0, vy: 0 }));
-}
-
 function growStep(pts, cfg) {
   const n = pts.length;
   if (n < 3) return;
@@ -39,7 +42,6 @@ function growStep(pts, cfg) {
   const fy = new Float32Array(n);
   const rsq = cfg.repulsion * cfg.repulsion;
 
-  // Pairwise repulsion
   for (let i = 0; i < n; i++) {
     const ax = pts[i].x, ay = pts[i].y;
     for (let j = i + 1; j < n; j++) {
@@ -56,7 +58,6 @@ function growStep(pts, cfg) {
     }
   }
 
-  // Chain springs
   for (let i = 0; i < n; i++) {
     const p = pts[i];
     const prev = pts[(i - 1 + n) % n];
@@ -71,8 +72,6 @@ function growStep(pts, cfg) {
     }
   }
 
-  // Light outward radial pressure — ensures each layer expands a touch
-  // relative to the one before it (so the vessel opens upward)
   for (let i = 0; i < n; i++) {
     const p = pts[i];
     const r = Math.sqrt(p.x * p.x + p.y * p.y) || 0.001;
@@ -81,7 +80,6 @@ function growStep(pts, cfg) {
     fy[i] += (p.y / r) * push;
   }
 
-  // Integrate + jitter
   for (let i = 0; i < n; i++) {
     pts[i].vx = (pts[i].vx + fx[i] + (Math.random() - 0.5) * cfg.jitter) * cfg.damping;
     pts[i].vy = (pts[i].vy + fy[i] + (Math.random() - 0.5) * cfg.jitter) * cfg.damping;
@@ -89,7 +87,6 @@ function growStep(pts, cfg) {
     pts[i].y += pts[i].vy;
   }
 
-  // Growth: insert midpoint where edges are too long
   if (pts.length < cfg.maxNodes) {
     const threshold = cfg.spacing * cfg.growthMultiplier;
     for (let i = 0; i < pts.length; i++) {
@@ -111,48 +108,45 @@ function growStep(pts, cfg) {
   }
 }
 
-/* ---------- Generate the full vessel (array of ring layers) ---------- */
+/* ---------- Vessel generation ---------- */
 
 function generateVessel(userCfg) {
-  // Translate user-friendly params into algorithm params
-  const layers = Math.max(10, Math.round(userCfg.layers));           // 30..100
-  const growth = userCfg.growth;                                     // 1..10 — steps per layer
-  const detail = userCfg.detail;                                     // 2..10 — spacing inversely
+  const layers = Math.max(10, Math.round(userCfg.layers));
+  const growth = userCfg.growth;
+  const detail = userCfg.detail;
+  const base = userCfg.base;
 
   const cfg = {
-    spacing: 3 + (10 - detail) * 0.4,      // higher detail = smaller spacing = more nodes
+    spacing: 3 + (10 - detail) * 0.4,
     repulsion: 8 + (10 - detail) * 0.5,
     repulsionStrength: 0.45,
     springStiffness: 0.28,
     damping: 0.84,
     jitter: 0.08,
-    flare: 0.03 + growth * 0.015,          // stronger growth = wider flare per layer
+    flare: 0.025 + growth * 0.012,
     maxNodes: 220,
     growthMultiplier: 1.45,
   };
 
   const stepsPerLayer = Math.max(1, Math.round(growth));
 
-  // Seed ring — small, noisy circle for a "base"
-  let ring = seedCircle(32, 2.0 + Math.random() * 0.6, 0.25);
-  // Burn-in: a few quick steps so the first layer already has a little character
+  let ring = seedCircle(32, base + Math.random() * 0.3, 0.22);
   for (let s = 0; s < 3; s++) growStep(ring, cfg);
 
-  const layerPts = [];   // array of { pts: [...], y }
+  const layerPts = [];
   for (let i = 0; i < layers; i++) {
     for (let s = 0; s < stepsPerLayer; s++) growStep(ring, cfg);
-    // Clone current ring as this layer's geometry
     layerPts.push({
       pts: ring.map(p => ({ x: p.x, y: p.y })),
-      y: i * 0.35,   // vertical spacing between layers
+      y: i * 0.35,
     });
   }
   return layerPts;
 }
 
-/* ---------- Closed Catmull-Rom resample for smooth rings ---------- */
+/* ---------- Catmull-Rom resample ---------- */
 
-function smoothRing(pts, samples = 120) {
+function smoothRing(pts, samples = 140) {
   const n = pts.length;
   if (n < 4) return pts.slice();
   const out = [];
@@ -164,8 +158,7 @@ function smoothRing(pts, samples = 120) {
     const p3 = pts[(i + 2) % n];
     for (let s = 0; s < segPerSpan; s++) {
       const t = s / segPerSpan;
-      const t2 = t * t;
-      const t3 = t2 * t;
+      const t2 = t * t, t3 = t2 * t;
       const x = 0.5 * (
         (2 * p1.x) +
         (-p0.x + p2.x) * t +
@@ -184,34 +177,37 @@ function smoothRing(pts, samples = 120) {
   return out;
 }
 
-/* ---------- Three.js scene setup ---------- */
+/* ---------- Scene setup ---------- */
 
 export function init() {
   const mount = document.getElementById('vessel-canvas');
   const placeholder = document.getElementById('vessel-placeholder');
   if (!mount) return;
 
-  const ACC = '#b0d8a4';
+  const SAGE  = '#b0d8a4';
+  const CLAY  = '#c08a5d';
+  const TARGET_R = 6;   // half-width the vessel should fit within
+  const TARGET_H = 8;   // half-height ditto
 
-  // Scene / camera / renderer
   const scene = new THREE.Scene();
   scene.background = null;
 
   const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 200);
-  camera.position.set(18, 18, 28);
+  camera.position.set(18, 12, 26);
 
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
   renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
   mount.appendChild(renderer.domElement);
   if (placeholder) placeholder.remove();
 
-  // Soft neutral lighting
-  scene.add(new THREE.AmbientLight(0xffffff, 0.9));
-  const key = new THREE.DirectionalLight(0xffffff, 0.4);
-  key.position.set(10, 14, 8);
+  scene.add(new THREE.AmbientLight(0xffffff, 0.85));
+  const key = new THREE.DirectionalLight(0xffffff, 0.55);
+  key.position.set(10, 18, 8);
   scene.add(key);
+  const rim = new THREE.DirectionalLight(0xffffff, 0.22);
+  rim.position.set(-8, 6, -10);
+  scene.add(rim);
 
-  // Controls
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
   controls.dampingFactor = 0.08;
@@ -219,54 +215,38 @@ export function init() {
   controls.enablePan = false;
   controls.autoRotate = true;
   controls.autoRotateSpeed = 0.45;
-  controls.minPolarAngle = Math.PI * 0.18;
-  controls.maxPolarAngle = Math.PI * 0.55;
+  // Near-full vertical rotation — tiny buffer from exact poles only
+  controls.minPolarAngle = 0.08;
+  controls.maxPolarAngle = Math.PI - 0.08;
 
-  // Pause auto-rotate while user interacts, resume after idle
-  let interactionTimer = null;
+  let idleTimer = null;
   controls.addEventListener('start', () => {
     controls.autoRotate = false;
-    if (interactionTimer) clearTimeout(interactionTimer);
+    if (idleTimer) clearTimeout(idleTimer);
   });
   controls.addEventListener('end', () => {
-    if (interactionTimer) clearTimeout(interactionTimer);
-    interactionTimer = setTimeout(() => { controls.autoRotate = true; }, 2200);
+    if (idleTimer) clearTimeout(idleTimer);
+    idleTimer = setTimeout(() => { controls.autoRotate = true; }, 2200);
   });
 
-  // Vessel group
   const vesselGroup = new THREE.Group();
   scene.add(vesselGroup);
 
-  // Subtle base plate
-  const baseGeom = new THREE.CircleGeometry(6, 64);
-  const baseMat = new THREE.MeshBasicMaterial({
-    color: 0x181820, transparent: true, opacity: 0.55, side: THREE.DoubleSide,
-  });
-  const basePlate = new THREE.Mesh(baseGeom, baseMat);
-  basePlate.rotation.x = -Math.PI / 2;
-  basePlate.position.y = -0.3;
-  scene.add(basePlate);
+  /* ---------- Mode state ---------- */
+  let mode = 'wire';          // 'wire' | 'print'
+  let currentLayers = null;   // cached so mode-switch doesn't re-roll the dice
 
-  // Reference ring at the base
-  const baseRingGeom = new THREE.RingGeometry(5.9, 6.0, 96);
-  const baseRingMat = new THREE.MeshBasicMaterial({ color: 0x2c2c34 });
-  const baseRing = new THREE.Mesh(baseRingGeom, baseRingMat);
-  baseRing.rotation.x = -Math.PI / 2;
-  baseRing.position.y = -0.29;
-  scene.add(baseRing);
-
-  /* Build vessel wireframe from generated layer points */
-  function buildVessel(layerData) {
-    // dispose previous
+  function disposeVessel() {
     while (vesselGroup.children.length) {
       const c = vesselGroup.children.pop();
       c.geometry?.dispose();
       if (Array.isArray(c.material)) c.material.forEach(m => m.dispose());
       else c.material?.dispose();
     }
+  }
 
-    const total = layerData.length;
-    // Find max radius to normalise camera fit
+  /* Auto-fit: scale uniformly so vessel fits in (±TARGET_R, ±TARGET_H). */
+  function computeScale(layerData) {
     let maxR = 0;
     for (const L of layerData) {
       for (const p of L.pts) {
@@ -274,39 +254,76 @@ export function init() {
         if (r > maxR) maxR = r;
       }
     }
-    const scale = maxR > 0 ? 5.5 / maxR : 1;
-    const totalY = (total - 1) * 0.35;
+    const totalY = (layerData.length - 1) * 0.35;
+    const sR = maxR > 0 ? TARGET_R / maxR : 1;
+    const sH = totalY > 0 ? TARGET_H / (totalY * 0.5) : 1;
+    return Math.min(sR, sH);
+  }
 
-    // Build each layer as a closed LineLoop
-    for (let i = 0; i < total; i++) {
+  function buildWire(layerData) {
+    disposeVessel();
+    const scale = computeScale(layerData);
+    const totalY = (layerData.length - 1) * 0.35;
+    const yShift = -totalY * 0.5;
+
+    for (let i = 0; i < layerData.length; i++) {
       const L = layerData[i];
       const smooth = smoothRing(L.pts, 140);
       const positions = new Float32Array(smooth.length * 3);
       for (let k = 0; k < smooth.length; k++) {
         positions[k * 3]     = smooth[k].x * scale;
-        positions[k * 3 + 1] = L.y - totalY * 0.5;  // centre vertically on origin
+        positions[k * 3 + 1] = (L.y + yShift) * scale;
         positions[k * 3 + 2] = smooth[k].y * scale;
       }
       const geom = new THREE.BufferGeometry();
       geom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
-      // Older layers dimmer, newer layers brighter
-      const age = i / Math.max(1, total - 1);
-      const op  = 0.28 + age * 0.55;
+      const age = i / Math.max(1, layerData.length - 1);
       const mat = new THREE.LineBasicMaterial({
-        color: new THREE.Color(ACC),
+        color: new THREE.Color(SAGE),
         transparent: true,
-        opacity: op,
+        opacity: 0.3 + age * 0.55,
       });
-      const line = new THREE.LineLoop(geom, mat);
-      vesselGroup.add(line);
+      vesselGroup.add(new THREE.LineLoop(geom, mat));
     }
-
-    // Re-centre controls target
-    controls.target.set(0, 0, 0);
   }
 
-  /* Resize handling */
+  function buildPrint(layerData) {
+    disposeVessel();
+    const scale = computeScale(layerData);
+    const totalY = (layerData.length - 1) * 0.35;
+    const yShift = -totalY * 0.5;
+
+    // Shared material — one draw call worth of uniforms
+    const mat = new THREE.MeshStandardMaterial({
+      color: new THREE.Color(CLAY),
+      roughness: 0.78,
+      metalness: 0.05,
+      flatShading: false,
+    });
+
+    for (let i = 0; i < layerData.length; i++) {
+      const L = layerData[i];
+      // Use the raw ring points as curve control points — TubeGeometry
+      // interpolates between them, so we don't need to pre-smooth.
+      const ringPts = L.pts.map(p => new THREE.Vector3(
+        p.x * scale,
+        (L.y + yShift) * scale,
+        p.y * scale,
+      ));
+      const curve = new THREE.CatmullRomCurve3(ringPts, true, 'catmullrom', 0.5);
+      const tube = new THREE.TubeGeometry(curve, 96, 0.08, 6, true);
+      vesselGroup.add(new THREE.Mesh(tube, mat));
+    }
+  }
+
+  function build() {
+    if (!currentLayers) return;
+    if (mode === 'wire') buildWire(currentLayers);
+    else buildPrint(currentLayers);
+  }
+
+  /* ---------- Resize ---------- */
   function resize() {
     const w = mount.clientWidth  || 400;
     const h = mount.clientHeight || 300;
@@ -317,7 +334,7 @@ export function init() {
   resize();
   new ResizeObserver(resize).observe(mount);
 
-  /* Generate with current control values */
+  /* ---------- Controls ---------- */
   function readControls() {
     const map = {};
     document.querySelectorAll('.demo__controls input[type="range"]').forEach(i => {
@@ -328,13 +345,12 @@ export function init() {
 
   function regenerate() {
     const cfg = readControls();
-    const layers = generateVessel(cfg);
-    buildVessel(layers);
+    currentLayers = generateVessel(cfg);
+    build();
   }
 
   regenerate();
 
-  /* Hook sliders, generate button, download button */
   document.querySelectorAll('.demo__controls input[type="range"]').forEach(input => {
     const out = document.querySelector(`output[data-out="${input.dataset.key}"]`);
     if (out) out.textContent = input.value;
@@ -344,16 +360,32 @@ export function init() {
 
   document.getElementById('vessel-generate')?.addEventListener('click', regenerate);
 
+  const modeBtn = document.getElementById('vessel-mode');
+  modeBtn?.addEventListener('click', () => {
+    mode = (mode === 'wire') ? 'print' : 'wire';
+    modeBtn.textContent = (mode === 'wire') ? 'Show as print' : 'Show as wire';
+    build();
+  });
+
   document.getElementById('vessel-download')?.addEventListener('click', () => {
+    // Temporarily bump pixel ratio for a crisp export
+    const prevPR = renderer.getPixelRatio();
+    const size = new THREE.Vector2();
+    renderer.getSize(size);
+    renderer.setPixelRatio(Math.min(3, window.devicePixelRatio * 2));
+    renderer.setSize(size.x, size.y, false);
     renderer.render(scene, camera);
     const url = renderer.domElement.toDataURL('image/png');
+    renderer.setPixelRatio(prevPR);
+    renderer.setSize(size.x, size.y, false);
+
     const a = document.createElement('a');
     a.href = url;
-    a.download = `trace-terra-vessel-${Date.now()}.png`;
+    a.download = `trace-terra-vessel-${mode}-${Date.now()}.png`;
     document.body.appendChild(a); a.click(); a.remove();
   });
 
-  /* Render loop — pause when offscreen */
+  /* ---------- Render loop ---------- */
   let running = true;
   function tick() {
     if (!running) return;

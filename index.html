@@ -133,11 +133,13 @@
         </div>
       </div>
       <div class="demo__controls">
-        <label><span>Layers</span><input type="range" min="30" max="100" value="60" step="1" data-key="layers"><output data-out="layers">60</output></label>
+        <label><span>Layers</span><input type="range" min="30" max="100" value="55" step="1" data-key="layers"><output data-out="layers">55</output></label>
+        <label><span>Base</span><input type="range" min="1" max="5" value="2" step="0.25" data-key="base"><output data-out="base">2</output></label>
         <label><span>Growth</span><input type="range" min="1" max="10" value="5" step="0.5" data-key="growth"><output data-out="growth">5</output></label>
         <label><span>Detail</span><input type="range" min="2" max="10" value="5" step="0.5" data-key="detail"><output data-out="detail">5</output></label>
         <div class="demo__btn-row">
           <button type="button" class="demo__reset" id="vessel-generate" aria-label="Generate a new vessel">↻ Generate</button>
+          <button type="button" class="demo__reset" id="vessel-mode" aria-label="Switch render mode">Show as print</button>
           <button type="button" class="demo__reset" id="vessel-download" aria-label="Download as PNG">↓ Save</button>
         </div>
       </div>
