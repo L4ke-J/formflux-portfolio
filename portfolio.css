@@ -597,14 +597,17 @@ html[data-theme="light"] .featured__overlay {
   min-width: 90px;
 }
 
-/* 3D canvas for the vessel demo */
+/* 3D canvas for the vessel demo.
+   Scales with viewport on desktop so fullscreen browsers actually use
+   the height available — not just a short 380px band. Capped so it
+   never overwhelms the section. */
 .demo__stage--3d {
-  min-height: 380px;
+  min-height: clamp(440px, 72vh, 820px);
 }
 .vessel-canvas {
   position: relative;
   width: 100%;
-  min-height: 380px;
+  min-height: clamp(440px, 72vh, 820px);
   background:
     radial-gradient(ellipse 70% 50% at 50% 70%, var(--acc-glow), transparent 70%),
     linear-gradient(180deg, var(--bg-2) 0%, var(--bg-3) 100%);

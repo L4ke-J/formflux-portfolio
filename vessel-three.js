@@ -35,6 +35,11 @@ function seedCircle(n, r, jitter = 0.4) {
   return pts;
 }
 
+/* Differential-growth step. Forces: inter-node repulsion, chain springs,
+   jitter. Then integrate, add/remove nodes. Finally, if targetR is
+   provided, project the ring's MEAN radius back to targetR — this is a
+   uniform scale so folds (relative deformation) survive, but runaway
+   outward drift is prevented across many iterations. */
 function growStep(pts, cfg, targetR) {
   const n = pts.length;
   if (n < 3) return;
@@ -70,24 +75,6 @@ function growStep(pts, cfg, targetR) {
       fx[i] += (dx / d) * f;
       fy[i] += (dy / d) * f;
     }
-  }
-
-  // Profile targeting — move the whole ring toward targetR without
-  // flattening individual folds. Compare the ring's MEAN radius (not
-  // per-node radius) against target, and apply a uniform outward /
-  // inward push based on that delta. Fold lobes stay intact; the ring
-  // as a whole grows or shrinks to track the per-layer target.
-  let meanR = 0;
-  for (let i = 0; i < n; i++) {
-    meanR += Math.sqrt(pts[i].x * pts[i].x + pts[i].y * pts[i].y);
-  }
-  meanR /= n;
-  const profilePush = (targetR - meanR) * cfg.profileStrength;
-  for (let i = 0; i < n; i++) {
-    const p = pts[i];
-    const r = Math.sqrt(p.x * p.x + p.y * p.y) || 0.001;
-    fx[i] += (p.x / r) * profilePush;
-    fy[i] += (p.y / r) * profilePush;
   }
 
   for (let i = 0; i < n; i++) {
@@ -135,6 +122,24 @@ function growStep(pts, cfg, targetR) {
       }
     }
   }
+
+  // Mean-radius normalization. Uniform scale, so folds (relative radius
+  // variation around the mean) are preserved — only the ring's overall
+  // size is pulled back to the target. Prevents runaway outward drift.
+  if (targetR != null && pts.length > 2) {
+    let meanR = 0;
+    for (let i = 0; i < pts.length; i++) {
+      meanR += Math.sqrt(pts[i].x * pts[i].x + pts[i].y * pts[i].y);
+    }
+    meanR /= pts.length;
+    if (meanR > 0.001) {
+      const s = targetR / meanR;
+      for (let i = 0; i < pts.length; i++) {
+        pts[i].x *= s;
+        pts[i].y *= s;
+      }
+    }
+  }
 }
 
 /* ---------- Vessel generation ---------- */
@@ -152,7 +157,6 @@ function generateVessel(userCfg) {
     springStiffness: 0.26,
     damping: 0.85,
     jitter: 0.08,
-    profileStrength: 0.45,   // ring-mean-based, applied uniformly
     maxNodes: 260,
     minNodes: 10,
     shrinkThreshold: 0.7,
@@ -162,21 +166,45 @@ function generateVessel(userCfg) {
   const stepsPerLayer = 3;
   const finalExtraR = growth * 0.8;
 
-  // Seed node count matched to base circumference / target spacing so the
-  // initial ring is stable at the requested base radius. Clamped to [10, 36]
-  // to keep the first few layers looking organic, not hex-polygonal.
-  const targetSeedN = Math.max(10, Math.min(36, Math.round((2 * Math.PI * base) / cfg.spacing)));
-  let ring = seedCircle(targetSeedN, base, 0.08);
-
-  // Long burn-in at the base target lets the ring settle into a clean
-  // near-circle before we start capturing layers.
-  for (let s = 0; s < 10; s++) growStep(ring, cfg, base);
+  // --- Layer 0: explicit mathematical circle at `base` radius ---
+  // No simulation, no jitter. Guarantees a perfectly clean circular
+  // bottom regardless of parameter combination. Node count matched to
+  // circumference/spacing so the ring is stable as it grows.
+  const seedN = Math.max(10, Math.min(36, Math.round((2 * Math.PI * base) / cfg.spacing)));
+  const ring = [];
+  for (let i = 0; i < seedN; i++) {
+    const a = (i / seedN) * Math.PI * 2;
+    ring.push({ x: Math.cos(a) * base, y: Math.sin(a) * base, vx: 0, vy: 0 });
+  }
 
   const layerPts = [];
-  for (let i = 0; i < layers; i++) {
-    const t = layers === 1 ? 0 : i / (layers - 1);
+  layerPts.push({
+    pts: ring.map(p => ({ x: p.x, y: p.y })),
+    y: 0,
+  });
+
+  // --- Subsequent layers: uniform scale to new target radius, then
+  // run growStep for fold development. Scaling handles the vase
+  // profile; growStep only develops folds. They never fight. ---
+  for (let i = 1; i < layers; i++) {
+    const t = i / (layers - 1);
     const targetR = base + t * finalExtraR;
+
+    let meanR = 0;
+    for (let k = 0; k < ring.length; k++) {
+      meanR += Math.sqrt(ring[k].x * ring[k].x + ring[k].y * ring[k].y);
+    }
+    meanR /= ring.length;
+    const scale = meanR > 0.001 ? (targetR / meanR) : 1;
+    for (let k = 0; k < ring.length; k++) {
+      ring[k].x *= scale;
+      ring[k].y *= scale;
+      ring[k].vx = 0;   // reset velocities so scaling doesn't launch nodes
+      ring[k].vy = 0;
+    }
+
     for (let s = 0; s < stepsPerLayer; s++) growStep(ring, cfg, targetR);
+
     layerPts.push({
       pts: ring.map(p => ({ x: p.x, y: p.y })),
       y: i * 0.35,
