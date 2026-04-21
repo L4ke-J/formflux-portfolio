@@ -566,6 +566,25 @@ html[data-theme="light"] .featured__overlay {
   cursor: ew-resize;
   border: 2px solid var(--bg-3);
 }
+.demo__reset {
+  margin-top: 6px;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: var(--ink-2);
+  background: transparent;
+  border: 1px solid var(--rule-2);
+  border-radius: 100px;
+  padding: 7px 14px;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: color .2s, border-color .2s, background .2s;
+}
+.demo__reset:hover {
+  color: var(--acc);
+  border-color: var(--acc);
+  background: var(--acc-glow);
+}
 
 /* ======= WORK GRID ======= */
 .work {

@@ -112,18 +112,19 @@
     </div>
   </div>
 
-  <!-- live mini-demo: parametric shape generator -->
+  <!-- live mini-demo: differential-growth simulation -->
   <div class="featured__demo">
     <div class="demo__chrome">
-      <span class="demo__title">Parametric vessel — illustrative</span>
-      <span class="demo__hint">a playful illustration of the design logic behind Trace Terra &mdash; drag to watch the parameters breathe</span>
+      <span class="demo__title">Live · differential growth</span>
+      <span class="demo__hint">the algorithm that shaped the final Trace Terra vessels &mdash; drag to change the forces it&rsquo;s balancing</span>
     </div>
     <div class="demo__stage">
       <svg id="vessel-svg" viewBox="0 0 280 220" preserveAspectRatio="xMidYMid meet"></svg>
       <div class="demo__controls">
-        <label><span>Layer count</span><input type="range" min="6" max="40" value="22" data-key="layers"><output data-out="layers">22</output></label>
-        <label><span>Wave amplitude</span><input type="range" min="0" max="14" value="6" data-key="amp"><output data-out="amp">6</output></label>
-        <label><span>Taper</span><input type="range" min="-30" max="30" value="-8" data-key="taper"><output data-out="taper">-8</output></label>
+        <label><span>Pressure</span><input type="range" min="14" max="36" value="24" step="0.5" data-key="repulsion"><output data-out="repulsion">24</output></label>
+        <label><span>Tension</span><input type="range" min="6" max="14" value="9" step="0.25" data-key="spacing"><output data-out="spacing">9</output></label>
+        <label><span>Speed</span><input type="range" min="1" max="4" value="2" data-key="speed"><output data-out="speed">2</output></label>
+        <button type="button" class="demo__reset" id="demo-reset" aria-label="Reseed the simulation">↻ Reset</button>
       </div>
     </div>
   </div>
