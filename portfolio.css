@@ -585,6 +585,54 @@ html[data-theme="light"] .featured__overlay {
   border-color: var(--acc);
   background: var(--acc-glow);
 }
+.demo__btn-row {
+  display: flex; gap: 8px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+.demo__btn-row .demo__reset {
+  margin-top: 0;
+  flex: 1 1 auto;
+  text-align: center;
+  min-width: 90px;
+}
+
+/* 3D canvas for the vessel demo */
+.demo__stage--3d {
+  min-height: 380px;
+}
+.vessel-canvas {
+  position: relative;
+  width: 100%;
+  min-height: 380px;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 70%, var(--acc-glow), transparent 70%),
+    linear-gradient(180deg, var(--bg-2) 0%, var(--bg-3) 100%);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+  cursor: grab;
+}
+.vessel-canvas:active { cursor: grabbing; }
+.vessel-canvas canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  position: absolute; inset: 0;
+}
+.vessel-canvas__placeholder {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  pointer-events: none;
+}
+@media (max-width: 760px) {
+  .demo__stage--3d { min-height: 340px; }
+  .vessel-canvas { min-height: 280px; }
+}
 
 /* ======= WORK GRID ======= */
 .work {

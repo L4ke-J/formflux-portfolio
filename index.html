@@ -6,6 +6,14 @@
 <title>James Lang — Design Engineer · formfluX</title>
 <meta name="description" content="James Lang — Designer–engineer. Products, systems, and bio-integrated materials — from wearables to water to living substrates.">
 <link rel="stylesheet" href="portfolio.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
 </head>
 <body>
 
@@ -112,19 +120,26 @@
     </div>
   </div>
 
-  <!-- live mini-demo: differential-growth simulation -->
-  <div class="featured__demo">
+  <!-- live mini-demo: differential-growth 3D vessel generator -->
+  <div class="featured__demo" id="vessel-demo">
     <div class="demo__chrome">
       <span class="demo__title">Live · differential growth</span>
-      <span class="demo__hint">the algorithm that shaped the final Trace Terra vessels &mdash; drag to change the forces it&rsquo;s balancing</span>
+      <span class="demo__hint">generate your own Trace Terra vessel &mdash; drag to orbit, take a souvenir</span>
     </div>
-    <div class="demo__stage">
-      <svg id="vessel-svg" viewBox="0 0 280 260" preserveAspectRatio="xMidYMid meet"></svg>
+    <div class="demo__stage demo__stage--3d">
+      <div id="vessel-canvas" class="vessel-canvas">
+        <div class="vessel-canvas__placeholder" id="vessel-placeholder">
+          <span>initialising 3D scene…</span>
+        </div>
+      </div>
       <div class="demo__controls">
-        <label><span>Pressure</span><input type="range" min="14" max="36" value="24" step="0.5" data-key="repulsion"><output data-out="repulsion">24</output></label>
-        <label><span>Tension</span><input type="range" min="6" max="14" value="9" step="0.25" data-key="spacing"><output data-out="spacing">9</output></label>
-        <label><span>Speed</span><input type="range" min="1" max="4" value="2" data-key="speed"><output data-out="speed">2</output></label>
-        <button type="button" class="demo__reset" id="demo-reset" aria-label="Reseed the simulation">↻ Reset</button>
+        <label><span>Layers</span><input type="range" min="30" max="100" value="60" step="1" data-key="layers"><output data-out="layers">60</output></label>
+        <label><span>Growth</span><input type="range" min="1" max="10" value="5" step="0.5" data-key="growth"><output data-out="growth">5</output></label>
+        <label><span>Detail</span><input type="range" min="2" max="10" value="5" step="0.5" data-key="detail"><output data-out="detail">5</output></label>
+        <div class="demo__btn-row">
+          <button type="button" class="demo__reset" id="vessel-generate" aria-label="Generate a new vessel">↻ Generate</button>
+          <button type="button" class="demo__reset" id="vessel-download" aria-label="Download as PNG">↓ Save</button>
+        </div>
       </div>
     </div>
   </div>
