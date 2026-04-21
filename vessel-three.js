@@ -72,10 +72,13 @@ function growStep(pts, cfg) {
     }
   }
 
+  // Outward radial flare, softly capped at cfg.softMaxR so the vessel
+  // asymptotes to a sensible max diameter instead of pancaking.
   for (let i = 0; i < n; i++) {
     const p = pts[i];
     const r = Math.sqrt(p.x * p.x + p.y * p.y) || 0.001;
-    const push = cfg.flare;
+    const factor = Math.max(0, 1 - r / cfg.softMaxR);
+    const push = cfg.flare * factor;
     fx[i] += (p.x / r) * push;
     fy[i] += (p.y / r) * push;
   }
@@ -123,12 +126,19 @@ function generateVessel(userCfg) {
     springStiffness: 0.28,
     damping: 0.84,
     jitter: 0.08,
-    flare: 0.025 + growth * 0.012,
+    // Growth controls how fast the vessel flares outward — but it's
+    // softly capped by softMaxR, so extreme growth just saturates
+    // earlier rather than producing a pancake.
+    flare: 0.02 + growth * 0.022,
+    softMaxR: 7,
     maxNodes: 220,
     growthMultiplier: 1.45,
   };
 
-  const stepsPerLayer = Math.max(1, Math.round(growth));
+  // Differential growth needs 2–4 steps per layer to actually fold
+  // the curve; decoupling from the growth slider so Growth only
+  // affects flare amount.
+  const stepsPerLayer = 3;
 
   let ring = seedCircle(32, base + Math.random() * 0.3, 0.22);
   for (let s = 0; s < 3; s++) growStep(ring, cfg);
