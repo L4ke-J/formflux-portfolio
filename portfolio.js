@@ -10,21 +10,21 @@ if (nav) {
 
 /* ---------- Vessel SVG generator (parametric Trace Terra illustration) ---------- */
 const vessel = document.getElementById('vessel-svg');
-const vesselState = { layers: 22, amp: 6, twist: 18, taper: -8 };
+const vesselState = { layers: 22, amp: 6, taper: -8 };
 
 function renderVessel() {
   if (!vessel) return;
-  const { layers, amp, twist, taper } = vesselState;
+  const { layers, amp, taper } = vesselState;
   const cx = 140, baseY = 200, topY = 24;
   const baseR = 70, topR = baseR + taper;
   const span = baseY - topY;
 
   const points = 64;
-  const ringPoints = (yPct, r, twistDeg) => {
+  const ringPoints = (yPct, r) => {
     const out = [];
     for (let i = 0; i <= points; i++) {
       const t = i / points;
-      const ang = t * Math.PI * 2 + twistDeg * Math.PI / 180;
+      const ang = t * Math.PI * 2;
       const wave = Math.sin(ang * 6 + yPct * Math.PI * 4) * (amp * (0.4 + yPct * 0.6));
       const rr = r + wave;
       const x = cx + Math.cos(ang) * rr;
@@ -38,8 +38,7 @@ function renderVessel() {
   for (let l = 0; l <= layers; l++) {
     const t = l / layers;
     const r = topR + (baseR - topR) * t;
-    const tw = twist * t;
-    const pts = ringPoints(1 - t, r, tw);
+    const pts = ringPoints(1 - t, r);
     const path = pts.map(([x, y], i) => (i === 0 ? `M${x.toFixed(1)},${y.toFixed(1)}` : `L${x.toFixed(1)},${y.toFixed(1)}`)).join(' ');
     const opacity = 0.25 + t * 0.55;
     svgInner += `<path d="${path}" fill="none" stroke="var(--acc)" stroke-width="${(0.6 + t * 0.4).toFixed(2)}" opacity="${opacity.toFixed(2)}"/>`;
@@ -66,7 +65,7 @@ document.querySelectorAll('.demo__controls input[type="range"]').forEach(input =
   const out = document.querySelector(`output[data-out="${key}"]`);
   input.addEventListener('input', () => {
     vesselState[key] = +input.value;
-    if (out) out.textContent = key === 'twist' ? `${input.value}°` : input.value;
+    if (out) out.textContent = input.value;
     renderVessel();
   });
 });
