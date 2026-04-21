@@ -35,7 +35,7 @@ function seedCircle(n, r, jitter = 0.4) {
   return pts;
 }
 
-function growStep(pts, cfg) {
+function growStep(pts, cfg, targetR) {
   const n = pts.length;
   if (n < 3) return;
   const fx = new Float32Array(n);
@@ -72,13 +72,15 @@ function growStep(pts, cfg) {
     }
   }
 
-  // Outward radial flare, softly capped at cfg.softMaxR so the vessel
-  // asymptotes to a sensible max diameter instead of pancaking.
+  // Profile targeting — pull each node toward this layer's target radius.
+  // Low layers have a small targetR (base), high layers have targetR at
+  // base + growth*K. Repulsion + chain springs still add the differential-
+  // growth folds on top of the profile.
   for (let i = 0; i < n; i++) {
     const p = pts[i];
     const r = Math.sqrt(p.x * p.x + p.y * p.y) || 0.001;
-    const factor = Math.max(0, 1 - r / cfg.softMaxR);
-    const push = cfg.flare * factor;
+    const delta = targetR - r;
+    const push = delta * cfg.profileStrength;
     fx[i] += (p.x / r) * push;
     fy[i] += (p.y / r) * push;
   }
@@ -120,32 +122,34 @@ function generateVessel(userCfg) {
   const base = userCfg.base;
 
   const cfg = {
-    spacing: 3 + (10 - detail) * 0.4,
-    repulsion: 8 + (10 - detail) * 0.5,
-    repulsionStrength: 0.45,
+    // Rebalanced — low detail used to produce 5-node hexagons. Tighter
+    // spacing range now, and repulsion scales independently so fold
+    // energy stays lively at all detail levels.
+    spacing: 1.0 + (10 - detail) * 0.25,
+    repulsion: 3.0 + (10 - detail) * 0.4,
+    repulsionStrength: 0.5,
     springStiffness: 0.28,
     damping: 0.84,
-    jitter: 0.08,
-    // Growth controls how fast the vessel flares outward — but it's
-    // softly capped by softMaxR, so extreme growth just saturates
-    // earlier rather than producing a pancake.
-    flare: 0.02 + growth * 0.022,
-    softMaxR: 7,
-    maxNodes: 220,
-    growthMultiplier: 1.45,
+    jitter: 0.07,
+    profileStrength: 0.22,
+    maxNodes: 240,
+    growthMultiplier: 1.5,
   };
 
-  // Differential growth needs 2–4 steps per layer to actually fold
-  // the curve; decoupling from the growth slider so Growth only
-  // affects flare amount.
   const stepsPerLayer = 3;
+  // Each layer's target radius: base at layer 0, (base + growth * 0.8) at top.
+  // The differential-growth forces add folds on top of this profile so the
+  // vessel has a clear narrow-to-wide silhouette.
+  const finalExtraR = growth * 0.8;
 
   let ring = seedCircle(32, base + Math.random() * 0.3, 0.22);
-  for (let s = 0; s < 3; s++) growStep(ring, cfg);
+  for (let s = 0; s < 4; s++) growStep(ring, cfg, base);
 
   const layerPts = [];
   for (let i = 0; i < layers; i++) {
-    for (let s = 0; s < stepsPerLayer; s++) growStep(ring, cfg);
+    const t = layers === 1 ? 0 : i / (layers - 1);
+    const targetR = base + t * finalExtraR;
+    for (let s = 0; s < stepsPerLayer; s++) growStep(ring, cfg, targetR);
     layerPts.push({
       pts: ring.map(p => ({ x: p.x, y: p.y })),
       y: i * 0.35,
@@ -196,8 +200,7 @@ export function init() {
 
   const SAGE  = '#b0d8a4';
   const CLAY  = '#c08a5d';
-  const TARGET_R = 6;   // half-width the vessel should fit within
-  const TARGET_H = 8;   // half-height ditto
+  const LAYER_H = 0.35;   // world-unit height between stacked layers
 
   const scene = new THREE.Scene();
   scene.background = null;
@@ -255,25 +258,12 @@ export function init() {
     }
   }
 
-  /* Auto-fit: scale uniformly so vessel fits in (±TARGET_R, ±TARGET_H). */
-  function computeScale(layerData) {
-    let maxR = 0;
-    for (const L of layerData) {
-      for (const p of L.pts) {
-        const r = Math.sqrt(p.x * p.x + p.y * p.y);
-        if (r > maxR) maxR = r;
-      }
-    }
-    const totalY = (layerData.length - 1) * 0.35;
-    const sR = maxR > 0 ? TARGET_R / maxR : 1;
-    const sH = totalY > 0 ? TARGET_H / (totalY * 0.5) : 1;
-    return Math.min(sR, sH);
-  }
-
+  /* Build each layer at its natural world-scale position — no uniform
+     scaling. The camera fits the resulting bounding box instead, so
+     taller vessels actually look taller on screen. */
   function buildWire(layerData) {
     disposeVessel();
-    const scale = computeScale(layerData);
-    const totalY = (layerData.length - 1) * 0.35;
+    const totalY = (layerData.length - 1) * LAYER_H;
     const yShift = -totalY * 0.5;
 
     for (let i = 0; i < layerData.length; i++) {
@@ -281,9 +271,9 @@ export function init() {
       const smooth = smoothRing(L.pts, 140);
       const positions = new Float32Array(smooth.length * 3);
       for (let k = 0; k < smooth.length; k++) {
-        positions[k * 3]     = smooth[k].x * scale;
-        positions[k * 3 + 1] = (L.y + yShift) * scale;
-        positions[k * 3 + 2] = smooth[k].y * scale;
+        positions[k * 3]     = smooth[k].x;
+        positions[k * 3 + 1] = L.y + yShift;
+        positions[k * 3 + 2] = smooth[k].y;
       }
       const geom = new THREE.BufferGeometry();
       geom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
@@ -300,11 +290,9 @@ export function init() {
 
   function buildPrint(layerData) {
     disposeVessel();
-    const scale = computeScale(layerData);
-    const totalY = (layerData.length - 1) * 0.35;
+    const totalY = (layerData.length - 1) * LAYER_H;
     const yShift = -totalY * 0.5;
 
-    // Shared material — one draw call worth of uniforms
     const mat = new THREE.MeshStandardMaterial({
       color: new THREE.Color(CLAY),
       roughness: 0.78,
@@ -314,12 +302,10 @@ export function init() {
 
     for (let i = 0; i < layerData.length; i++) {
       const L = layerData[i];
-      // Use the raw ring points as curve control points — TubeGeometry
-      // interpolates between them, so we don't need to pre-smooth.
       const ringPts = L.pts.map(p => new THREE.Vector3(
-        p.x * scale,
-        (L.y + yShift) * scale,
-        p.y * scale,
+        p.x,
+        L.y + yShift,
+        p.y,
       ));
       const curve = new THREE.CatmullRomCurve3(ringPts, true, 'catmullrom', 0.5);
       const tube = new THREE.TubeGeometry(curve, 96, 0.08, 6, true);
@@ -327,10 +313,37 @@ export function init() {
     }
   }
 
+  /* Fit camera to the vessel's bounding box, preserving current orbit
+     direction. Called after every build so the camera steps back as
+     the vessel grows taller. */
+  const _boxSize = new THREE.Vector3();
+  const _boxCenter = new THREE.Vector3();
+  const _dir = new THREE.Vector3();
+  function fitCamera() {
+    const box = new THREE.Box3().setFromObject(vesselGroup);
+    if (box.isEmpty()) return;
+    box.getSize(_boxSize);
+    box.getCenter(_boxCenter);
+
+    const halfFovY = (camera.fov * Math.PI / 180) / 2;
+    const halfFovX = Math.atan(Math.tan(halfFovY) * camera.aspect);
+    const distY  = (_boxSize.y / 2) / Math.tan(halfFovY);
+    const distXZ = (Math.max(_boxSize.x, _boxSize.z) / 2) / Math.tan(halfFovX);
+    const fitDist = Math.max(distY, distXZ) * 1.4; // padding
+
+    controls.target.copy(_boxCenter);
+    _dir.subVectors(camera.position, _boxCenter);
+    if (_dir.lengthSq() < 0.001) _dir.set(0.7, 0.35, 1.0);
+    _dir.normalize();
+    camera.position.copy(_boxCenter).add(_dir.multiplyScalar(fitDist));
+    controls.update();
+  }
+
   function build() {
     if (!currentLayers) return;
     if (mode === 'wire') buildWire(currentLayers);
     else buildPrint(currentLayers);
+    fitCamera();
   }
 
   /* ---------- Resize ---------- */
