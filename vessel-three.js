@@ -72,17 +72,22 @@ function growStep(pts, cfg, targetR) {
     }
   }
 
-  // Profile targeting — pull each node toward this layer's target radius.
-  // Low layers have a small targetR (base), high layers have targetR at
-  // base + growth*K. Repulsion + chain springs still add the differential-
-  // growth folds on top of the profile.
+  // Profile targeting — move the whole ring toward targetR without
+  // flattening individual folds. Compare the ring's MEAN radius (not
+  // per-node radius) against target, and apply a uniform outward /
+  // inward push based on that delta. Fold lobes stay intact; the ring
+  // as a whole grows or shrinks to track the per-layer target.
+  let meanR = 0;
+  for (let i = 0; i < n; i++) {
+    meanR += Math.sqrt(pts[i].x * pts[i].x + pts[i].y * pts[i].y);
+  }
+  meanR /= n;
+  const profilePush = (targetR - meanR) * cfg.profileStrength;
   for (let i = 0; i < n; i++) {
     const p = pts[i];
     const r = Math.sqrt(p.x * p.x + p.y * p.y) || 0.001;
-    const delta = targetR - r;
-    const push = delta * cfg.profileStrength;
-    fx[i] += (p.x / r) * push;
-    fy[i] += (p.y / r) * push;
+    fx[i] += (p.x / r) * profilePush;
+    fy[i] += (p.y / r) * profilePush;
   }
 
   for (let i = 0; i < n; i++) {
@@ -111,6 +116,25 @@ function growStep(pts, cfg, targetR) {
       }
     }
   }
+
+  // Node removal: if a node's chain neighbours are already close enough
+  // (their direct distance < cfg.spacing * shrinkThreshold), the node is
+  // redundant. Prevents pile-ups at small radii where the seed had more
+  // nodes than the circumference can comfortably hold.
+  if (pts.length > cfg.minNodes) {
+    const rmThresh = cfg.spacing * cfg.shrinkThreshold;
+    const rmThresh2 = rmThresh * rmThresh;
+    for (let i = pts.length - 1; i >= 0; i--) {
+      if (pts.length <= cfg.minNodes) break;
+      const prev = pts[(i - 1 + pts.length) % pts.length];
+      const next = pts[(i + 1) % pts.length];
+      const dx = next.x - prev.x;
+      const dy = next.y - prev.y;
+      if (dx * dx + dy * dy < rmThresh2) {
+        pts.splice(i, 1);
+      }
+    }
+  }
 }
 
 /* ---------- Vessel generation ---------- */
@@ -122,28 +146,31 @@ function generateVessel(userCfg) {
   const base = userCfg.base;
 
   const cfg = {
-    // Rebalanced — low detail used to produce 5-node hexagons. Tighter
-    // spacing range now, and repulsion scales independently so fold
-    // energy stays lively at all detail levels.
-    spacing: 1.0 + (10 - detail) * 0.25,
-    repulsion: 3.0 + (10 - detail) * 0.4,
-    repulsionStrength: 0.5,
-    springStiffness: 0.28,
-    damping: 0.84,
-    jitter: 0.07,
-    profileStrength: 0.22,
-    maxNodes: 240,
+    spacing: 0.9 + (10 - detail) * 0.2,        // range 0.9 – 2.9
+    repulsion: 2.6 + (10 - detail) * 0.35,     // range 2.6 – 5.4
+    repulsionStrength: 0.45,
+    springStiffness: 0.26,
+    damping: 0.85,
+    jitter: 0.08,
+    profileStrength: 0.45,   // ring-mean-based, applied uniformly
+    maxNodes: 260,
+    minNodes: 10,
+    shrinkThreshold: 0.7,
     growthMultiplier: 1.5,
   };
 
   const stepsPerLayer = 3;
-  // Each layer's target radius: base at layer 0, (base + growth * 0.8) at top.
-  // The differential-growth forces add folds on top of this profile so the
-  // vessel has a clear narrow-to-wide silhouette.
   const finalExtraR = growth * 0.8;
 
-  let ring = seedCircle(32, base + Math.random() * 0.3, 0.22);
-  for (let s = 0; s < 4; s++) growStep(ring, cfg, base);
+  // Seed node count matched to base circumference / target spacing so the
+  // initial ring is stable at the requested base radius. Clamped to [10, 36]
+  // to keep the first few layers looking organic, not hex-polygonal.
+  const targetSeedN = Math.max(10, Math.min(36, Math.round((2 * Math.PI * base) / cfg.spacing)));
+  let ring = seedCircle(targetSeedN, base, 0.08);
+
+  // Long burn-in at the base target lets the ring settle into a clean
+  // near-circle before we start capturing layers.
+  for (let s = 0; s < 10; s++) growStep(ring, cfg, base);
 
   const layerPts = [];
   for (let i = 0; i < layers; i++) {
