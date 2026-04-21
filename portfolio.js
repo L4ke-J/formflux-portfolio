@@ -8,41 +8,57 @@ if (nav) {
   }, { passive: true });
 }
 
-/* ---------- Differential-growth simulation ------------
+/* ---------- Differential-growth simulation (isometric loft) ----------
    The actual algorithm used to generate the final Trace Terra vessels
-   in Houdini. A closed chain of nodes where each node (a) repels
+   in Houdini: a closed chain of nodes where each node (a) repels
    non-chain neighbours within a radius (Pressure), (b) is sprung
    toward its chain neighbours at a target spacing (Tension), and
-   (c) gets a small random perturbation each step (breaks symmetry
-   so folds actually form). When an edge stretches past threshold, a
-   new node is inserted — the curve grows and folds on itself.
+   (c) receives a small jitter impulse each step (breaks symmetry
+   so folds actually form). When an edge stretches past threshold,
+   a new node is inserted — the curve grows and folds.
 
-   Rendered with a stacked-history trail: the last ~50 ring states
-   are drawn underneath the live ring, fading out with age, echoing
-   the loft-stack look of the real Trace Terra vessel geometry.
-------------------------------------------------------- */
+   Every few steps the ring is snapshotted into a history buffer,
+   and every frame those snapshots are drawn as STACKED LAYERS in an
+   isometric view — each layer lifted vertically above the last and
+   foreshortened in Y, so the history stack reads as a 3D lofted
+   vessel growing upward, exactly like the real project.
+
+   Mouse Y over the widget tilts the view between near-top-down and
+   near-side-on. No auto-rotation — user drives the 3D feel.
+-------------------------------------------------------------------- */
 (function diffGrowthSim() {
   const svg = document.getElementById('vessel-svg');
   if (!svg) return;
 
   const opts = {
-    spacing: 8,           // target distance between chain neighbours (Tension)
-    repulsion: 22,        // radius at which non-chain nodes push apart (Pressure)
-    speed: 2,             // simulation steps per render frame
+    spacing: 8,
+    repulsion: 22,
+    speed: 2,
     repulsionStrength: 0.55,
     springStiffness: 0.26,
     damping: 0.86,
-    jitter: 0.12,         // per-step random impulse — breaks symmetry
+    jitter: 0.12,
     maxNodes: 520,
     growthMultiplier: 1.5,
-    historyEvery: 3,      // steps between history snapshots
-    historyMax: 48,       // number of previous rings to keep drawn
+    historyEvery: 3,
+    historyMax: 54,
     boundary: { x0: 14, y0: 14, x1: 266, y1: 206, push: 0.06 },
   };
 
+  // Isometric stack geometry
+  const STACK = {
+    cx: 140,              // horizontal centre of stack
+    baseY: 222,           // y of the oldest layer
+    layerH: 1.25,         // vertical distance between stacked layers
+    yComp: 0.32,          // ring vertical compression (tilt / perspective)
+    xSkew: 0.18,          // horizontal lean as layers stack (adds depth)
+  };
+
   let nodes = [];
-  let history = [];       // array of paths (strings), newest last
+  let history = [];       // array of {pts: [{x,y}...], c: {x,y}} — centroid cached
   let historyCounter = 0;
+  let tilt = STACK.yComp; // current tilt, lerped toward target by pointer
+  let targetTilt = STACK.yComp;
 
   function seed() {
     nodes = [];
@@ -50,7 +66,6 @@ if (nav) {
     const n = 32;
     for (let i = 0; i < n; i++) {
       const a = (i / n) * Math.PI * 2;
-      // noisy seed so symmetry is broken from t=0
       const nr = r + (Math.random() - 0.5) * 1.6;
       nodes.push({
         x: cx + Math.cos(a) * nr + (Math.random() - 0.5) * 0.6,
@@ -62,6 +77,12 @@ if (nav) {
     historyCounter = 0;
   }
 
+  function centroid(pts) {
+    let x = 0, y = 0;
+    for (const p of pts) { x += p.x; y += p.y; }
+    return { x: x / pts.length, y: y / pts.length };
+  }
+
   function step() {
     const n = nodes.length;
     if (n < 3) return;
@@ -70,7 +91,7 @@ if (nav) {
     const fy = new Float32Array(n);
     const rsq = opts.repulsion * opts.repulsion;
 
-    // Pairwise repulsion (O(n²) — fine up to ~520 nodes)
+    // Pairwise repulsion
     for (let i = 0; i < n; i++) {
       const ax = nodes[i].x, ay = nodes[i].y;
       for (let j = i + 1; j < n; j++) {
@@ -87,7 +108,7 @@ if (nav) {
       }
     }
 
-    // Spring toward chain neighbours
+    // Spring to chain neighbours
     for (let i = 0; i < n; i++) {
       const p = nodes[i];
       const prev = nodes[(i - 1 + n) % n];
@@ -121,7 +142,7 @@ if (nav) {
       nodes[i].y += nodes[i].vy;
     }
 
-    // Growth: insert midpoint where an edge is too long
+    // Growth
     if (nodes.length < opts.maxNodes) {
       const threshold = opts.spacing * opts.growthMultiplier;
       for (let i = 0; i < nodes.length; i++) {
@@ -142,18 +163,18 @@ if (nav) {
       }
     }
 
-    // History snapshot every N steps
+    // History snapshot
     historyCounter++;
     if (historyCounter >= opts.historyEvery) {
-      history.push(buildPath(nodes));
+      const snap = nodes.map(p => ({ x: p.x, y: p.y }));
+      history.push({ pts: snap, c: centroid(snap) });
       if (history.length > opts.historyMax) history.shift();
       historyCounter = 0;
     }
   }
 
-  /* Catmull-Rom (closed) smoothing — converts the polyline to a
-     nicer curve, matching the soft organic read of the source. */
-  function buildPath(pts) {
+  // Closed Catmull-Rom → cubic Béziers for smooth organic curves
+  function buildCatmullClosed(pts) {
     const n = pts.length;
     if (n < 4) return '';
     let d = `M${pts[0].x.toFixed(1)},${pts[0].y.toFixed(1)}`;
@@ -171,30 +192,66 @@ if (nav) {
     return d + ' Z';
   }
 
-  function render() {
-    const live = buildPath(nodes);
+  // Project a ring onto the isometric stage at a given vertical offset (layer index)
+  function projectLayer(pts, c, layerIdx) {
+    const tOff = -(layerIdx * STACK.layerH);
+    const xSkewOffset = layerIdx * STACK.xSkew; // layers lean slightly as they stack
+    return pts.map(p => ({
+      x: STACK.cx + (p.x - c.x) + xSkewOffset,
+      y: STACK.baseY + tOff + (p.y - c.y) * tilt,
+    }));
+  }
 
-    // history trails — oldest drawn first, faintest
-    const max = history.length;
-    let trails = '';
-    for (let i = 0; i < max; i++) {
-      const age = (max - i) / max;        // 1 = oldest, ~0 = newest
-      const alpha = (0.05 + (1 - age) * 0.22).toFixed(3);
-      trails += `<path d="${history[i]}" fill="none" stroke="var(--acc)" stroke-width="0.6" opacity="${alpha}"/>`;
+  function render() {
+    // lerp tilt toward target (smooth mouse response)
+    tilt += (targetTilt - tilt) * 0.08;
+
+    const total = history.length;
+    let out =
+      '<defs>' +
+      '<filter id="g-glow" x="-10%" y="-10%" width="120%" height="120%">' +
+      '<feGaussianBlur in="SourceGraphic" stdDeviation="1.1"/></filter>' +
+      '<linearGradient id="layer-grad" x1="0" y1="1" x2="0" y2="0">' +
+      '<stop offset="0" stop-color="var(--acc)" stop-opacity="0.08"/>' +
+      '<stop offset="1" stop-color="var(--acc)" stop-opacity="0.55"/>' +
+      '</linearGradient>' +
+      '</defs>';
+
+    // Faint ground ruling — gives the stack a place to sit
+    out += `<line x1="16" y1="${(STACK.baseY + 8).toFixed(0)}" x2="264" y2="${(STACK.baseY + 8).toFixed(0)}" stroke="var(--rule-2)" stroke-width="0.4" stroke-dasharray="2,3" opacity="0.5"/>`;
+
+    // History layers — oldest first, newer paint on top
+    for (let i = 0; i < total; i++) {
+      const entry = history[i];
+      const tr = projectLayer(entry.pts, entry.c, i);
+      const path = buildCatmullClosed(tr);
+      // age: 1 = oldest (bottom), 0 = newest (top)
+      const age = (total - i) / total;
+      const stroke = 0.09 + (1 - age) * 0.45;
+      const width = 0.45 + (1 - age) * 0.4;
+      out += `<path d="${path}" fill="none" stroke="var(--acc)" stroke-width="${width.toFixed(2)}" opacity="${stroke.toFixed(3)}"/>`;
     }
 
-    svg.innerHTML =
-      '<defs><filter id="g-glow" x="-10%" y="-10%" width="120%" height="120%">' +
-      '<feGaussianBlur in="SourceGraphic" stdDeviation="1.1"/></filter></defs>' +
-      trails +
-      `<path d="${live}" fill="color-mix(in srgb, var(--acc) 10%, transparent)" ` +
-      `stroke="color-mix(in srgb, var(--acc) 55%, transparent)" stroke-width="2.6" ` +
-      `filter="url(#g-glow)"/>` +
-      `<path d="${live}" fill="none" stroke="var(--acc)" stroke-width="1.15"/>` +
+    // Live ring — the growing layer, drawn on top of the stack
+    if (nodes.length > 3) {
+      const liveC = centroid(nodes);
+      const liveTr = projectLayer(nodes, liveC, total);
+      const livePath = buildCatmullClosed(liveTr);
+      out +=
+        `<path d="${livePath}" fill="color-mix(in srgb, var(--acc) 12%, transparent)" ` +
+        `stroke="color-mix(in srgb, var(--acc) 55%, transparent)" stroke-width="2.4" filter="url(#g-glow)"/>` +
+        `<path d="${livePath}" fill="none" stroke="var(--acc)" stroke-width="1.15"/>`;
+    }
+
+    // Chrome readouts
+    out +=
       `<g font-family="JetBrains Mono, monospace" font-size="8" fill="var(--ink-3)" letter-spacing="0.04em">` +
-        `<text x="14" y="214">nodes · ${nodes.length}</text>` +
-        `<text x="264" y="214" text-anchor="end">iter · ${history.length * opts.historyEvery}</text>` +
+        `<text x="14" y="252">nodes · ${nodes.length}</text>` +
+        `<text x="140" y="252" text-anchor="middle">layers · ${total}</text>` +
+        `<text x="264" y="252" text-anchor="end">tilt · ${(tilt * 100 | 0)}%</text>` +
       `</g>`;
+
+    svg.innerHTML = out;
   }
 
   let running = false;
@@ -205,7 +262,7 @@ if (nav) {
     for (let s = 0; s < speed; s++) step();
     render();
     if (nodes.length >= opts.maxNodes && !resetAt) {
-      resetAt = performance.now() + 1500;
+      resetAt = performance.now() + 1600;
     }
     if (resetAt && performance.now() >= resetAt) {
       seed();
@@ -214,7 +271,6 @@ if (nav) {
     requestAnimationFrame(tick);
   }
 
-  // Reduced-motion: static evolved form, no animation
   const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   seed();
@@ -239,6 +295,20 @@ if (nav) {
     io.observe(svg);
   } else {
     running = true; tick();
+  }
+
+  // Mouse-driven tilt — cursor Y within the widget shifts the view
+  // between near-top-down (0.18) and near-side (0.56)
+  const stage = svg.closest('.demo__stage');
+  if (stage) {
+    stage.addEventListener('pointermove', (e) => {
+      const rect = stage.getBoundingClientRect();
+      const py = (e.clientY - rect.top) / rect.height;          // 0..1
+      targetTilt = 0.18 + Math.max(0, Math.min(1, py)) * 0.38;  // 0.18..0.56
+    });
+    stage.addEventListener('pointerleave', () => {
+      targetTilt = STACK.yComp;
+    });
   }
 
   // Wire sliders
