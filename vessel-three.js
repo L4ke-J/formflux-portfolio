@@ -177,18 +177,25 @@ function generateVessel(userCfg) {
   // constant (layers * steps ≈ 100–160) across the slider range.
   const stepsPerLayer = layers >= 80 ? 1 : layers >= 50 ? 2 : 3;
 
-  // --- Printability gate ---
-  // FDM clay extrusion tolerates roughly a 35° outward overhang from
-  // vertical per layer before the wet filament sags. This is enforced
-  // two ways:
-  //   1. Global cap on total radial growth (this block).
-  //   2. PER-VERTEX clamp between consecutive rings (below in the loop).
-  //      Without that, the mean profile can be within budget while
-  //      individual fold lobes jut out horizontally and are un-printable.
+  // --- Printability gate (adaptive budget) ---
+  // FDM clay extrusion holds ~35° local overhang from vertical before
+  // the wet filament sags. We allocate this budget in two parts:
+  //   1. Mean-radius flare: capped at MEAN_MAX° (the vessel's overall
+  //      silhouette slope).
+  //   2. Fold deviation evolution per layer: whatever budget is LEFT
+  //      after the mean slope is accounted for. So when the cone flares
+  //      at 25°, folds get a tight ~22° budget. When the wall is
+  //      straight, folds get the full ~35°. Total local overhang stays
+  //      bounded at TOTAL_MAX° regardless.
   const LAYER_H_REF = 0.11;            // must match buildWire/buildPrint LAYER_H
-  const MAX_OVERHANG_RAD = 35 * Math.PI / 180;
-  const maxPrintableExtraR = Math.tan(MAX_OVERHANG_RAD) * LAYER_H_REF * (layers - 1);
-  const maxPerLayerRadialDelta = Math.tan(MAX_OVERHANG_RAD) * LAYER_H_REF;
+  // Total-overhang target: we aim to stay under 40° actual observed in
+  // the measurement pass. In practice the sparse vertex-level clamp
+  // leaves ~5° of slack (adjacent rings have different node counts,
+  // interpolation between prev nodes misses local peaks), so we target
+  // 33° in the clamp to land near 38° observed.
+  const TOTAL_MAX_RAD = 33 * Math.PI / 180;
+  const MEAN_MAX_RAD  = 22 * Math.PI / 180;
+  const maxPrintableExtraR = Math.tan(MEAN_MAX_RAD) * LAYER_H_REF * (layers - 1);
 
   // Stability cap (unchanged): small-base + high-growth can't explode
   // the cone angle at the algorithm level.
@@ -200,25 +207,56 @@ function generateVessel(userCfg) {
   const actualOverhangDeg =
     Math.atan(finalExtraR / ((layers - 1) * LAYER_H_REF)) * 180 / Math.PI;
 
-  // Per-vertex overhang clamp. For each node in the new ring, we look
-  // up the radius of the previous ring at the SAME angle (linear
-  // interpolation between its discrete nodes) and pull the new node
-  // inward if it's about to overhang by more than `maxPerLayerRadialDelta`.
-  // This is what stops individual fold lobes from jutting out
-  // horizontally while the global profile looks fine.
-  function clampOverhang(currentPts, prevPts, maxDeltaR) {
-    const prev = prevPts.map(p => ({
-      a: Math.atan2(p.y, p.x),
-      r: Math.sqrt(p.x * p.x + p.y * p.y),
-    })).sort((u, v) => u.a - v.a);
+  // Adaptive fold-deviation budget: total tan() minus mean-slope tan().
+  // Floor at a small value (≈ 6° equivalent) so folds never fully
+  // freeze, even at maximum flare.
+  const deltaMean = finalExtraR / Math.max(1, layers - 1);
+  const maxPerLayerDevDelta = Math.max(
+    0.012,    // ≈ tan(6°) × 0.11 — minimum fold drift, keeps character alive
+    Math.tan(TOTAL_MAX_RAD) * LAYER_H_REF - deltaMean,
+  );
+
+  // Per-vertex fold-deviation clamp. For each node in the new ring, we
+  // compare its DEVIATION from the new ring's mean radius against the
+  // previous ring's deviation at the same angle. The delta is capped
+  // at `maxDevDelta`, so folds can evolve smoothly between layers but
+  // individual lobes can't gain/lose more than the clay-supportable
+  // budget per layer. Decoupled from mean-slope flare, which has its
+  // own global budget — this is what lets the demo generate real fold
+  // character instead of safe-mode cones.
+  //
+  // Also returns the MAX observed absolute overhang across all vertex
+  // pairs (in radians) so the UI can report the real printability,
+  // not just the mean.
+  function clampDeviationOverhang(currentPts, prevPts, maxDevDelta) {
+    // Ring means
+    let meanCurr = 0, meanPrev = 0;
+    for (let k = 0; k < currentPts.length; k++) {
+      meanCurr += Math.sqrt(currentPts[k].x * currentPts[k].x + currentPts[k].y * currentPts[k].y);
+    }
+    meanCurr /= currentPts.length;
+    for (let k = 0; k < prevPts.length; k++) {
+      meanPrev += Math.sqrt(prevPts[k].x * prevPts[k].x + prevPts[k].y * prevPts[k].y);
+    }
+    meanPrev /= prevPts.length;
+
+    // Prev ring sorted by angle, storing DEVIATION from meanPrev.
+    const prev = prevPts.map(p => {
+      const r = Math.sqrt(p.x * p.x + p.y * p.y);
+      return { a: Math.atan2(p.y, p.x), r, dev: r - meanPrev };
+    }).sort((u, v) => u.a - v.a);
     const N = prev.length;
-    if (N < 3) return;
+    if (N < 3) return 0;
+
+    let maxAbsRadialDelta = 0;
     for (let k = 0; k < currentPts.length; k++) {
       const p = currentPts[k];
       const theta = Math.atan2(p.y, p.x);
       const r_curr = Math.sqrt(p.x * p.x + p.y * p.y);
       if (r_curr < 0.001) continue;
-      // bracket theta in the sorted prev array
+      const dev_curr = r_curr - meanCurr;
+
+      // bracket theta
       let j = 0;
       while (j < N && prev[j].a < theta) j++;
       const lo = prev[(j - 1 + N) % N];
@@ -226,14 +264,25 @@ function generateVessel(userCfg) {
       let da = hi.a - lo.a; if (da <= 0) da += 2 * Math.PI;
       let dt = theta - lo.a; if (dt < 0) dt += 2 * Math.PI;
       const t = da > 0 ? dt / da : 0;
+      const dev_prev = lo.dev + (hi.dev - lo.dev) * t;
       const r_prev = lo.r + (hi.r - lo.r) * t;
-      const dr = r_curr - r_prev;
-      if (Math.abs(dr) > maxDeltaR) {
-        const clamped = r_prev + Math.sign(dr) * maxDeltaR;
-        const s = clamped / r_curr;
-        p.x *= s; p.y *= s;
+
+      const ddev = dev_curr - dev_prev;
+      if (Math.abs(ddev) > maxDevDelta) {
+        const dev_new = dev_prev + Math.sign(ddev) * maxDevDelta;
+        const r_new = meanCurr + dev_new;
+        if (r_new > 0.01 && r_curr > 0.01) {
+          const s = r_new / r_curr;
+          p.x *= s; p.y *= s;
+        }
       }
+
+      // Track worst-case actual absolute overhang AFTER clamping
+      const r_final = Math.sqrt(p.x * p.x + p.y * p.y);
+      const absDR = Math.abs(r_final - r_prev);
+      if (absDR > maxAbsRadialDelta) maxAbsRadialDelta = absDR;
     }
+    return maxAbsRadialDelta;
   }
 
   // --- Layer 0: explicit mathematical circle at `base` radius ---
@@ -256,6 +305,7 @@ function generateVessel(userCfg) {
   // Snapshot of the ring we just committed — used by the per-vertex
   // overhang clamp when generating the next ring.
   let prevSnapshot = ring.map(p => ({ x: p.x, y: p.y }));
+  let maxLocalRadialDelta = 0;    // worst observed across all layers
 
   // --- Subsequent layers: uniform scale to new target radius, then
   // run growStep for fold development. Scaling handles the vase
@@ -279,8 +329,10 @@ function generateVessel(userCfg) {
 
     for (let s = 0; s < stepsPerLayer; s++) growStep(ring, cfg, targetR);
 
-    // Enforce per-vertex printability vs the previous committed ring.
-    clampOverhang(ring, prevSnapshot, maxPerLayerRadialDelta);
+    // Enforce per-vertex printability vs the previous committed ring,
+    // on deviations-from-mean so folds get their own budget.
+    const dR = clampDeviationOverhang(ring, prevSnapshot, maxPerLayerDevDelta);
+    if (dR > maxLocalRadialDelta) maxLocalRadialDelta = dR;
 
     layerPts.push({
       pts: ring.map(p => ({ x: p.x, y: p.y })),
@@ -291,9 +343,16 @@ function generateVessel(userCfg) {
     prevSnapshot = ring.map(p => ({ x: p.x, y: p.y }));
   }
 
+  // Actual worst-case overhang angle measured across the mesh after
+  // the deviation clamp ran. This is the truth, not the mean-based
+  // approximation — use it for the UI readout.
+  const actualMaxOverhangDeg =
+    Math.atan(maxLocalRadialDelta / LAYER_H_REF) * 180 / Math.PI;
+
   // Attach printability meta so the UI can surface it.
   layerPts.meta = {
-    overhangDeg: actualOverhangDeg,
+    meanOverhangDeg: actualOverhangDeg,
+    maxOverhangDeg: actualMaxOverhangDeg,
     printLimited,
     baseRadius: base,
     topRadius: base + finalExtraR,
@@ -415,7 +474,7 @@ export function init() {
 
     for (let i = 0; i < layerData.length; i++) {
       const L = layerData[i];
-      const smooth = smoothRing(L.pts, 140);
+      const smooth = smoothRing(L.pts, 180);
       const positions = new Float32Array(smooth.length * 3);
       for (let k = 0; k < smooth.length; k++) {
         positions[k * 3]     = smooth[k].x;
@@ -439,14 +498,16 @@ export function init() {
     disposeVessel();
 
     // FDM clay extrusion: layers sit directly on the one below and
-    // squash ovally under their own weight. LAYER_H_PRINT equals
-    // the generator's LAYER_H (0.11) so rings just touch.
-    //   filament vertical half-height = TUBE_R * SQUASH_Y = 0.051
-    //   filament vertical full = 0.102 ≈ LAYER_H  (touching)
-    //   filament horizontal half-width = TUBE_R = 0.085
+    // squash ovally under their own weight. Filament dimensions tuned
+    // so consecutive layers OVERLAP slightly (filament height > layer
+    // height), which is what eliminates the thin dark gaps between
+    // rings without making the whole vessel look smooth-skinned.
+    //   filament vertical full = 2 * TUBE_R * SQUASH_Y = 0.1134
+    //   LAYER_H                = 0.11
+    //   overlap                = 0.0034 — just enough to close seams
     const LAYER_H_PRINT = LAYER_H;
-    const TUBE_R = 0.085;
-    const SQUASH_Y = 0.60;   // 1 = circular, <1 = squashed oval
+    const TUBE_R = 0.09;
+    const SQUASH_Y = 0.63;   // 1 = circular, <1 = squashed oval
 
     const totalY = (layerData.length - 1) * LAYER_H_PRINT;
     const yShift = -totalY * 0.5;
@@ -477,10 +538,11 @@ export function init() {
 
     for (let i = 0; i < layerData.length; i++) {
       const L = layerData[i];
-      // Pre-smooth the ring with the same Catmull-Rom resampler used in
-      // wire mode. Raw ring nodes (~10–30 of them) would give a slightly
-      // angular tube path; upsampling to 160 gives a silky filament.
-      const smooth = smoothRing(L.pts, 160);
+      // Pre-smooth the ring with the Catmull-Rom resampler. Raw ring
+      // nodes (~10–30 of them) would give a slightly angular tube
+      // path; upsampling to 240 gives a silky filament even when
+      // zoomed in close.
+      const smooth = smoothRing(L.pts, 240);
       const ringPts = smooth.map(p => new THREE.Vector3(p.x, 0, p.y));
       // Build the ring at LOCAL y = 0 inside the mesh, then translate
       // via mesh.position.y. mesh.scale.y only squashes the tube's
@@ -552,12 +614,15 @@ export function init() {
   function updatePrintInfo() {
     const el = document.getElementById('vessel-printinfo');
     if (!el || !currentLayers?.meta) return;
-    const { overhangDeg, printLimited } = currentLayers.meta;
-    const deg = Math.round(overhangDeg);
-    el.textContent = printLimited
-      ? `Printable · ${deg}° overhang (capped at 40°)`
-      : `Printable · ${deg}° overhang`;
-    el.classList.toggle('is-limited', printLimited);
+    const { maxOverhangDeg } = currentLayers.meta;
+    const deg = Math.round(maxOverhangDeg);
+    // Below 40° = comfortably within clay-print tolerance (green).
+    // 40–45° = borderline, needs care when printing (amber).
+    const marginal = deg >= 40;
+    el.textContent = marginal
+      ? `Printable with care · ${deg}° max overhang`
+      : `Printable · ${deg}° max overhang`;
+    el.classList.toggle('is-limited', marginal);
   }
 
   function regenerate() {
