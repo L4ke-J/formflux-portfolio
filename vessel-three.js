@@ -187,7 +187,7 @@ function generateVessel(userCfg) {
   //      at 25°, folds get a tight ~22° budget. When the wall is
   //      straight, folds get the full ~35°. Total local overhang stays
   //      bounded at TOTAL_MAX° regardless.
-  const LAYER_H_REF = 0.11;            // must match buildWire/buildPrint LAYER_H
+  const LAYER_H_REF = 0.095;           // must match buildWire/buildPrint LAYER_H
   // Total-overhang target: we aim to stay under 40° actual observed in
   // the measurement pass. In practice the sparse vertex-level clamp
   // leaves ~5° of slack (adjacent rings have different node counts,
@@ -402,11 +402,13 @@ export function init() {
 
   const SAGE  = '#b0d8a4';
   const CLAY  = '#c8c3b3';   // cool stone-neutral porcelain
-  // World-unit height between stacked layers. Matches the filament
-  // geometry below (2·TUBE_R·SQUASH_Y ≈ 0.102) so adjacent rings touch
-  // in print mode, FDM-style. Wire mode inherits the same spacing so
-  // switching modes doesn't change the vessel's proportions.
-  const LAYER_H = 0.11;
+  // World-unit height between stacked layers. Filament cross-section
+  // in print mode is 2·TUBE_R·SQUASH_Y ≈ 0.1134 — comfortably larger
+  // than LAYER_H, so adjacent rings OVERLAP (by ~0.018 world units,
+  // ~19% of layer height). Big enough to close any visible dark seam
+  // without dissolving the individual filament read. Wire mode inherits
+  // the same spacing so switching modes doesn't change proportions.
+  const LAYER_H = 0.095;
 
   const scene = new THREE.Scene();
   scene.background = null;
@@ -498,13 +500,13 @@ export function init() {
     disposeVessel();
 
     // FDM clay extrusion: layers sit directly on the one below and
-    // squash ovally under their own weight. Filament dimensions tuned
-    // so consecutive layers OVERLAP slightly (filament height > layer
-    // height), which is what eliminates the thin dark gaps between
-    // rings without making the whole vessel look smooth-skinned.
+    // squash ovally under their own weight. Filament height is kept
+    // noticeably larger than LAYER_H so consecutive rings overlap,
+    // fully closing the thin dark seams between them without melting
+    // the individual filament read away.
     //   filament vertical full = 2 * TUBE_R * SQUASH_Y = 0.1134
-    //   LAYER_H                = 0.11
-    //   overlap                = 0.0034 — just enough to close seams
+    //   LAYER_H                = 0.095
+    //   overlap                = 0.0184 — seams closed decisively
     const LAYER_H_PRINT = LAYER_H;
     const TUBE_R = 0.09;
     const SQUASH_Y = 0.63;   // 1 = circular, <1 = squashed oval
