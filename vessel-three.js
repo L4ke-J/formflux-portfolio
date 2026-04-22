@@ -178,15 +178,17 @@ function generateVessel(userCfg) {
   const stepsPerLayer = layers >= 80 ? 1 : layers >= 50 ? 2 : 3;
 
   // --- Printability gate ---
-  // FDM clay extrusion tolerates roughly a 40° outward overhang from
-  // vertical per layer before the wet filament sags. The user can ask
-  // for more growth than that via the slider, but we clamp to what
-  // actually prints. Result: every generated vessel is physically
-  // printable, and the slider never produces "mess" that can't exist
-  // as an object.
-  const LAYER_H_REF = 0.20;            // print-mode layer height (tighter)
-  const MAX_OVERHANG_RAD = 40 * Math.PI / 180;
+  // FDM clay extrusion tolerates roughly a 35° outward overhang from
+  // vertical per layer before the wet filament sags. This is enforced
+  // two ways:
+  //   1. Global cap on total radial growth (this block).
+  //   2. PER-VERTEX clamp between consecutive rings (below in the loop).
+  //      Without that, the mean profile can be within budget while
+  //      individual fold lobes jut out horizontally and are un-printable.
+  const LAYER_H_REF = 0.11;            // must match buildWire/buildPrint LAYER_H
+  const MAX_OVERHANG_RAD = 35 * Math.PI / 180;
   const maxPrintableExtraR = Math.tan(MAX_OVERHANG_RAD) * LAYER_H_REF * (layers - 1);
+  const maxPerLayerRadialDelta = Math.tan(MAX_OVERHANG_RAD) * LAYER_H_REF;
 
   // Stability cap (unchanged): small-base + high-growth can't explode
   // the cone angle at the algorithm level.
@@ -197,6 +199,42 @@ function generateVessel(userCfg) {
   const printLimited = stableExtraR > maxPrintableExtraR + 0.01;
   const actualOverhangDeg =
     Math.atan(finalExtraR / ((layers - 1) * LAYER_H_REF)) * 180 / Math.PI;
+
+  // Per-vertex overhang clamp. For each node in the new ring, we look
+  // up the radius of the previous ring at the SAME angle (linear
+  // interpolation between its discrete nodes) and pull the new node
+  // inward if it's about to overhang by more than `maxPerLayerRadialDelta`.
+  // This is what stops individual fold lobes from jutting out
+  // horizontally while the global profile looks fine.
+  function clampOverhang(currentPts, prevPts, maxDeltaR) {
+    const prev = prevPts.map(p => ({
+      a: Math.atan2(p.y, p.x),
+      r: Math.sqrt(p.x * p.x + p.y * p.y),
+    })).sort((u, v) => u.a - v.a);
+    const N = prev.length;
+    if (N < 3) return;
+    for (let k = 0; k < currentPts.length; k++) {
+      const p = currentPts[k];
+      const theta = Math.atan2(p.y, p.x);
+      const r_curr = Math.sqrt(p.x * p.x + p.y * p.y);
+      if (r_curr < 0.001) continue;
+      // bracket theta in the sorted prev array
+      let j = 0;
+      while (j < N && prev[j].a < theta) j++;
+      const lo = prev[(j - 1 + N) % N];
+      const hi = prev[j % N];
+      let da = hi.a - lo.a; if (da <= 0) da += 2 * Math.PI;
+      let dt = theta - lo.a; if (dt < 0) dt += 2 * Math.PI;
+      const t = da > 0 ? dt / da : 0;
+      const r_prev = lo.r + (hi.r - lo.r) * t;
+      const dr = r_curr - r_prev;
+      if (Math.abs(dr) > maxDeltaR) {
+        const clamped = r_prev + Math.sign(dr) * maxDeltaR;
+        const s = clamped / r_curr;
+        p.x *= s; p.y *= s;
+      }
+    }
+  }
 
   // --- Layer 0: explicit mathematical circle at `base` radius ---
   // No simulation, no jitter. Guarantees a perfectly clean circular
@@ -214,6 +252,10 @@ function generateVessel(userCfg) {
     pts: ring.map(p => ({ x: p.x, y: p.y })),
     y: 0,
   });
+
+  // Snapshot of the ring we just committed — used by the per-vertex
+  // overhang clamp when generating the next ring.
+  let prevSnapshot = ring.map(p => ({ x: p.x, y: p.y }));
 
   // --- Subsequent layers: uniform scale to new target radius, then
   // run growStep for fold development. Scaling handles the vase
@@ -237,10 +279,16 @@ function generateVessel(userCfg) {
 
     for (let s = 0; s < stepsPerLayer; s++) growStep(ring, cfg, targetR);
 
+    // Enforce per-vertex printability vs the previous committed ring.
+    clampOverhang(ring, prevSnapshot, maxPerLayerRadialDelta);
+
     layerPts.push({
       pts: ring.map(p => ({ x: p.x, y: p.y })),
-      y: i * 0.35,
+      y: i * LAYER_H_REF,
     });
+
+    // Snapshot for the next iteration's clamp.
+    prevSnapshot = ring.map(p => ({ x: p.x, y: p.y }));
   }
 
   // Attach printability meta so the UI can surface it.
@@ -294,8 +342,12 @@ export function init() {
   if (!mount) return;
 
   const SAGE  = '#b0d8a4';
-  const CLAY  = '#d9c9a7';   // warm stoneware cream
-  const LAYER_H = 0.35;   // world-unit height between stacked layers
+  const CLAY  = '#c8c3b3';   // cool stone-neutral porcelain
+  // World-unit height between stacked layers. Matches the filament
+  // geometry below (2·TUBE_R·SQUASH_Y ≈ 0.102) so adjacent rings touch
+  // in print mode, FDM-style. Wire mode inherits the same spacing so
+  // switching modes doesn't change the vessel's proportions.
+  const LAYER_H = 0.11;
 
   const scene = new THREE.Scene();
   scene.background = null;
@@ -386,22 +438,23 @@ export function init() {
   function buildPrint(layerData) {
     disposeVessel();
 
-    // In print mode, mimic FDM clay extrusion: layers sit directly on
-    // the layer beneath and squash ovally under their own weight. So:
-    //   - tighter LAYER_H (rings touch/slightly overlap)
-    //   - fatter tube radius
-    //   - tube cross-section scaled in Y so it's wider than tall
-    const LAYER_H_PRINT = 0.20;
-    const TUBE_R = 0.15;
-    const SQUASH_Y = 0.55;   // 1 = circular, <1 = squashed oval
+    // FDM clay extrusion: layers sit directly on the one below and
+    // squash ovally under their own weight. LAYER_H_PRINT equals
+    // the generator's LAYER_H (0.11) so rings just touch.
+    //   filament vertical half-height = TUBE_R * SQUASH_Y = 0.051
+    //   filament vertical full = 0.102 ≈ LAYER_H  (touching)
+    //   filament horizontal half-width = TUBE_R = 0.085
+    const LAYER_H_PRINT = LAYER_H;
+    const TUBE_R = 0.085;
+    const SQUASH_Y = 0.60;   // 1 = circular, <1 = squashed oval
 
     const totalY = (layerData.length - 1) * LAYER_H_PRINT;
     const yShift = -totalY * 0.5;
 
     const mat = new THREE.MeshStandardMaterial({
       color: new THREE.Color(CLAY),
-      roughness: 0.58,
-      metalness: 0.04,
+      roughness: 0.42,      // soft satin — contemporary ceramic
+      metalness: 0.02,
       flatShading: false,
     });
 
@@ -415,21 +468,27 @@ export function init() {
       meanR0 += Math.sqrt(L0.pts[k].x * L0.pts[k].x + L0.pts[k].y * L0.pts[k].y);
     }
     meanR0 /= L0.pts.length;
-    const discR = Math.max(0.1, meanR0 - TUBE_R * 0.4);
+    const discR = Math.max(0.08, meanR0 - TUBE_R * 0.3);
     const discH = TUBE_R * SQUASH_Y * 2.0;
-    const discGeom = new THREE.CylinderGeometry(discR, discR, discH, 72);
+    const discGeom = new THREE.CylinderGeometry(discR, discR, discH, 96);
     const disc = new THREE.Mesh(discGeom, mat);
     disc.position.y = yShift;
     vesselGroup.add(disc);
 
     for (let i = 0; i < layerData.length; i++) {
       const L = layerData[i];
+      // Pre-smooth the ring with the same Catmull-Rom resampler used in
+      // wire mode. Raw ring nodes (~10–30 of them) would give a slightly
+      // angular tube path; upsampling to 160 gives a silky filament.
+      const smooth = smoothRing(L.pts, 160);
+      const ringPts = smooth.map(p => new THREE.Vector3(p.x, 0, p.y));
       // Build the ring at LOCAL y = 0 inside the mesh, then translate
-      // via mesh.position.y. That way mesh.scale.y only squashes the
-      // tube's cross-section — the layer's position is unaffected.
-      const ringPts = L.pts.map(p => new THREE.Vector3(p.x, 0, p.y));
+      // via mesh.position.y. mesh.scale.y only squashes the tube's
+      // cross-section — the layer's position is unaffected.
       const curve = new THREE.CatmullRomCurve3(ringPts, true, 'catmullrom', 0.5);
-      const tube = new THREE.TubeGeometry(curve, 120, TUBE_R, 8, true);
+      // Axial resolution ≥ ring resolution · radial 16 for a round
+      // cross-section with no visible facets at close range.
+      const tube = new THREE.TubeGeometry(curve, smooth.length, TUBE_R, 16, true);
       const mesh = new THREE.Mesh(tube, mat);
       mesh.position.y = i * LAYER_H_PRINT + yShift;
       mesh.scale.set(1, SQUASH_Y, 1);
