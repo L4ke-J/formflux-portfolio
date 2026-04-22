@@ -150,27 +150,42 @@ function generateVessel(userCfg) {
   const detail = userCfg.detail;
   const base = userCfg.base;
 
+  // --- Parameter coupling for stability ---
+  // spacing drops with detail, but floor keeps it > 1.0 so small base
+  // circumferences can still host seed nodes without over-density.
+  const spacing = Math.max(1.1, 0.9 + (10 - detail) * 0.2);   // 1.1 – 2.9
+  // repulsion tied to spacing (always 2× target distance). If repulsion
+  // is much larger than spacing the ring oscillates unstably; locking
+  // the ratio is what prevents "chaos at high detail".
+  const repulsion = spacing * 2.0;
+
   const cfg = {
-    spacing: 0.9 + (10 - detail) * 0.2,        // range 0.9 – 2.9
-    repulsion: 2.6 + (10 - detail) * 0.35,     // range 2.6 – 5.4
-    repulsionStrength: 0.45,
-    springStiffness: 0.26,
-    damping: 0.85,
-    jitter: 0.08,
+    spacing,
+    repulsion,
+    repulsionStrength: 0.42,
+    springStiffness: 0.28,
+    damping: 0.84,
+    jitter: 0.05,   // fixed, low — high detail shouldn't mean "noisy"
     maxNodes: 260,
-    minNodes: 10,
+    minNodes: 6,
     shrinkThreshold: 0.7,
     growthMultiplier: 1.5,
   };
 
-  const stepsPerLayer = 3;
-  const finalExtraR = growth * 0.8;
+  // Fewer steps when layer count is high, so folds don't over-develop
+  // across 80+ sequential iterations. Total "sim work" stays roughly
+  // constant (layers * steps ≈ 100–160) across the slider range.
+  const stepsPerLayer = layers >= 80 ? 1 : layers >= 50 ? 2 : 3;
+
+  // Cap final top radius so small-base + high-growth can't explode the
+  // cone angle into instability. Top radius never exceeds ~4.5× base.
+  const finalExtraR = Math.min(growth * 0.8, Math.max(2, base * 3.5));
 
   // --- Layer 0: explicit mathematical circle at `base` radius ---
   // No simulation, no jitter. Guarantees a perfectly clean circular
   // bottom regardless of parameter combination. Node count matched to
   // circumference/spacing so the ring is stable as it grows.
-  const seedN = Math.max(10, Math.min(36, Math.round((2 * Math.PI * base) / cfg.spacing)));
+  const seedN = Math.max(6, Math.min(36, Math.round((2 * Math.PI * base) / cfg.spacing)));
   const ring = [];
   for (let i = 0; i < seedN; i++) {
     const a = (i / seedN) * Math.PI * 2;
@@ -345,26 +360,38 @@ export function init() {
 
   function buildPrint(layerData) {
     disposeVessel();
-    const totalY = (layerData.length - 1) * LAYER_H;
+
+    // In print mode, mimic FDM clay extrusion: layers sit directly on
+    // the layer beneath and squash ovally under their own weight. So:
+    //   - tighter LAYER_H (rings touch/slightly overlap)
+    //   - fatter tube radius
+    //   - tube cross-section scaled in Y so it's wider than tall
+    const LAYER_H_PRINT = 0.20;
+    const TUBE_R = 0.15;
+    const SQUASH_Y = 0.55;   // 1 = circular, <1 = squashed oval
+
+    const totalY = (layerData.length - 1) * LAYER_H_PRINT;
     const yShift = -totalY * 0.5;
 
     const mat = new THREE.MeshStandardMaterial({
       color: new THREE.Color(CLAY),
-      roughness: 0.78,
+      roughness: 0.72,
       metalness: 0.05,
       flatShading: false,
     });
 
     for (let i = 0; i < layerData.length; i++) {
       const L = layerData[i];
-      const ringPts = L.pts.map(p => new THREE.Vector3(
-        p.x,
-        L.y + yShift,
-        p.y,
-      ));
+      // Build the ring at LOCAL y = 0 inside the mesh, then translate
+      // via mesh.position.y. That way mesh.scale.y only squashes the
+      // tube's cross-section — the layer's position is unaffected.
+      const ringPts = L.pts.map(p => new THREE.Vector3(p.x, 0, p.y));
       const curve = new THREE.CatmullRomCurve3(ringPts, true, 'catmullrom', 0.5);
-      const tube = new THREE.TubeGeometry(curve, 96, 0.08, 6, true);
-      vesselGroup.add(new THREE.Mesh(tube, mat));
+      const tube = new THREE.TubeGeometry(curve, 120, TUBE_R, 8, true);
+      const mesh = new THREE.Mesh(tube, mat);
+      mesh.position.y = i * LAYER_H_PRINT + yShift;
+      mesh.scale.set(1, SQUASH_Y, 1);
+      vesselGroup.add(mesh);
     }
   }
 
@@ -384,7 +411,7 @@ export function init() {
     const halfFovX = Math.atan(Math.tan(halfFovY) * camera.aspect);
     const distY  = (_boxSize.y / 2) / Math.tan(halfFovY);
     const distXZ = (Math.max(_boxSize.x, _boxSize.z) / 2) / Math.tan(halfFovX);
-    const fitDist = Math.max(distY, distXZ) * 1.4; // padding
+    const fitDist = Math.max(distY, distXZ) * 1.18; // tight padding
 
     controls.target.copy(_boxCenter);
     _dir.subVectors(camera.position, _boxCenter);
