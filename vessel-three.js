@@ -177,9 +177,26 @@ function generateVessel(userCfg) {
   // constant (layers * steps ≈ 100–160) across the slider range.
   const stepsPerLayer = layers >= 80 ? 1 : layers >= 50 ? 2 : 3;
 
-  // Cap final top radius so small-base + high-growth can't explode the
-  // cone angle into instability. Top radius never exceeds ~4.5× base.
-  const finalExtraR = Math.min(growth * 0.8, Math.max(2, base * 3.5));
+  // --- Printability gate ---
+  // FDM clay extrusion tolerates roughly a 40° outward overhang from
+  // vertical per layer before the wet filament sags. The user can ask
+  // for more growth than that via the slider, but we clamp to what
+  // actually prints. Result: every generated vessel is physically
+  // printable, and the slider never produces "mess" that can't exist
+  // as an object.
+  const LAYER_H_REF = 0.20;            // print-mode layer height (tighter)
+  const MAX_OVERHANG_RAD = 40 * Math.PI / 180;
+  const maxPrintableExtraR = Math.tan(MAX_OVERHANG_RAD) * LAYER_H_REF * (layers - 1);
+
+  // Stability cap (unchanged): small-base + high-growth can't explode
+  // the cone angle at the algorithm level.
+  const stableExtraR = Math.min(growth * 0.8, Math.max(2, base * 3.5));
+
+  // Take the tighter of the two limits.
+  const finalExtraR = Math.min(stableExtraR, maxPrintableExtraR);
+  const printLimited = stableExtraR > maxPrintableExtraR + 0.01;
+  const actualOverhangDeg =
+    Math.atan(finalExtraR / ((layers - 1) * LAYER_H_REF)) * 180 / Math.PI;
 
   // --- Layer 0: explicit mathematical circle at `base` radius ---
   // No simulation, no jitter. Guarantees a perfectly clean circular
@@ -225,6 +242,14 @@ function generateVessel(userCfg) {
       y: i * 0.35,
     });
   }
+
+  // Attach printability meta so the UI can surface it.
+  layerPts.meta = {
+    overhangDeg: actualOverhangDeg,
+    printLimited,
+    baseRadius: base,
+    topRadius: base + finalExtraR,
+  };
   return layerPts;
 }
 
@@ -269,7 +294,7 @@ export function init() {
   if (!mount) return;
 
   const SAGE  = '#b0d8a4';
-  const CLAY  = '#c08a5d';
+  const CLAY  = '#d9c9a7';   // warm stoneware cream
   const LAYER_H = 0.35;   // world-unit height between stacked layers
 
   const scene = new THREE.Scene();
@@ -375,10 +400,27 @@ export function init() {
 
     const mat = new THREE.MeshStandardMaterial({
       color: new THREE.Color(CLAY),
-      roughness: 0.72,
-      metalness: 0.05,
+      roughness: 0.58,
+      metalness: 0.04,
       flatShading: false,
     });
+
+    // Closed base: a printed disc sitting just inside the first ring
+    // so the bottom of the vessel reads as solid, not open. Its
+    // thickness matches the squashed filament so it looks like FDM
+    // infill laid down before the walls start.
+    const L0 = layerData[0];
+    let meanR0 = 0;
+    for (let k = 0; k < L0.pts.length; k++) {
+      meanR0 += Math.sqrt(L0.pts[k].x * L0.pts[k].x + L0.pts[k].y * L0.pts[k].y);
+    }
+    meanR0 /= L0.pts.length;
+    const discR = Math.max(0.1, meanR0 - TUBE_R * 0.4);
+    const discH = TUBE_R * SQUASH_Y * 2.0;
+    const discGeom = new THREE.CylinderGeometry(discR, discR, discH, 72);
+    const disc = new THREE.Mesh(discGeom, mat);
+    disc.position.y = yShift;
+    vesselGroup.add(disc);
 
     for (let i = 0; i < layerData.length; i++) {
       const L = layerData[i];
@@ -448,10 +490,22 @@ export function init() {
     return map;
   }
 
+  function updatePrintInfo() {
+    const el = document.getElementById('vessel-printinfo');
+    if (!el || !currentLayers?.meta) return;
+    const { overhangDeg, printLimited } = currentLayers.meta;
+    const deg = Math.round(overhangDeg);
+    el.textContent = printLimited
+      ? `Printable · ${deg}° overhang (capped at 40°)`
+      : `Printable · ${deg}° overhang`;
+    el.classList.toggle('is-limited', printLimited);
+  }
+
   function regenerate() {
     const cfg = readControls();
     currentLayers = generateVessel(cfg);
     build();
+    updatePrintInfo();
   }
 
   regenerate();

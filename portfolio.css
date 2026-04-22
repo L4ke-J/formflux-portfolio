@@ -596,6 +596,29 @@ html[data-theme="light"] .featured__overlay {
   text-align: center;
   min-width: 90px;
 }
+/* Printability read-out — green dot when printable within spec,
+   amber when the user's growth got capped by the overhang limit. */
+.demo__printinfo {
+  margin-top: 12px;
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  text-align: center;
+  line-height: 1.5;
+}
+.demo__printinfo::before {
+  content: '';
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--acc);
+  margin-right: 6px;
+  vertical-align: 1px;
+}
+.demo__printinfo.is-limited { color: #d4a04c; }
+.demo__printinfo.is-limited::before { background: #d4a04c; }
 
 /* 3D canvas for the vessel demo.
    Scales with viewport on desktop so fullscreen browsers actually use
