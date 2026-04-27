@@ -84,6 +84,22 @@ html[data-theme="light"] .cs-hero__image-wrap::after {
   max-width: 640px;
   line-height: 1.55;
 }
+/* Brand-mark variant of the hero title — used when the project's
+   identity is its own typography (e.g. Mel Studio). Sits in place of
+   the H1 .cs-hero__title and inherits its bottom margin.
+   Selector specificity beats the .cs-hero__image-wrap img rule above
+   that otherwise stretches every img to 100%/100%. */
+.cs-hero__image-wrap img.cs-hero__brandmark {
+  display: block;
+  position: relative;       /* sit above the hero overlay gradient */
+  width: clamp(160px, 22vw, 280px);
+  height: auto;
+  object-fit: contain;
+  margin: 0 0 18px 0;
+  /* Logo PNG has navy blue ink + transparent background. Drop a soft
+     shadow so it stays legible against any hero photograph. */
+  filter: drop-shadow(0 2px 12px rgba(0, 0, 0, 0.45));
+}
 .cs-hero--placeholder .cs-hero__image-wrap {
   background: repeating-linear-gradient(45deg, var(--bg-2) 0, var(--bg-2) 14px, var(--bg-3) 14px, var(--bg-3) 28px);
 }
