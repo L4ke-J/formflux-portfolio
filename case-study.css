@@ -109,6 +109,38 @@ html[data-theme="light"] .cs-hero__image-wrap::after {
 .cs-hero--placeholder .cs-hero__title { color: var(--ink); }
 .cs-hero--placeholder .cs-hero__sub { color: var(--ink-2); }
 
+/* Brand-panel hero — used when the project's identity stands on its
+   own (e.g. Mel Studio). No background photograph: a soft radial wash
+   over bg-2, with the logo enlarged and the overlay centred. */
+.cs-hero--brand .cs-hero__image-wrap {
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 50%, rgba(255,255,255,0.04), transparent 70%),
+    var(--bg-2);
+  border: 1px solid var(--rule);
+}
+.cs-hero--brand .cs-hero__image-wrap::after { display: none; }
+.cs-hero--brand .cs-hero__overlay {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: clamp(24px, 4vw, 56px);
+  background: transparent;
+}
+.cs-hero--brand .cs-hero__kicker { color: var(--acc); }
+.cs-hero--brand .cs-hero__sub {
+  color: rgba(255,255,255,0.78);
+  max-width: 620px;
+  margin-inline: auto;
+}
+/* In the brand variant the logo is the visual anchor — bump it up,
+   drop the hero-photo drop-shadow (no photograph to fight). */
+.cs-hero--brand .cs-hero__image-wrap img.cs-hero__brandmark {
+  width: clamp(220px, 30vw, 400px);
+  margin: 4px auto 22px auto;
+  filter: none;
+}
+
 /* ============ OVERVIEW — featured__body-style 3-col ============ */
 .cs-overview {
   display: grid;
