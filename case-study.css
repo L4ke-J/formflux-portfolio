@@ -110,13 +110,16 @@ html[data-theme="light"] .cs-hero__image-wrap::after {
 .cs-hero--placeholder .cs-hero__sub { color: var(--ink-2); }
 
 /* Brand-panel hero — used when the project's identity stands on its
-   own (e.g. Mel Studio). No background photograph: a soft radial wash
-   over bg-2, with the logo enlarged and the overlay centred. */
+   own (e.g. Mel Studio). No background photograph: a warm cream panel
+   with a soft inner highlight, evoking a brand mark printed on quality
+   paper. The navy logo pops against it; inside the dark page chrome
+   the whole thing reads as a featured branded card. */
 .cs-hero--brand .cs-hero__image-wrap {
   background:
-    radial-gradient(ellipse 70% 60% at 50% 50%, rgba(255,255,255,0.04), transparent 70%),
-    var(--bg-2);
+    radial-gradient(ellipse 72% 64% at 50% 38%, rgba(255,255,255,0.55), transparent 70%),
+    linear-gradient(160deg, #c9bfa4 0%, #e8dec3 45%, #c9bfa4 100%);
   border: 1px solid var(--rule);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12);
 }
 .cs-hero--brand .cs-hero__image-wrap::after { display: none; }
 .cs-hero--brand .cs-hero__overlay {
@@ -127,9 +130,14 @@ html[data-theme="light"] .cs-hero__image-wrap::after {
   padding: clamp(24px, 4vw, 56px);
   background: transparent;
 }
-.cs-hero--brand .cs-hero__kicker { color: var(--acc); }
+/* Kicker + sub flip to the brand's deep navy — same hue family as the
+   logo ink — so they read as part of the brand mark, not page chrome. */
+.cs-hero--brand .cs-hero__kicker {
+  color: #232a78;
+  letter-spacing: 0.12em;
+}
 .cs-hero--brand .cs-hero__sub {
-  color: rgba(255,255,255,0.78);
+  color: rgba(35, 42, 120, 0.78);
   max-width: 620px;
   margin-inline: auto;
 }

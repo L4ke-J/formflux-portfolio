@@ -853,6 +853,33 @@ html[data-theme="light"] .featured__overlay {
   display: flex; flex-direction: column; padding: 18px;
   justify-content: space-between;
 }
+
+/* Mel Studio home-grid card — brand mark on a warm cream panel.
+   Matches the cs-hero--brand panel in case-study.css so the home
+   teaser and the case-study hero feel like a matched pair. */
+.proj__media--mel-brand {
+  background:
+    radial-gradient(ellipse 75% 65% at 50% 45%, rgba(255,255,255,0.55), transparent 70%),
+    linear-gradient(160deg, #c9bfa4 0%, #e8dec3 50%, #c9bfa4 100%);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12);
+}
+.proj__media--mel-brand a {
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; height: 100%;
+  padding: clamp(20px, 6%, 44px);
+}
+.proj__media--mel-brand img.mel-brand-logo {
+  /* Override the .proj__media img cover/transform rules for the logo;
+     it's a brand mark, not a photograph. */
+  width: 70%;
+  max-width: 320px;
+  height: auto;
+  object-fit: contain;
+}
+.proj:hover .proj__media--mel-brand img.mel-brand-logo {
+  transform: scale(1.04);
+}
 .mel-vis { display: flex; flex-direction: column; gap: 8px; height: 100%; }
 .mel-printer {
   flex: 1;
