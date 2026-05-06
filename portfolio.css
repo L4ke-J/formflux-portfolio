@@ -145,6 +145,33 @@ em { font-style: italic; }
 }
 .nav__links a:hover::after { transform: scaleX(1); }
 
+/* Language toggle — sits in the nav's third grid column (right side).
+   Active language is bright ink (no link); the other is a muted link
+   that brightens on hover. Tiny separator slash between them. */
+.nav__lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.nav__lang-current {
+  color: var(--ink);
+}
+.nav__lang-sep {
+  color: var(--ink-3);
+  opacity: 0.45;
+}
+.nav__lang-link {
+  color: var(--ink-3);
+  text-decoration: none;
+  transition: color .2s;
+}
+.nav__lang-link:hover { color: var(--ink); }
+
 .nav__status {
   display: inline-flex; align-items: center; gap: 8px;
   font-family: var(--f-mono);
