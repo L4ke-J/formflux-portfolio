@@ -8,6 +8,34 @@ if (nav) {
   }, { passive: true });
 }
 
+/* ---------- Mobile menu toggle ----------
+   Hamburger button toggles `body.menu-open`, which the CSS uses to
+   show a full-screen overlay containing the nav links and the
+   language toggle. Closes automatically when a nav link is tapped
+   (so on-page anchors still scroll to the right place). */
+(function mobileMenu() {
+  const btn = document.querySelector('.nav__menu-toggle');
+  if (!btn) return;
+  const close = () => {
+    document.body.classList.remove('menu-open');
+    btn.setAttribute('aria-expanded', 'false');
+  };
+  btn.addEventListener('click', () => {
+    const isOpen = document.body.classList.toggle('menu-open');
+    btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    btn.setAttribute('aria-label', isOpen
+      ? (document.documentElement.lang === 'zh-CN' ? '关闭菜单' : 'Close menu')
+      : (document.documentElement.lang === 'zh-CN' ? '打开菜单' : 'Open menu'));
+  });
+  document.querySelectorAll('.nav__links a').forEach(a => {
+    a.addEventListener('click', close);
+  });
+  // ESC closes the menu
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && document.body.classList.contains('menu-open')) close();
+  });
+})();
+
 /* ---------- Lazy-load the 3D vessel demo ----------
    Three.js is ~150KB gzipped. Only fetch + init when the demo section
    is about to enter the viewport, so initial page load stays lean.

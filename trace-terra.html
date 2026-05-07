@@ -25,6 +25,9 @@
     <span class="nav__lang-sep">/</span>
     <a href="index-zh.html" class="nav__lang-link" hreflang="zh">中</a>
   </div>
+  <button class="nav__menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="primary-nav">
+    <span></span><span></span><span></span>
+  </button>
 </header>
 
 <main class="cs">
@@ -319,12 +322,8 @@
   modal.addEventListener('click', e => { if (e.target.closest('[data-close]')) close(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('is-open')) close(); });
 })();
-// Nav scroll state
-(function(){
-  const nav = document.querySelector('.nav');
-  if (!nav) return;
-  window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 8); }, { passive: true });
-})();
+// Nav scroll state + mobile menu — handled by portfolio.js
 </script>
+<script src="portfolio.js"></script>
 </body>
 </html>
