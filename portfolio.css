@@ -1302,7 +1302,7 @@ html[data-theme="light"] .featured__overlay {
 }
 .contact-row {
   display: grid;
-  grid-template-columns: 140px 1fr auto;
+  grid-template-columns: 140px minmax(0, 1fr) auto;
   gap: 24px;
   align-items: center;
   padding: 22px 0;
@@ -1310,6 +1310,23 @@ html[data-theme="light"] .featured__overlay {
   transition: padding .25s, color .25s;
 }
 .contact-row:hover { padding-left: 16px; color: var(--acc); }
+.cr-val { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* Mobile: stack label above value so long emails / URLs don't push
+   the row past the viewport edge. The arrow stays on the right of
+   the value row. */
+@media (max-width: 760px) {
+  .contact-row {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "lbl lbl"
+      "val arr";
+    row-gap: 4px;
+    column-gap: 14px;
+  }
+  .cr-lbl { grid-area: lbl; }
+  .cr-val { grid-area: val; }
+  .cr-arr { grid-area: arr; }
+}
 .cr-lbl {
   font-family: var(--f-mono);
   font-size: 11px;
