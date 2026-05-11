@@ -149,6 +149,88 @@ html[data-theme="light"] .cs-hero__image-wrap::after {
   filter: none;
 }
 
+/* ============ NX Water brand-hero variant ============
+   Same panel pattern as Mel Studio but with the NX Water brand pattern
+   tiled as a low-opacity backdrop, so the empty space reads as
+   intentional brand surface rather than missing imagery.
+   The NX Water wordmark is much wider than the Mel mark (≈3:1) — bump
+   the width clamp so it doesn't get visually starved. */
+.cs-hero--brand-nx .cs-hero__image-wrap {
+  background:
+    radial-gradient(ellipse 72% 64% at 50% 38%, rgba(255,255,255,0.55), transparent 70%),
+    linear-gradient(160deg, #c9bfa4 0%, #e8dec3 45%, #c9bfa4 100%),
+    url('images/ksm/nxwater-pattern.png');
+  background-blend-mode: normal, normal, multiply;
+  background-size: cover, cover, 280px auto;
+  background-repeat: no-repeat, no-repeat, repeat;
+  background-position: center, center, center;
+}
+.cs-hero--brand-nx .cs-hero__image-wrap img.cs-hero__brandmark--nx {
+  /* wider wordmark, no symbol */
+  width: clamp(280px, 42vw, 540px);
+  /* the file ships with a white background, not transparent — drop it
+     using mix-blend-mode so the brand pattern shows through cleanly */
+  mix-blend-mode: multiply;
+}
+
+/* ============ CI/VI section — parent + sub-brand pair ============
+   Two side-by-side brand cards using the same cream panel as Mel
+   Studio. Cards have figcaption rules underneath naming each brand. */
+.ksm-brand-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 16 / 10;
+  padding: clamp(28px, 5%, 56px);
+  border-radius: var(--radius);
+  border: 1px solid var(--rule);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12);
+  background:
+    radial-gradient(ellipse 75% 65% at 50% 45%, rgba(255,255,255,0.5), transparent 70%),
+    linear-gradient(160deg, #c9bfa4 0%, #e8dec3 50%, #c9bfa4 100%);
+  overflow: hidden;
+  margin: 0;
+}
+.ksm-brand-card img {
+  width: 70%;
+  max-width: 320px;
+  height: auto;
+  object-fit: contain;
+  /* both logos ship with white backgrounds — multiply blend so the
+     cream panel shows through where the logo file is white */
+  mix-blend-mode: multiply;
+}
+.ksm-brand-card figcaption {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(35, 42, 120, 0.65);
+  white-space: nowrap;
+}
+
+/* ============ NX Water section — subtle pattern backdrop ============
+   The placeholder for Phase 3 (renders under NDA) gets the brand
+   pattern as a low-opacity backdrop so the section reads as "branded
+   space" rather than "empty rectangle". */
+.cs-chapter--nx .ksm-nx-placeholder {
+  position: relative;
+  min-height: 320px;
+  background:
+    linear-gradient(rgba(20,20,22,0.88), rgba(20,20,22,0.94)),
+    url('images/ksm/nxwater-pattern.png');
+  background-blend-mode: normal, normal;
+  background-size: cover, 220px auto;
+  background-repeat: no-repeat, repeat;
+  overflow: hidden;
+}
+
 /* ============ OVERVIEW — featured__body-style 3-col ============ */
 .cs-overview {
   display: grid;

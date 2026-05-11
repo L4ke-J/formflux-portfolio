@@ -907,6 +907,41 @@ html[data-theme="light"] .featured__overlay {
 .proj:hover .proj__media--mel-brand img.mel-brand-logo {
   transform: scale(1.04);
 }
+
+/* NX Water / KSM home-grid card — same cream brand panel, but the
+   NX Water brand pattern is tiled at low opacity behind the wordmark
+   so the card reads as "branded surface" rather than empty card.
+   Uses mix-blend-mode on the logo so its white background doesn't
+   block the pattern underneath. */
+.proj__media--ksm-brand {
+  background:
+    radial-gradient(ellipse 75% 65% at 50% 45%, rgba(255,255,255,0.5), transparent 70%),
+    linear-gradient(160deg, #c9bfa4 0%, #e8dec3 50%, #c9bfa4 100%),
+    url('images/ksm/nxwater-pattern.png');
+  background-blend-mode: normal, normal, multiply;
+  background-size: cover, cover, 180px auto;
+  background-repeat: no-repeat, no-repeat, repeat;
+  background-position: center, center, center;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12);
+}
+.proj__media--ksm-brand a {
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; height: 100%;
+  padding: clamp(20px, 6%, 44px);
+}
+.proj__media--ksm-brand img.ksm-brand-logo {
+  /* Wide NX Water wordmark needs more horizontal room than Mel's mark */
+  width: 76%;
+  max-width: 380px;
+  height: auto;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+.proj:hover .proj__media--ksm-brand img.ksm-brand-logo {
+  transform: scale(1.04);
+}
+
 .mel-vis { display: flex; flex-direction: column; gap: 8px; height: 100%; }
 .mel-printer {
   flex: 1;
