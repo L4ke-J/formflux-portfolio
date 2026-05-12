@@ -204,15 +204,22 @@ html[data-theme="light"] .cs-hero__image-wrap::after {
   overflow: hidden;
   margin: 0;
 }
-/* Specificity guard — beats the generic .cs-media--pair img rule
-   (aspect-ratio 16/9 + object-fit cover) that was cropping the wide
-   wordmarks into apparent dark rectangles. */
+/* Specificity guard — overrides BOTH generic rules that apply to
+   images inside .cs-media:
+   - .cs-media img { background: var(--bg-2); border: 1px solid ... }
+     was painting a dark rectangle behind every brand-card logo.
+   - .cs-media--pair img { aspect-ratio: 16/9; object-fit: cover }
+     was force-cropping the wide wordmarks into a 16:9 box.
+   This rule's specificity (0,2,1) beats both. */
 .cs-media--pair .ksm-brand-card img {
   width: 70%;
   max-width: 360px;
   height: auto;
   aspect-ratio: auto;
   object-fit: contain;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
 }
 .ksm-brand-card figcaption {
   position: absolute;
