@@ -256,27 +256,23 @@ html[data-theme="light"] .cs-hero__image-wrap::after {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* portrait aspect — Villa is a tall vertical product, so a
-     landscape card wastes horizontal space and shrinks the render */
-  aspect-ratio: 4 / 5;
-  padding: clamp(20px, 3.5%, 40px) clamp(20px, 3.5%, 40px) 52px;
+  /* Original landscape banner size kept — the PNGs were cropped
+     tight to the product itself, so the render fills more of the
+     card naturally without changing card dimensions. */
+  aspect-ratio: 4 / 3;
+  padding: clamp(20px, 3%, 36px) clamp(20px, 3%, 36px) 48px;
   border-radius: var(--radius);
   border: 1px solid var(--rule);
   box-shadow: inset 0 0 0 1px rgba(255,255,255,0.18);
-  /* same porcelain panel as the Phase 1 brand cards */
   background:
     radial-gradient(ellipse 75% 65% at 50% 40%, rgba(255,255,255,0.65), transparent 70%),
     linear-gradient(160deg, #dde6eb 0%, #ecf1f4 50%, #dde6eb 100%);
   overflow: hidden;
   margin: 0;
 }
-/* Specificity guard — overrides .cs-media img background/border AND
-   .cs-media--pair img aspect-ratio/object-fit. Height-sized to fill
-   the portrait card; max-width prevents the 3/4-angle render (which
-   is slightly wider) from overflowing horizontally. */
 .cs-media--pair .ksm-product-card img {
   width: auto;
-  height: 92%;
+  height: 96%;     /* near-fill the card vertically */
   max-width: 95%;
   aspect-ratio: auto;
   object-fit: contain;
