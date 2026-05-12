@@ -908,38 +908,68 @@ html[data-theme="light"] .featured__overlay {
   transform: scale(1.04);
 }
 
-/* NX Water / KSM home-grid card — same cream brand panel, but the
-   NX Water brand pattern is tiled at low opacity behind the wordmark
-   so the card reads as "branded surface" rather than empty card.
-   Uses mix-blend-mode on the logo so its white background doesn't
-   block the pattern underneath. */
+/* NX Water / KSM home-grid card — deliberately distinct from the
+   cream Mel Studio card. Deep ink panel + the NX Water brand pattern
+   rendered as a single large hero motif (not tiled) so the seam
+   artifacts disappear. The NX Water wordmark sits in the lower-left,
+   with a "CN PATENT 2025" pill bottom-right communicating the IP
+   outcome at a glance. */
 .proj__media--ksm-brand {
   background:
-    radial-gradient(ellipse 75% 65% at 50% 45%, rgba(255,255,255,0.5), transparent 70%),
-    linear-gradient(160deg, #c9bfa4 0%, #e8dec3 50%, #c9bfa4 100%),
-    url('images/ksm/nxwater-pattern.png');
-  background-blend-mode: normal, normal, multiply;
-  background-size: cover, cover, 180px auto;
-  background-repeat: no-repeat, no-repeat, repeat;
-  background-position: center, center, center;
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12);
+    radial-gradient(ellipse 80% 70% at 30% 30%, rgba(50, 100, 180, 0.18), transparent 70%),
+    radial-gradient(ellipse 60% 50% at 80% 80%, rgba(40, 90, 160, 0.12), transparent 70%),
+    linear-gradient(160deg, #0f1620 0%, #1a2330 60%, #0c121b 100%);
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
 }
 .proj__media--ksm-brand a {
-  display: flex; align-items: center; justify-content: center;
+  display: block;
   width: 100%; height: 100%;
-  padding: clamp(20px, 6%, 44px);
+  position: relative;
+}
+/* Large pattern hero, no tiling — sits in the upper-right slightly
+   bleeding off the card edge for visual energy */
+.proj__media--ksm-brand::before {
+  content: '';
+  position: absolute;
+  top: -8%; right: -6%;
+  width: 78%; height: 90%;
+  background:
+    url('images/ksm/nxwater-pattern.png') no-repeat center / contain;
+  opacity: 0.18;
+  filter: invert(1);
+  pointer-events: none;
 }
 .proj__media--ksm-brand img.ksm-brand-logo {
-  /* Wide NX Water wordmark needs more horizontal room than Mel's mark */
-  width: 76%;
-  max-width: 380px;
+  position: absolute;
+  left: clamp(20px, 6%, 36px);
+  bottom: clamp(20px, 8%, 36px);
+  width: 54%;
+  max-width: 260px;
   height: auto;
   object-fit: contain;
-  mix-blend-mode: multiply;
+  filter: invert(1);   /* dark wordmark on dark panel → invert to white */
+  transition: transform .6s ease;
 }
 .proj:hover .proj__media--ksm-brand img.ksm-brand-logo {
   transform: scale(1.04);
+}
+/* CN PATENT 2025 pill — bottom-right, mono caps, subtle */
+.proj__media--ksm-brand::after {
+  content: 'CN PATENT 2025';
+  position: absolute;
+  right: clamp(20px, 6%, 36px);
+  top: clamp(20px, 8%, 36px);
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  padding: 6px 10px;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 4px;
+  pointer-events: none;
 }
 
 .mel-vis { display: flex; flex-direction: column; gap: 8px; height: 100%; }
