@@ -210,11 +210,18 @@ html[data-theme="light"] .cs-hero__image-wrap::after {
      was painting a dark rectangle behind every brand-card logo.
    - .cs-media--pair img { aspect-ratio: 16/9; object-fit: cover }
      was force-cropping the wide wordmarks into a 16:9 box.
-   This rule's specificity (0,2,1) beats both. */
+   This rule's specificity (0,2,1) beats both.
+
+   Sizing strategy: lock HEIGHT (not width) so both logos sit in
+   identical-height boxes. The KSM and NX Water logos have
+   different aspect ratios (2.5:1 vs 3:1), so width-sizing produced
+   different-height boxes — which let the flex-centred logos
+   appear misaligned vertically (NX Water sat higher because its
+   shorter box was smaller). Height-sizing fixes that. */
 .cs-media--pair .ksm-brand-card img {
-  width: 70%;
-  max-width: 360px;
-  height: auto;
+  width: auto;
+  height: clamp(90px, 20%, 150px);
+  max-width: 80%;
   aspect-ratio: auto;
   object-fit: contain;
   background: transparent;
