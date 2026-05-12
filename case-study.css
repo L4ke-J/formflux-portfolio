@@ -176,6 +176,38 @@ html[data-theme="light"] .cs-hero__image-wrap::after {
   z-index: -1;
   pointer-events: none;
 }
+
+/* ============ Brand-hero MOBILE FIX ============
+   On mobile the 16:9 aspect-ratio that suits photographic heroes
+   clips the brand-panel content (logo + kicker + multi-line prose
+   needs more vertical room than 16:9 gives at ~390px wide).
+   Drop the aspect ratio, let the panel grow to fit its content
+   instead. Applies to both Mel Studio (.cs-hero--brand) and the
+   NX Water variant (.cs-hero--brand-nx). */
+@media (max-width: 760px) {
+  .cs-hero--brand .cs-hero__image-wrap {
+    aspect-ratio: auto;
+    min-height: 360px;
+  }
+  .cs-hero--brand .cs-hero__overlay {
+    position: static;
+    padding: clamp(32px, 8vw, 56px) clamp(20px, 5vw, 32px);
+    /* Static positioning means the overlay defines the panel's
+       intrinsic height — no clipping, content drives the layout. */
+  }
+  .cs-hero--brand .cs-hero__image-wrap img.cs-hero__brandmark {
+    width: clamp(180px, 55vw, 280px);
+    margin-bottom: 16px;
+  }
+  /* For NX variant: the wide wordmark + pattern need a touch more room */
+  .cs-hero--brand-nx .cs-hero__image-wrap img.cs-hero__brandmark--nx {
+    width: clamp(220px, 70vw, 360px);
+  }
+  .cs-hero--brand .cs-hero__sub {
+    font-size: 14px;
+    line-height: 1.55;
+  }
+}
 .cs-hero--brand-nx .cs-hero__image-wrap img.cs-hero__brandmark--nx {
   /* wider wordmark, no symbol — the NX Water logo is ~3:1 */
   width: clamp(280px, 42vw, 540px);
