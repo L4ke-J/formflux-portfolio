@@ -150,14 +150,15 @@ html[data-theme="light"] .cs-hero__image-wrap::after {
 }
 
 /* ============ NX Water brand-hero variant ============
-   Same cream panel as Mel Studio. The NX Water brand pattern is
-   placed as a single large hero motif via ::before (no repeat) so
-   the tile seams don't show. The NX Water wordmark is much wider
-   than the Mel mark (≈3:1) — bump the width clamp accordingly. */
+   Soft porcelain panel with a subtle cool water-blue undertone —
+   deliberately NOT the warm cream used for Mel Studio, so the two
+   cases read as distinct identities. The NX Water brand pattern
+   sits as a single large hero motif via ::before (no repeat) so
+   the tile seams don't show. */
 .cs-hero--brand-nx .cs-hero__image-wrap {
   background:
-    radial-gradient(ellipse 72% 64% at 50% 38%, rgba(255,255,255,0.55), transparent 70%),
-    linear-gradient(160deg, #c9bfa4 0%, #e8dec3 45%, #c9bfa4 100%);
+    radial-gradient(ellipse 72% 64% at 50% 38%, rgba(255,255,255,0.65), transparent 70%),
+    linear-gradient(160deg, #dde6eb 0%, #ecf1f4 45%, #dde6eb 100%);
   position: relative;
   isolation: isolate;
 }
@@ -193,17 +194,24 @@ html[data-theme="light"] .cs-hero__image-wrap::after {
   padding: clamp(28px, 5%, 56px);
   border-radius: var(--radius);
   border: 1px solid var(--rule);
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.18);
+  /* Soft porcelain panel — cool light, deliberately distinct from
+     Mel Studio's warm cream. Subtle water-blue tint nods at NX Water
+     without competing with the navy ink. */
   background:
-    radial-gradient(ellipse 75% 65% at 50% 45%, rgba(255,255,255,0.5), transparent 70%),
-    linear-gradient(160deg, #c9bfa4 0%, #e8dec3 50%, #c9bfa4 100%);
+    radial-gradient(ellipse 75% 65% at 50% 40%, rgba(255,255,255,0.65), transparent 70%),
+    linear-gradient(160deg, #dde6eb 0%, #ecf1f4 50%, #dde6eb 100%);
   overflow: hidden;
   margin: 0;
 }
-.ksm-brand-card img {
+/* Specificity guard — beats the generic .cs-media--pair img rule
+   (aspect-ratio 16/9 + object-fit cover) that was cropping the wide
+   wordmarks into apparent dark rectangles. */
+.cs-media--pair .ksm-brand-card img {
   width: 70%;
-  max-width: 320px;
+  max-width: 360px;
   height: auto;
+  aspect-ratio: auto;
   object-fit: contain;
 }
 .ksm-brand-card figcaption {
