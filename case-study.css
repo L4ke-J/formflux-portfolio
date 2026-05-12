@@ -256,8 +256,10 @@ html[data-theme="light"] .cs-hero__image-wrap::after {
   display: flex;
   align-items: center;
   justify-content: center;
-  aspect-ratio: 4 / 3;
-  padding: clamp(28px, 5%, 56px) clamp(28px, 5%, 56px) 48px;
+  /* portrait aspect — Villa is a tall vertical product, so a
+     landscape card wastes horizontal space and shrinks the render */
+  aspect-ratio: 4 / 5;
+  padding: clamp(20px, 3.5%, 40px) clamp(20px, 3.5%, 40px) 52px;
   border-radius: var(--radius);
   border: 1px solid var(--rule);
   box-shadow: inset 0 0 0 1px rgba(255,255,255,0.18);
@@ -269,13 +271,13 @@ html[data-theme="light"] .cs-hero__image-wrap::after {
   margin: 0;
 }
 /* Specificity guard — overrides .cs-media img background/border AND
-   .cs-media--pair img aspect-ratio/object-fit. Height-sized because
-   the Villa unit is a tall vertical product; width-sizing would
-   underuse the panel's vertical space. */
+   .cs-media--pair img aspect-ratio/object-fit. Height-sized to fill
+   the portrait card; max-width prevents the 3/4-angle render (which
+   is slightly wider) from overflowing horizontally. */
 .cs-media--pair .ksm-product-card img {
   width: auto;
-  height: 85%;
-  max-width: 70%;
+  height: 92%;
+  max-width: 95%;
   aspect-ratio: auto;
   object-fit: contain;
   background: transparent;
