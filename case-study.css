@@ -212,16 +212,15 @@ html[data-theme="light"] .cs-hero__image-wrap::after {
      was force-cropping the wide wordmarks into a 16:9 box.
    This rule's specificity (0,2,1) beats both.
 
-   Sizing strategy: lock HEIGHT (not width) so both logos sit in
-   identical-height boxes. The KSM and NX Water logos have
-   different aspect ratios (2.5:1 vs 3:1), so width-sizing produced
-   different-height boxes — which let the flex-centred logos
-   appear misaligned vertically (NX Water sat higher because its
-   shorter box was smaller). Height-sizing fixes that. */
+   Both PNGs are now top-bottom symmetric (NX Water's bottom
+   whitespace was cropped to match its top padding), so width-based
+   sizing produces logos whose visible content lands at the same
+   vertical centre when flex-centred. Back to the bigger size the
+   user preferred. */
 .cs-media--pair .ksm-brand-card img {
-  width: auto;
-  height: clamp(90px, 20%, 150px);
-  max-width: 80%;
+  width: 70%;
+  max-width: 380px;
+  height: auto;
   aspect-ratio: auto;
   object-fit: contain;
   background: transparent;
